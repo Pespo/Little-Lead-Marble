@@ -1,6 +1,6 @@
-#include "InputListener.h"
+#include "llmInputListener.h"
 
-InputListener::InputListener(Ogre::RenderWindow *wnd, Ogre::Camera *camera, Ogre::SceneManager *sceneMgr) {
+llmInputListener::llmInputListener(Ogre::RenderWindow *wnd, Ogre::Camera *camera, Ogre::SceneManager *sceneMgr) {
 	mWindow = wnd;
 	mCamera = camera;
 	startOIS();
@@ -19,13 +19,13 @@ InputListener::InputListener(Ogre::RenderWindow *wnd, Ogre::Camera *camera, Ogre
 
 }
 
-InputListener::~InputListener(){
+llmInputListener::~llmInputListener(){
 	Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
 	windowClosed(mWindow);
 }
 
-bool InputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
-	std::cout << "Frame Rendering Queued" << std::endl;
+bool llmInputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+//	std::cout << "Frame Rendering Queued" << std::endl;
 	if(mWindow->isClosed())
 		return false;
 
@@ -41,7 +41,7 @@ bool InputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
     return mContinuer;
 }
 
-void InputListener::startOIS() {
+void llmInputListener::startOIS() {
 	Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
 
 	OIS::ParamList pl;
@@ -58,7 +58,7 @@ void InputListener::startOIS() {
 	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
 }
 
-void InputListener::windowResized(Ogre::RenderWindow* wnd) {
+void llmInputListener::windowResized(Ogre::RenderWindow* wnd) {
     unsigned int width, height, depth;
     int left, top;
     wnd->getMetrics(width, height, depth, left, top);
@@ -68,7 +68,7 @@ void InputListener::windowResized(Ogre::RenderWindow* wnd) {
     ms.height = height;
 }
 
-void InputListener::windowClosed(Ogre::RenderWindow* wnd) {
+void llmInputListener::windowClosed(Ogre::RenderWindow* wnd) {
     if( wnd == mWindow ) {
         if( mInputManager ) {
             mInputManager->destroyInputObject( mMouse );
@@ -81,21 +81,21 @@ void InputListener::windowClosed(Ogre::RenderWindow* wnd) {
 }
 
 
-bool InputListener::mouseMoved(const OIS::MouseEvent &e) {
+bool llmInputListener::mouseMoved(const OIS::MouseEvent &e) {
 	mCamera->yaw(Ogre::Degree(-mVitesseRotation * e.state.X.rel));
     mCamera->pitch(Ogre::Degree(-mVitesseRotation * e.state.Y.rel));
     return true;
 }
 
-bool InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
+bool llmInputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
     return true; 
 }
 
-bool InputListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id){
+bool llmInputListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id){
     return true;
 }
   
-bool InputListener::keyPressed(const OIS::KeyEvent &e){
+bool llmInputListener::keyPressed(const OIS::KeyEvent &e){
 	std::cout << "keyPressed" << std::endl;
 	switch(e.key) {
 		case OIS::KC_ESCAPE:
@@ -120,7 +120,7 @@ bool InputListener::keyPressed(const OIS::KeyEvent &e){
     return mContinuer;
 }
 
-bool InputListener::keyReleased(const OIS::KeyEvent &e){
+bool llmInputListener::keyReleased(const OIS::KeyEvent &e){
 	switch(e.key) {
 		case OIS::KC_W:
 			mMouvement.z += 1;

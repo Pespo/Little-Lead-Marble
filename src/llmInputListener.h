@@ -1,12 +1,16 @@
+#ifndef _llmInputListener_H_
+#define _llmInputListener_H_
+
 #include <Ogre.h>
 #include <OIS/OIS.h>
 #include <OgreSceneManager.h>
+#include <SdkTrays.h>
  
-class InputListener : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener {
+class llmInputListener : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener, OgreBites::SdkTrayListener {
 
 public:
-	InputListener(Ogre::RenderWindow *wnd, Ogre::Camera *camera, Ogre::SceneManager *sceneMgr);
-	~InputListener();
+	llmInputListener(Ogre::RenderWindow *wnd, Ogre::Camera *camera, Ogre::SceneManager *sceneMgr);
+	~llmInputListener();
 	
 	bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 	void startOIS();
@@ -33,4 +37,7 @@ private:
     Ogre::Vector3 mMouvement;
     Ogre::Real mVitesse;
     Ogre::Real mVitesseRotation;
+
+    OgreBites::SdkTrayManager* mTrayMgr;
 };
+#endif
