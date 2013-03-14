@@ -1,5 +1,5 @@
-#include "llmObject.h"
-#include "llmMotionState.h"
+#include "Object.h"
+#include "MotionState.h"
 #include <LinearMath/btVector3.h>
 #include <Ogre.h>
 
@@ -7,68 +7,68 @@ inline btVector3 cvt(const Ogre::Vector3 &V){
     return btVector3(V.x, V.y, V.z);
 }
 
-llmObject::llmObject(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* smgr, Ogre::Vector3& halfdim, float mass) :
- m_world(world), m_smgr(smgr) {
+llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* smgr, Ogre::Vector3& halfdim, float mass) :
+ m_pWorld(world), m_pSceneManager(smgr) {
 
     halfdim *= 1/50.f;
-	m_ent = m_smgr->createEntity(name + "_ent", mesh + ".mesh");
-    m_node = m_smgr->getRootSceneNode()->createChildSceneNode(name + "_node");
-    m_node->attachObject(m_ent);
-    m_node->scale(halfdim);
+	m_pEntity = m_pSceneManager->createEntity(name + "_ent", mesh + ".mesh");
+    m_pNode = m_pSceneManager->getRootSceneNode( )->createChildSceneNode(name + "_node");
+    m_pNode->attachObject(m_pEntity);
+    m_pNode->scale(halfdim);
  
 	size_t vertex_count, index_count;
 
 
-    Ogre::Vector3* m_vertices;
-    unsigned* m_indices;
+    Ogre::Vector3* vertices;
+    unsigned* indices;
  
-	getMeshInformation(m_ent->getMesh(),vertex_count,m_vertices,index_count,m_indices, halfdim);
-	Ogre::LogManager::getSingleton().logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
-	Ogre::LogManager::getSingleton().logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);
+	getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, halfdim);
+	Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
+	Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);
 
-	m_verticesTest = new btVector3[vertex_count];
+	m_pVerticesTest = new btVector3[vertex_count];
 
     for(int i = 0; i < vertex_count; i++){
-        m_verticesTest[i] = cvt(m_vertices[i]);
+        m_pVerticesTest[i] = cvt(vertices[i]);
     }
 
-    m_shape = new btConvexHullShape(*m_verticesTest,vertex_count);
+    m_pShape = new btConvexHullShape(*m_pVerticesTest,vertex_count);
     btVector3 inertia;
-    m_shape->calculateLocalInertia(mass, inertia);
-    llmMotionState* motionState = new llmMotionState(m_node);
-    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_shape, inertia);
-    m_body = new btRigidBody(BodyCI);
-    m_world->addRigidBody(m_body);
+    m_pShape->calculateLocalInertia(mass, inertia);
+    MotionState* motionState = new MotionState(m_pNode);
+    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
+    m_pBody = new btRigidBody(BodyCI);
+    m_pWorld->addRigidBody(m_pBody);
 
-    delete m_vertices;
-    delete m_indices;
+    delete vertices;
+    delete indices;
 }
  
-llmObject::~llmObject() {
-    delete [] m_verticesTest;
-    delete m_body->getMotionState();
-    m_world->removeRigidBody(m_body);
-    delete m_body;
+llm::Object::~Object( ) {
+    delete [] m_pVerticesTest;
+    delete m_pBody->getMotionState( );
+    m_pWorld->removeRigidBody(m_pBody);
+    delete m_pBody;
      
-    delete m_shape;
-    /*m_smgr->destroySceneNode(m_node);
-	m_smgr->destroyEntity(m_ent);*/
+    delete m_pShape;
+    /*m_pSceneManager->destroySceneNode(m_pNode);
+	m_pSceneManager->destroyEntity(m_pEntity);*/
 }
 
  
-btRigidBody* llmObject::getRigidBody() {
-    return m_body;
+btRigidBody* llm::Object::getRigidBody( ) {
+    return m_pBody;
 }
  
-Ogre::SceneNode* llmObject::getSceneNode() {
-    return m_node;
+Ogre::SceneNode* llm::Object::getSceneNode( ) {
+    return m_pNode;
 }
  
-Ogre::Entity* llmObject::getEntity() {
-    return m_ent;
+Ogre::Entity* llm::Object::getEntity( ) {
+    return m_pEntity;
 }
 
-void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre::Vector3* &vertices,
+void llm::Object::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre::Vector3* &vertices,
     size_t &index_count, unsigned* &indices, const Ogre::Vector3 &scale, 
     const Ogre::Vector3 &position,
     const Ogre::Quaternion &orient) {
@@ -83,7 +83,7 @@ void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre:
     size_t prev_ind = index_count;
  
     // Calculate how many vertices and indices we're going to need
-    for(int i = 0;i < mesh->getNumSubMeshes();i++) {
+    for(int i = 0;i < mesh->getNumSubMeshes( );i++) {
         Ogre::SubMesh* submesh = mesh->getSubMesh(i);
  
         // We only need to add the shared vertices once
@@ -109,7 +109,7 @@ void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre:
     added_shared = false;
  
     // Run through the submeshes again, adding the data into the arrays
-    for(int i = 0;i < mesh->getNumSubMeshes();i++) {
+    for(int i = 0;i < mesh->getNumSubMeshes( );i++) {
         Ogre::SubMesh* submesh = mesh->getSubMesh(i);
  
         Ogre::VertexData* vertex_data = submesh->useSharedVertices ? mesh->sharedVertexData : submesh->vertexData;
@@ -120,11 +120,11 @@ void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre:
             }
  
             const Ogre::VertexElement* posElem = vertex_data->vertexDeclaration->findElementBySemantic(Ogre::VES_POSITION);
-            Ogre::HardwareVertexBufferSharedPtr vbuf = vertex_data->vertexBufferBinding->getBuffer(posElem->getSource());
+            Ogre::HardwareVertexBufferSharedPtr vbuf = vertex_data->vertexBufferBinding->getBuffer(posElem->getSource( ));
             unsigned char* vertex = static_cast<unsigned char*>(vbuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
             Ogre::Real* pReal;
  
-            for(size_t j = 0; j < vertex_data->vertexCount; ++j, vertex += vbuf->getVertexSize()) {
+            for(size_t j = 0; j < vertex_data->vertexCount; ++j, vertex += vbuf->getVertexSize( )) {
                 posElem->baseVertexPointerToElement(vertex, &pReal);
  
                 Ogre::Vector3 pt;
@@ -139,7 +139,7 @@ void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre:
                 vertices[current_offset + j].y = pt.y;
                 vertices[current_offset + j].z = pt.z;
             }
-            vbuf->unlock();
+            vbuf->unlock( );
             next_offset += vertex_data->vertexCount;
         }
  
@@ -149,7 +149,7 @@ void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre:
         unsigned short* pShort;
         unsigned int* pInt;
         Ogre::HardwareIndexBufferSharedPtr ibuf = index_data->indexBuffer;
-        bool use32bitindexes = (ibuf->getType() == Ogre::HardwareIndexBuffer::IT_32BIT);
+        bool use32bitindexes = (ibuf->getType( ) == Ogre::HardwareIndexBuffer::IT_32BIT);
         if (use32bitindexes) pInt = static_cast<unsigned int*>(ibuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
         else pShort = static_cast<unsigned short*>(ibuf->lock(Ogre::HardwareBuffer::HBL_READ_ONLY));
  
@@ -166,7 +166,7 @@ void llmObject::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre:
             index_offset += 3;
         }
         
-        ibuf->unlock();
+        ibuf->unlock( );
         current_offset = next_offset;
     }
 }
