@@ -24,16 +24,15 @@ namespace llm {
         
 		btCollisionShape* m_pShape;
 		btRigidBody* m_pBody;
-        
-		btVector3* m_pVerticesTest;
 
 	public:
 		Object(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim, float mass);
 		virtual ~Object( );
  
-		btRigidBody* getRigidBody( );
-		Ogre::SceneNode* getSceneNode( );
-		Ogre::Entity* getEntity( );
+		btRigidBody* rigidBody( );
+		Ogre::SceneNode* sceneNode( );
+		Ogre::Entity* entity( );
+        
 		void getMeshInformation(Ogre::MeshPtr mesh, size_t &vertex_count,Ogre::Vector3* &vertices,
 			size_t &index_count, unsigned* &indices,
 			const Ogre::Vector3 &scale = Ogre::Vector3::UNIT_SCALE,

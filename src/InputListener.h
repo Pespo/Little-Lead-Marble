@@ -54,6 +54,8 @@ namespace llm {
 		bool mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id);
 		bool keyPressed(const OIS::KeyEvent &e);
 		bool keyReleased(const OIS::KeyEvent &e);
+
+		void quit();
 	};
 }
 #endif
