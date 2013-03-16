@@ -9,6 +9,9 @@
 #include <Bullet-C-Api.h>
 #include <btBulletCollisionCommon.h>
 
+#include <CEGUI.h>
+#include <RendererModules\Ogre\CEGUIOgreRenderer.h>
+
 namespace llm{
  
     class Application {
@@ -19,6 +22,8 @@ namespace llm{
         Ogre::Camera* m_pCamera;
         Ogre::SceneManager* m_pSceneMgr;
         Ogre::FrameListener* m_pInputListener;
+
+        CEGUI::OgreRenderer* mRenderer;
 
         //variable bullet
         btDbvtBroadphase* m_pBroadphase;
@@ -37,6 +42,7 @@ namespace llm{
      
         bool start( );
         void exit( );
+        bool quit(const CEGUI::EventArgs& e);
     	void createFrameListener( );
         
     };

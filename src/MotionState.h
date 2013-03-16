@@ -1,4 +1,4 @@
-#pragma once
+#pragma once	
 #ifndef MOTIONSTATE_H
 #define MOTIONSTATE_H
 
@@ -47,6 +47,15 @@ namespace llm {
 			m_pNode->setPosition(Ogre::Vector3(pos.x( ),pos.y( ),pos.z( )));
 			m_pNode->setOrientation(Ogre::Quaternion(ori.w( ),ori.x( ),ori.y( ),ori.z( )));
 		}
+
+		btTransform transform( ) {
+			return m_transform;
+		}
+
+		void transform(const btTransform &transform) {
+			setWorldTransform(transform);
+		}
+
 	};
 }
 #endif

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 project("LLM")
 set(project_description "Little Lead Marble")
 
@@ -6,6 +6,7 @@ SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMakeModules;${CMAKE_MODULE_PATH}")
 find_package(OGRE REQUIRED)	#Requires OGRE_HOME env var (path to install directory of OGRE)
 find_package(OIS REQUIRED)
 find_package(Bullet REQUIRED)
+find_package(CEGUI REQUIRED)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
@@ -26,6 +27,7 @@ include_directories(
 	${OGRE_INCLUDE_DIRS}
 	${OIS_INCLUDE_DIRS}
 	${BULLET_INCLUDE_DIRS}
+	${CEGUI_INCLUDE_DIRS}
 	"${OGRE_INCLUDE_DIR}/../../boost"
 )
 
@@ -40,7 +42,7 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Object.h"
 	"src/main.cpp"
 ) 
-target_link_libraries("${project_description}" ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${BULLET_LIBRARIES})
+target_link_libraries("${project_description}" ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${BULLET_LIBRARIES} ${CEGUI_LIBRARIES})
 
 if( MSVC )
 	# Deactivate warning C4251

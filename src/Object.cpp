@@ -18,21 +18,21 @@ llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynami
  
 	size_t vertex_count, index_count;
 
-
     Ogre::Vector3* vertices;
     unsigned* indices;
+    btVector3* btVertices;
  
 	getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, halfdim);
 	Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
 	Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);
 
-	m_pVerticesTest = new btVector3[vertex_count];
+	btVertices = new btVector3[vertex_count];
 
     for(int i = 0; i < vertex_count; i++){
-        m_pVerticesTest[i] = cvt(vertices[i]);
+        btVertices[i] = cvt(vertices[i]);
     }
 
-    m_pShape = new btConvexHullShape(*m_pVerticesTest,vertex_count);
+    m_pShape = new btConvexHullShape(*btVertices,vertex_count);
     btVector3 inertia;
     m_pShape->calculateLocalInertia(mass, inertia);
     MotionState* motionState = new MotionState(m_pNode);
@@ -40,12 +40,12 @@ llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynami
     m_pBody = new btRigidBody(BodyCI);
     m_pWorld->addRigidBody(m_pBody);
 
+    delete [] btVertices;
     delete vertices;
     delete indices;
 }
  
 llm::Object::~Object( ) {
-    delete [] m_pVerticesTest;
     delete m_pBody->getMotionState( );
     m_pWorld->removeRigidBody(m_pBody);
     delete m_pBody;
@@ -56,15 +56,15 @@ llm::Object::~Object( ) {
 }
 
  
-btRigidBody* llm::Object::getRigidBody( ) {
+btRigidBody* llm::Object::rigidBody( ) {
     return m_pBody;
 }
  
-Ogre::SceneNode* llm::Object::getSceneNode( ) {
+Ogre::SceneNode* llm::Object::sceneNode( ) {
     return m_pNode;
 }
  
-Ogre::Entity* llm::Object::getEntity( ) {
+Ogre::Entity* llm::Object::entity( ) {
     return m_pEntity;
 }
 

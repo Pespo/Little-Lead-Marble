@@ -14,7 +14,7 @@ using namespace std;
 	#include <crtdbg.h>
 #endif    // DEBUG
 
-void test( ) {
+void execution( ) {
     try {
             llm::Application app;
             app.start( );
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 			//_crtBreakAlloc = 14674;
 		#endif
 
-        test( );
+        execution( );
 
 		return 0;
     }
