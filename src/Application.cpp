@@ -34,9 +34,9 @@ llm::Application::Application( ) : m_pRoot(0) {
 std::cout << "avant" << std::endl;
 	mRenderer = & CEGUI::OgreRenderer::bootstrapSystem();
 std::cout << "apres" << std::endl;
-	
+
 	createFrameListener( );
-	
+
 	///-----initialization bullet phisics-----
 	//collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
 	m_pCollisionConfiguration = new btDefaultCollisionConfiguration( );
@@ -61,7 +61,7 @@ void llm::Application::exit( ) {
 	for(int i=0; i<m_objectList.size( ); i++)
         delete m_objectList[i];
      m_objectList.clear( );
-	
+
 	CEGUI::OgreRenderer::destroySystem();
 	delete m_pWorld;
 	delete m_pSolver;
@@ -117,13 +117,13 @@ bool llm::Application::start( ) {
 
 	//Création du sol
 	Object* ground = new Object("ground", "cube", m_pWorld, m_pSceneMgr, Ogre::Vector3(200,1,200), 0);
-	ground->entity( )->setMaterialName("Cube");
+	ground->entity()->setMaterialName("Cube");
 	m_objectList.push_back(ground);
  
  	//Création des pinguins
     for(int i=0; i<20; i++) {
 		//std::cout << "i " << i << std::endl;
-        Object* cube = new Object("penguin" + Ogre::StringConverter::toString(i), "penguin", m_pWorld, m_pSceneMgr, Ogre::Vector3(10,10,10), 40);
+        Object* cube = new Object("penguin" + Ogre::StringConverter::toString(i), "penguin", m_pWorld, m_pSceneMgr, Ogre::Vector3(10,10,10), 20);
         cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
        	m_objectList.push_back(cube);
     }
@@ -173,10 +173,9 @@ bool llm::Application::start( ) {
 		Ogre::WindowEventUtilities::messagePump( );
        
 		if(i>180){
-			if(m_objectList[1]->hasPhysics())
-				m_objectList[1]->rigidBody( )->applyCentralImpulse(btVector3(0., 50., 0.));
+			m_objectList[1]->rigidBody( )->applyCentralImpulse(btVector3(0., 50., 0.));
 		}
-	   
+
 	   	if(i>190)
 			i=0;
 

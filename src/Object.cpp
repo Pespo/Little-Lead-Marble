@@ -7,78 +7,52 @@ inline btVector3 cvt(const Ogre::Vector3 &V){
     return btVector3(V.x, V.y, V.z);
 }
 
-llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* smgr, Ogre::Vector3& halfdim, float mass) :
- m_pWorld(world), m_pSceneManager(smgr), m_pBody(NULL), m_pShape(NULL), m_bHasPhysics(false) {
+llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* smgr, Ogre::Vector3& halfdim, float mass) : 
+Asset(name, mesh, smgr, halfdim), m_pWorld(world) {
 
-    halfdim *= 1/50.f;
-    m_pEntity = m_pSceneManager->createEntity(name + "_ent", mesh + ".mesh");
-    m_pNode = m_pSceneManager->getRootSceneNode( )->createChildSceneNode(name + "_node");
-    m_pNode->attachObject(m_pEntity);
-    m_pNode->scale(halfdim);
- 
     size_t vertex_count, index_count;
 
     Ogre::Vector3* vertices;
     unsigned* indices;
  
-    getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, halfdim);
+    getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, m_pHalfdim);
     Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
     Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);
 
-    if(world != NULL) {
-        btVector3* btVertices;
+    btVector3* btVertices;
 
-        btVertices = new btVector3[vertex_count];
+    btVertices = new btVector3[vertex_count];
 
-        for(int i = 0; i < vertex_count; i++){
-            btVertices[i] = cvt(vertices[i]);
-        }
-
-        m_pShape = new btConvexHullShape(*btVertices,vertex_count);
-        btVector3 inertia;
-        m_pShape->calculateLocalInertia(mass, inertia);
-        MotionState* motionState = new MotionState(m_pNode);
-        btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
-        m_pBody = new btRigidBody(BodyCI);
-        m_pWorld->addRigidBody(m_pBody);
-        m_bHasPhysics = true;
-        delete [] btVertices;
+    for(int i = 0; i < vertex_count; i++){
+        btVertices[i] = cvt(vertices[i]);
     }
 
+    m_pShape = new btConvexHullShape(*btVertices,vertex_count);
+    btVector3 inertia;
+    m_pShape->calculateLocalInertia(mass, inertia);
+    MotionState* motionState = new MotionState(m_pNode);
+    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
+    m_pBody = new btRigidBody(BodyCI);
+    m_pWorld->addRigidBody(m_pBody);
+
+    delete [] btVertices;
     delete vertices;
     delete indices;
 }
  
 llm::Object::~Object( ) {
-    if(m_pBody != NULL && m_pWorld != NULL && m_pShape != NULL) {
-        delete m_pBody->getMotionState( );
-        m_pWorld->removeRigidBody(m_pBody);
-        delete m_pBody;
-         
-        delete m_pShape;
-    }
     
-    /*m_pSceneManager->destroySceneNode(m_pNode);
-    m_pSceneManager->destroyEntity(m_pEntity);*/
+    delete m_pBody->getMotionState( );
+    m_pWorld->removeRigidBody(m_pBody);
+    delete m_pBody;
+     
+    delete m_pShape;
 }
-
  
 btRigidBody* llm::Object::rigidBody( ) {
     return m_pBody;
 }
  
-Ogre::SceneNode* llm::Object::sceneNode( ) {
-    return m_pNode;
-}
- 
-Ogre::Entity* llm::Object::entity( ) {
-    return m_pEntity;
-}
-
-bool llm::Object::hasPhysics() {
-    return m_bHasPhysics;
-}
-
 void llm::Object::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre::Vector3* &vertices,
     size_t &index_count, unsigned* &indices, const Ogre::Vector3 &scale, 
     const Ogre::Vector3 &position,

@@ -48,6 +48,8 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Magnet.cpp"
 	"src/Magnet.h"
 	"src/MotionState.h"
+	"src/Asset.cpp"
+	"src/Asset.h"
 	"src/Object.cpp"
 	"src/Object.h"
 	"src/Player.cpp"
