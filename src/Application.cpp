@@ -173,7 +173,8 @@ bool llm::Application::start( ) {
 		Ogre::WindowEventUtilities::messagePump( );
        
 		if(i>180){
-			m_objectList[1]->rigidBody( )->applyCentralImpulse(btVector3(0., 50., 0.));
+			if(m_objectList[1]->hasPhysics())
+				m_objectList[1]->rigidBody( )->applyCentralImpulse(btVector3(0., 50., 0.));
 		}
 	   
 	   	if(i>190)
