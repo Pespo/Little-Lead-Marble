@@ -35,6 +35,8 @@ link_directories("${OGRE_INCLUDE_DIR}/../../boost/lib")
 add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Application.cpp"
 	"src/Application.h"
+	"src/Asset.cpp"
+	"src/Asset.h"
 	"src/Cube.cpp"
 	"src/Cube.h"
 	"src/Danger.cpp"
@@ -48,12 +50,11 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Magnet.cpp"
 	"src/Magnet.h"
 	"src/MotionState.h"
-	"src/Asset.cpp"
-	"src/Asset.h"
 	"src/Object.cpp"
 	"src/Object.h"
 	"src/Player.cpp"
 	"src/Player.h"
+	"src/Singleton.h"
 	"src/main.cpp"
 ) 
 target_link_libraries("${project_description}" ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${BULLET_LIBRARIES} ${CEGUI_LIBRARIES})

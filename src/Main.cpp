@@ -16,9 +16,9 @@ using namespace std;
 
 void execution( ) {
     try {
-            llm::Application app;
-            app.start( );
-            app.exit( );
+            llm::Application* app = llm::Application::getInstance();
+            app->start( );
+            app->kill( );
         } catch( Ogre::Exception& e ) {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
     MessageBoxA( NULL, e.getFullDescription( ).c_str( ), "An exception has occured!", MB_OK | MB_ICONERROR | MB_TASKMODAL);

@@ -3,7 +3,7 @@
 #define APPLICATION_H
 
 #include "Object.h"
-
+#include "Singleton.h"
 #include <Ogre.h>
 #include <btBulletDynamicsCommon.h>
 #include <Bullet-C-Api.h>
@@ -14,7 +14,12 @@
 
 namespace llm{
  
-    class Application {
+    class Application : public Singleton<Application> {
+
+		friend class Singleton<Application>;
+
+		Application( );
+        ~Application( );
 
         //Variable ogre3d
         Ogre::Root *m_pRoot;
@@ -37,9 +42,6 @@ namespace llm{
         bool m_bShutDown;
 
     public:
-        Application( );
-        ~Application( );
-     
         bool start( );
         void exit( );
         bool quit(const CEGUI::EventArgs& e);

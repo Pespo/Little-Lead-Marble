@@ -50,17 +50,10 @@ std::cout << "apres" << std::endl;
     m_pWorld = new btDiscreteDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
 }
 
-llm::Application::~Application( ) { }
-
-void llm::Application::createFrameListener( ) {
-    m_pInputListener = new InputListener(m_pWindow, m_pCamera, m_pSceneMgr);
-    m_pRoot->addFrameListener(m_pInputListener);
-}
-
-void llm::Application::exit( ) {
+llm::Application::~Application( ) {
 	for(int i=0; i<m_objectList.size( ); i++)
         delete m_objectList[i];
-     m_objectList.clear( );
+    m_objectList.clear( );
 
 	CEGUI::OgreRenderer::destroySystem();
 	delete m_pWorld;
@@ -70,6 +63,15 @@ void llm::Application::exit( ) {
 	delete m_pCollisionConfiguration;
     delete m_pInputListener;
 	delete m_pRoot;
+}
+
+void llm::Application::createFrameListener( ) {
+    m_pInputListener = new InputListener(m_pWindow, m_pCamera, m_pSceneMgr);
+    m_pRoot->addFrameListener(m_pInputListener);
+}
+
+void llm::Application::exit( ) {
+	
 }
 
 bool llm::Application::quit(const CEGUI::EventArgs &e) {
@@ -123,7 +125,7 @@ bool llm::Application::start( ) {
  	//Création des pinguins
     for(int i=0; i<20; i++) {
 		//std::cout << "i " << i << std::endl;
-        Object* cube = new Object("penguin" + Ogre::StringConverter::toString(i), "penguin", m_pWorld, m_pSceneMgr, Ogre::Vector3(10,10,10), 20);
+        Object* cube = new Object("penguin" + Ogre::StringConverter::toString(i), "penguin", m_pWorld, m_pSceneMgr, Ogre::Vector3(10,10,10), 40);
         cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
        	m_objectList.push_back(cube);
     }
