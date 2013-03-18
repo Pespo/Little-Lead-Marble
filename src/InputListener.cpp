@@ -1,5 +1,4 @@
 #include "InputListener.h"
-#include <CEGUI.h>
 
 llm::InputListener::InputListener(Ogre::RenderWindow *window, Ogre::Camera *camera, Ogre::SceneManager *sceneManager) {
 	m_pWindow = window;
@@ -17,7 +16,6 @@ llm::InputListener::InputListener(Ogre::RenderWindow *window, Ogre::Camera *came
 
 	m_pMouse->setEventCallback(this);
 	m_pKeyboard->setEventCallback(this);
-
 }
 
 llm::InputListener::~InputListener( ){
@@ -83,37 +81,16 @@ void llm::InputListener::windowClosed(Ogre::RenderWindow* window) {
 
 
 bool llm::InputListener::mouseMoved(const OIS::MouseEvent &e) {
-	//m_pCamera->yaw(Ogre::Degree(-m_vitesseRotation * e.state.X.rel));
-    //m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
-    CEGUI::System::getSingleton().injectMouseMove(e.state.X.rel, e.state.Y.rel);
+	m_pCamera->yaw(Ogre::Degree(-m_vitesseRotation * e.state.X.rel));
+    m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
     return true;
 }
 
-CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID)
-{
-    switch (buttonID)
-    {
-    case OIS::MB_Left:
-        return CEGUI::LeftButton;
-  
-    case OIS::MB_Right:
-        return CEGUI::RightButton;
-  
-    case OIS::MB_Middle:
-        return CEGUI::MiddleButton;
-  
-    default:
-        return CEGUI::LeftButton;
-    }
-}
-
 bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
-	CEGUI::System::getSingleton().injectMouseButtonDown(convertButton(id));
     return true; 
 }
 
 bool llm::InputListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id){
-	CEGUI::System::getSingleton().injectMouseButtonUp(convertButton(id));
     return true;
 }
   
@@ -125,7 +102,6 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 			break;
 		case OIS::KC_W:
 			m_mouvement.z -= 1;
-
 			break;
 		case OIS::KC_S:
 			m_mouvement.z += 1;
@@ -162,8 +138,4 @@ bool llm::InputListener::keyReleased(const OIS::KeyEvent &e){
 			break;
     }
     return true;
-}
-
-void llm::InputListener::quit( ) {
-	m_bContinue = false;
 }
