@@ -2,6 +2,7 @@
 
 llm::Danger::Danger( const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim, float mass ) :
  Object( name, mesh, world, sceneManager, dim, mass ) {
+ 	assert(world != NULL);
 
 }
 

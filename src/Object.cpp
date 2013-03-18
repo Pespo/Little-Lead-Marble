@@ -9,6 +9,7 @@ inline btVector3 cvt(const Ogre::Vector3 &V){
 
 llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* smgr, Ogre::Vector3& halfdim, float mass) : 
 Asset(name, mesh, smgr, halfdim), m_pWorld(world) {
+    assert(world != NULL);
 
     size_t vertex_count, index_count;
 

@@ -8,6 +8,7 @@ inline btVector3 cvt( const Ogre::Vector3 &V ) {
 
 llm::Cube::Cube( const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim, float mass ) :
  Object( name, mesh, world, sceneManager, dim, mass ), m_bIsGhost( false ) {
+ 	assert(world != NULL);
 
 }
 
