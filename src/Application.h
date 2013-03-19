@@ -45,22 +45,29 @@ namespace llm{
 
     public:
         bool start( );
-        bool quit(const CEGUI::EventArgs& e); 
+        
+        bool quit(const CEGUI::EventArgs& e);
+
         inline Ogre::Root* root(){
             return m_pRoot;
         }  
+
         inline Ogre::RenderWindow* window(){
             return m_pWindow;
         } 
+
         inline Ogre::SceneManager* sceneManagerLevel(){
             return m_pSceneManagerLevel;
         }  
+
         inline Ogre::Camera* camera(){
             return m_pCamera;
-        } 
+        }
+
 		inline btDiscreteDynamicsWorld* world(){
             return m_pWorld;
         }
+
         inline llm::Level* level() {
             return m_pLevel;
         }

@@ -4,7 +4,9 @@
 #include "Object.h"
 #include "Level.h"
 #include "Menu.h"
+
 #include <math.h>
+
 
 llm::Application::Application( ) : m_pRoot(0) {
 
@@ -27,7 +29,7 @@ llm::Application::Application( ) : m_pRoot(0) {
 	m_pInputListener = new InputListener(m_pWindow, m_pCamera, m_pSceneManagerLevel);
     m_pRoot->addFrameListener(m_pInputListener);
 
-	///-----initialization bullet phisics-----
+	///-----initialization bullet physics-----
 	//collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
 	m_pCollisionConfiguration = new btDefaultCollisionConfiguration( );
 	//use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
@@ -60,6 +62,7 @@ llm::Application::Application( ) : m_pRoot(0) {
 	
     ///---------initialisation CEGUI -----------
     mRenderer = & CEGUI::OgreRenderer::bootstrapSystem();
+
 }
 
 llm::Application::~Application( ) {
@@ -81,9 +84,11 @@ bool llm::Application::quit(const CEGUI::EventArgs &e) {
 	return true;
 }
 
+
 bool llm::Application::start( ) {	
 	m_pLevel = new Level();
 	//llm::Menu* menu = new Menu();
+	m_pLevel->load();
 	
 	while(true)	{
 		Ogre::WindowEventUtilities::messagePump( );

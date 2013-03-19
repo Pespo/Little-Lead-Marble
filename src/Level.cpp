@@ -1,6 +1,6 @@
 #include "Level.h"
 #include "Application.h"
-
+#include "DotSceneLoader.h"
 #include "InputListener.h"
 #include "MotionState.h"
 #include "Object.h"
@@ -43,16 +43,54 @@ llm::Level::Level( ) : m_startPosition( Ogre::Vector3( 0, 0, 0 ) ), m_plane( Ogr
     //mSceneMgr->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
 
 	app->world()->setGravity(btVector3(0,-10,0));
+}
+
+llm::Level::~Level( ) {
+	for(int i=0; i<m_statics.size( ); i++)
+        delete m_statics[i];
+    m_statics.clear( );
+    for(int i=0; i<m_magnets.size( ); i++)
+        delete m_magnets[i];
+    m_magnets.clear( );
+    for(int i=0; i<m_dangers.size( ); i++)
+        delete m_dangers[i];
+    m_dangers.clear( );
+    for(int i=0; i<m_cubes.size( ); i++)
+        delete m_cubes[i];
+    m_cubes.clear( );
+
+	delete m_pPlayer;
+	//delete m_pEnd;
+
+}
+
+bool llm::Level::load() {
+	//Import Scene
+	
+	//FUNCTION LOADING A SCENE FROM XML FILE
+	/*llm::Application* app = llm::Application::getInstance();
+	DotSceneLoader loader; */
+   // loader.parseDotScene("scene1_test2.xml",Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME , app->sceneManagerLevel());
+
+	//Verif remplissage lvl
+	/*std::vector<Asset*> assetLvl = app->level()->statics();
+	std::cout<<"Vector statics size ::: "<<assetLvl.size()<<std::endl;
+	for(int j=0; j<assetLvl.size(); ++j){
+		std::cout<<"NODE NAME :"<<assetLvl[j]->getAssetName()<<std::endl;
+		std::cout<<"ENTITY NAME :"<<assetLvl[j]->entity()->getName()<<std::endl;
+	}*/
+
+/***** TEST ENVIRONMENT *****/
 
 	//Création du sol
-	Object* ground = new Object("ground", "cube", app->world(), app->sceneManagerLevel(), Ogre::Vector3(200,1,200), 0);
+	Object* ground = new Object("ground", "cube", Ogre::Vector3(200,1,200), 0);
 	ground->entity()->setMaterialName("Cube");
 	m_statics.push_back(ground);
  
  	//Création des pinguins
     for(int i=0; i<20; i++) {
 		//std::cout << "i " << i << std::endl;
-        Cube* cube = new Cube("penguin" + Ogre::StringConverter::toString(i), "penguin", app->world(), app->sceneManagerLevel(), Ogre::Vector3(10,10,10), 40);
+        Cube* cube = new Cube("penguin" + Ogre::StringConverter::toString(i), "penguin", Ogre::Vector3(10,10,10), 40);
         cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
        	m_cubes.push_back(cube);
     }
@@ -86,25 +124,9 @@ llm::Level::Level( ) : m_startPosition( Ogre::Vector3( 0, 0, 0 ) ), m_plane( Ogr
 	CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 	CEGUI::MouseCursor::getSingleton().setImage( CEGUI::System::getSingleton().getDefaultMouseCursor());
 
-}
+/***** END OF TEST ENVIRONMENT *****/
 
-llm::Level::~Level( ) {
-	for(int i=0; i<m_statics.size( ); i++)
-        delete m_statics[i];
-    m_statics.clear( );
-    for(int i=0; i<m_magnets.size( ); i++)
-        delete m_magnets[i];
-    m_magnets.clear( );
-    for(int i=0; i<m_dangers.size( ); i++)
-        delete m_dangers[i];
-    m_dangers.clear( );
-    for(int i=0; i<m_cubes.size( ); i++)
-        delete m_cubes[i];
-    m_cubes.clear( );
-
-	delete m_pPlayer;
-	//delete m_pEnd;
-
+	return true;
 }
 
 bool llm::Level::cubeHit( int x, int y ) {
@@ -138,7 +160,6 @@ void llm::Level::cubeNextPosition( int x, int y ) {
 
 	Ogre::Vector3 position = ray.getPoint( ray.intersects( plane() ).second );
 	m_cubes[m_indiceCubeSelected]->move( position );
-
 }
 
 bool llm::Level::loop() {

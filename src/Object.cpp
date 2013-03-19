@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "Application.h"
 #include "MotionState.h"
 #include <LinearMath/btVector3.h>
 #include <Ogre.h>
@@ -7,9 +8,10 @@ inline btVector3 cvt(const Ogre::Vector3 &V){
     return btVector3(V.x, V.y, V.z);
 }
 
-llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* smgr, Ogre::Vector3& halfdim, float mass) : 
-Asset(name, mesh, smgr, halfdim), m_pWorld(world) {
-    assert(world != NULL);
+llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& halfdim, float mass) : 
+Asset(name, mesh, halfdim) {
+	m_pWorld = llm::Application::getInstance()->world();
+
 
     size_t vertex_count, index_count;
 
@@ -39,6 +41,42 @@ Asset(name, mesh, smgr, halfdim), m_pWorld(world) {
     delete [] btVertices;
     delete vertices;
     delete indices;
+}
+
+//Constructor called in DotSceneLoader
+llm::Object::Object(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass) : 
+Asset(sNode, ent){
+	m_pWorld = llm::Application::getInstance()->world();
+
+    size_t vertex_count, index_count;
+
+    Ogre::Vector3* vertices;
+    unsigned* indices;
+
+    getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, m_pHalfdim);
+    Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
+    Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);
+
+    btVector3* btVertices;
+
+    btVertices = new btVector3[vertex_count];
+
+    for(int i = 0; i < vertex_count; i++){
+        btVertices[i] = cvt(vertices[i]);
+    }
+
+    m_pShape = new btConvexHullShape(*btVertices,vertex_count);
+    btVector3 inertia;
+    m_pShape->calculateLocalInertia(mass, inertia);
+    MotionState* motionState = new MotionState(m_pNode);
+    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
+    m_pBody = new btRigidBody(BodyCI);
+    m_pWorld->addRigidBody(m_pBody);
+
+    delete [] btVertices;
+    delete vertices;
+    delete indices;
+
 }
  
 llm::Object::~Object( ) {

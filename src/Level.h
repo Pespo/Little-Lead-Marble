@@ -23,7 +23,8 @@ namespace llm {
 		Player* m_pPlayer;
 		Ogre::Vector3 m_startPosition;
 		Ogre::Plane m_plane;
-		std::vector<Object*> m_statics;
+		std::vector<Asset*> m_statics;
+		std::vector<Object*> m_objects;
 		std::vector<Cube*> m_cubes;
 		std::vector<Magnet*> m_magnets;
 		std::vector<Danger*> m_dangers;
@@ -41,7 +42,7 @@ namespace llm {
 		bool loop();
 		bool cubeHit( int x, int y );
 		void cubeNextPosition( int x, int y );
-
+		bool load();
 		inline Player* player( ) {
 			return m_pPlayer;
 		}
@@ -66,12 +67,17 @@ namespace llm {
 			m_startPosition = sP;
 		}
 
-		inline std::vector<Object*> statics( ) {
+		inline std::vector<Asset*> statics( ) {
 			return m_statics;
 		}
 
-		inline void setStatics( std::vector<Object*> s ) {
+		inline void setStatics( std::vector<Asset*> s ) {
 			m_statics = s;
+		}
+
+		//Add one static
+		inline void addStatic(Asset *s){ 
+			m_statics.push_back(s);
 		}
 
 		inline std::vector<Cube*> cubes( ) {
@@ -82,12 +88,36 @@ namespace llm {
 			m_cubes = c;
 		}
 
-		inline std::vector<Magnet*> margnets( ) {
+		//Add a cube
+		inline void addCube( Cube* c ) {
+			m_cubes.push_back(c);
+		}
+
+		inline std::vector<Object*> objects( ) {
+			return m_objects;
+		}
+
+		inline void setObjects( std::vector<Object*> o ) {
+			m_objects = o;
+		}
+
+		//Add a object
+		inline void addObject( Object* o ) {
+			m_objects.push_back(o);
+		}
+
+
+		inline std::vector<Magnet*> magnets( ) {
 			return m_magnets;
 		}
 
-		inline void setMargnets( std::vector<Magnet*> m ) {
+		inline void setMagnets( std::vector<Magnet*> m ) {
 			m_magnets = m;
+		}
+
+		//Add a magnet
+		inline void addMagnet( Magnet* m ) {
+			m_magnets.push_back(m);
 		}
 
 		inline std::vector<Danger*> dangers( ) {
@@ -96,6 +126,11 @@ namespace llm {
 
 		inline void setDangers( std::vector<Danger*> d ) {
 			m_dangers = d;
+		}
+
+		//Add a danger
+		inline void addDanger(Danger* d){
+			m_dangers.push_back(d);
 		}
 
 		inline End* end( ) {
@@ -129,6 +164,7 @@ namespace llm {
 		inline void setIsWon( bool bIW ) {
 			m_bIsWon = bIW;
 		}
+
 	};
 }
 

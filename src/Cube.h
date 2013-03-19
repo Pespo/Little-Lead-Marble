@@ -17,7 +17,8 @@ namespace llm {
 		virtual void onCollision( );
 
 	public:
-		Cube( const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim, float mass );
+		Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass );
+		Cube( Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass );
 		virtual ~Cube( );
 
 		void rotate( );
