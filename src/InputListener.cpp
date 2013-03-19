@@ -1,13 +1,11 @@
 #include "InputListener.h"
+#include "Application.h"
 
-llm::InputListener::InputListener(Ogre::RenderWindow *window, Ogre::Camera *camera, Ogre::SceneManager *sceneManager) {
-	m_pWindow = window;
-	m_pCamera = camera;
-	startOIS( );
-	windowResized(m_pWindow);
-	Ogre::WindowEventUtilities::addWindowEventListener(m_pWindow, this);
+llm::InputListener::InputListener(Ogre::RenderWindow *window) {
+	startOIS(window);
+	windowResized(window);
+	Ogre::WindowEventUtilities::addWindowEventListener(window, this);
 
-	m_pSceneManager = sceneManager;
     m_bContinue = true;
  
     m_mouvement = Ogre::Vector3::ZERO;
@@ -19,13 +17,13 @@ llm::InputListener::InputListener(Ogre::RenderWindow *window, Ogre::Camera *came
 }
 
 llm::InputListener::~InputListener( ){
-	Ogre::WindowEventUtilities::removeWindowEventListener(m_pWindow, this);
-	windowClosed(m_pWindow);
+	Ogre::WindowEventUtilities::removeWindowEventListener(llm::Application::getInstance()->window(), this);
+	windowClosed();
 }
 
 bool llm::InputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 //	std::cout << "Frame Rendering Queued" << std::endl;
-	if(m_pWindow->isClosed( ))
+	if(llm::Application::getInstance()->window()->isClosed( ))
 		return false;
 
 	if(m_pMouse)
@@ -35,19 +33,19 @@ bool llm::InputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
  
     Ogre::Vector3 deplacement = Ogre::Vector3::ZERO;
     deplacement = m_mouvement * m_vitesse * evt.timeSinceLastFrame;
-    m_pCamera->moveRelative(deplacement);
+    llm::Application::getInstance()->game()->camera()->moveRelative(deplacement);
  
     return m_bContinue;
 }
 
-void llm::InputListener::startOIS( ) {
+void llm::InputListener::startOIS( Ogre::RenderWindow *window ) {
 	Ogre::LogManager::getSingletonPtr( )->logMessage("*** Initializing OIS ***");
 
 	OIS::ParamList pl;
 	size_t windowHnd = 0;
 	std::ostringstream windowHndStr;
 	  
-	m_pWindow->getCustomAttribute("WINDOW", &windowHnd);
+	window->getCustomAttribute("WINDOW", &windowHnd);
 	windowHndStr << windowHnd;
 	pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str( )));
 
@@ -67,75 +65,123 @@ void llm::InputListener::windowResized(Ogre::RenderWindow* window) {
     ms.height = height;
 }
 
-void llm::InputListener::windowClosed(Ogre::RenderWindow* window) {
-    if( window == m_pWindow ) {
-        if( m_pInputManager ) {
-            m_pInputManager->destroyInputObject( m_pMouse );
-            m_pInputManager->destroyInputObject( m_pKeyboard );
+void llm::InputListener::windowClosed() {
+    if( m_pInputManager ) {
+        m_pInputManager->destroyInputObject( m_pMouse );
+        m_pInputManager->destroyInputObject( m_pKeyboard );
   
-            OIS::InputManager::destroyInputSystem(m_pInputManager);
-            m_pInputManager = 0;
-        }
+        OIS::InputManager::destroyInputSystem(m_pInputManager);
+        m_pInputManager = 0;
     }
 }
 
 
 bool llm::InputListener::mouseMoved(const OIS::MouseEvent &e) {
-	m_pCamera->yaw(Ogre::Degree(-m_vitesseRotation * e.state.X.rel));
-    m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
+	// m_pCamera->yaw(Ogre::Degree(-m_vitesseRotation * e.state.X.rel));
+ //    m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
+	CEGUI::System::getSingleton().injectMouseMove(e.state.X.rel, e.state.Y.rel);
     return true;
 }
 
 bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
+	if(llm::Application::getInstance()->inGame()){
+
+	} else {
+		CEGUI::System::getSingleton().injectMouseButtonDown(convertButton(id));
+	}
     return true; 
 }
 
 bool llm::InputListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id){
+	if(llm::Application::getInstance()->inGame()){
+
+	} else {
+		CEGUI::System::getSingleton().injectMouseButtonUp(convertButton(id));
+	}
     return true;
 }
   
 bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 	std::cout << "keyPressed" << std::endl;
-	switch(e.key) {
-		case OIS::KC_ESCAPE:
-			m_bContinue = false;
-			break;
-		case OIS::KC_W:
-			m_mouvement.z -= 1;
-			break;
-		case OIS::KC_S:
-			m_mouvement.z += 1;
-			break;
-		case OIS::KC_A:
-			m_mouvement.x -= 1;
-			break;
-		case OIS::KC_D:
-			m_mouvement.x += 1;
-			break;
-		case OIS::KC_LSHIFT:
-			m_vitesse *= 2;
-			break;
+	if(llm::Application::getInstance()->inGame()) {
+		switch(e.key) {
+			case OIS::KC_ESCAPE:
+				llm::Application::getInstance()->pause();
+				break;
+			case OIS::KC_W:
+				m_mouvement.z -= 1;
+				break;
+			case OIS::KC_S:
+				m_mouvement.z += 1;
+				break;
+			case OIS::KC_A:
+				m_mouvement.x -= 1;
+				break;
+			case OIS::KC_D:
+				m_mouvement.x += 1;
+				break;
+			case OIS::KC_LSHIFT:
+				m_vitesse *= 2;
+				break;
+		}
+	} else {
+		CEGUI::System &sys = CEGUI::System::getSingleton();
+	    sys.injectKeyDown(convertKey(e));
+	   // sys.injectChar(e.text);
 	}
     return m_bContinue;
 }
 
-bool llm::InputListener::keyReleased(const OIS::KeyEvent &e){
-	switch(e.key) {
-		case OIS::KC_W:
-			m_mouvement.z += 1;
-			break;
-		case OIS::KC_S:
-			m_mouvement.z -= 1;
-			break;
-		case OIS::KC_A:
-			m_mouvement.x += 1;
-			break;
-		case OIS::KC_D:
-			m_mouvement.x -= 1;
-			break;
-		case OIS::KC_LSHIFT:
-			m_vitesse /= 2;
-			break;
+bool llm::InputListener::keyReleased(const OIS::KeyEvent &e) {
+	if(llm::Application::getInstance()->inGame()) {
+		switch(e.key) {
+			case OIS::KC_W:
+				m_mouvement.z += 1;
+				break;
+			case OIS::KC_S:
+				m_mouvement.z -= 1;
+				break;
+			case OIS::KC_A:
+				m_mouvement.x += 1;
+				break;
+			case OIS::KC_D:
+				m_mouvement.x -= 1;
+				break;
+			case OIS::KC_LSHIFT:
+				m_vitesse /= 2;
+				break;
+	    }
+	} else {
+    	CEGUI::System::getSingleton().injectKeyUp(e.key);
     }
     return true;
+}
+
+void llm::InputListener::quit( ) {
+	m_bContinue = false;
+}
+
+CEGUI::MouseButton llm::InputListener::convertButton(OIS::MouseButtonID buttonID) {
+	std::cout << "Convert -------------" << std::endl;
+    switch (buttonID) {
+    case OIS::MB_Left:
+        return CEGUI::LeftButton;
+  
+    case OIS::MB_Right:
+        return CEGUI::RightButton;	
+  
+    case OIS::MB_Middle:
+        return CEGUI::MiddleButton;
+  
+    default:
+        return CEGUI::LeftButton;
+    }
+}
+
+CEGUI::Key::Scan llm::InputListener::convertKey(OIS::KeyEvent e) {
+    switch(e.key) {
+	case OIS::KC_ESCAPE:
+		quit();
+		return CEGUI::Key::Scan::Escape;
+	}
 }

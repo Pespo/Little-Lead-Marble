@@ -2,15 +2,12 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "InputListenerCEGUI.h"
 #include <Ogre.h>
-
 	
 namespace llm {
 
 	class Menu {
 
-		llm::InputListenerCEGUI* m_pInputListener;
 		Ogre::SceneManager* m_pSceneManager;
 		Ogre::Camera* m_pCamera;
 
@@ -18,7 +15,9 @@ namespace llm {
 		Menu();
 		~Menu();
 
-		void loop();
+		void pauseMenu();
+		void startMenu(bool visible);
+		void levelMenu();
 
 	};
 }

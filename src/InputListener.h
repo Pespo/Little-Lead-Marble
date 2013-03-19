@@ -2,14 +2,14 @@
 #ifndef INPUTLISTERNER_H
 #define INPUTLISTERNER_H
 
+#include <CEGUI.h>
 #include <Ogre.h>
 #include <OIS/OIS.h>
 #include <OgreSceneManager.h>
-// #include <SdkTrays.h>
 
 namespace llm {
 
-	class InputListener : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener/*, OgreBites::SdkTrayListener*/ {
+	class InputListener : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener {
 
 	protected :
 		Ogre::RenderWindow* m_pWindow;
@@ -36,7 +36,7 @@ namespace llm {
 		* @param [camera] : [Pointer to a camera]
 		* @param [sceneManager] : [Pointer to a scene manager]
 		*/
-		InputListener(Ogre::RenderWindow *window, Ogre::Camera *camera, Ogre::SceneManager *sceneManager);
+		InputListener( Ogre::RenderWindow *window );
 		~InputListener( );
 	
 		/**
@@ -46,9 +46,14 @@ namespace llm {
 		* @return [bool] : []
 		*/
 		bool frameRenderingQueued(const Ogre::FrameEvent& evt);
-		void startOIS( );
-		void windowResized(Ogre::RenderWindow* window);
-		void windowClosed(Ogre::RenderWindow* window);
+		void startOIS( Ogre::RenderWindow *window );
+		void windowResized( Ogre::RenderWindow *window );
+		void windowClosed();
+		void quit();
+		CEGUI::MouseButton convertButton(OIS::MouseButtonID buttonID);
+		CEGUI::Key::Scan convertKey(OIS::KeyEvent e);
+
+		bool quit(const CEGUI::EventArgs& e); 
 
 		virtual bool mouseMoved(const OIS::MouseEvent &e);
 		virtual bool mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id);

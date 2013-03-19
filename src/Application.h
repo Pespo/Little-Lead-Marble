@@ -4,12 +4,10 @@
 
 #include "Object.h"
 #include "Singleton.h"
-#include "Level.h"
+#include "Game.h"
+#include "Menu.h"
 
 #include <Ogre.h>
-#include <btBulletDynamicsCommon.h>
-#include <Bullet-C-Api.h>
-#include <btBulletCollisionCommon.h>
 
 #include <CEGUI.h>
 #include <RendererModules\Ogre\CEGUIOgreRenderer.h>
@@ -26,41 +24,43 @@ namespace llm{
         //Variable ogre3d
         Ogre::Root *m_pRoot;
         Ogre::RenderWindow* m_pWindow;
-        CEGUI::OgreRenderer* mRenderer;
-        Ogre::Camera* m_pCamera;
-        Ogre::SceneManager* m_pSceneManagerLevel;
-        Ogre::SceneManager* m_pSceneManagerMenu;
         Ogre::FrameListener* m_pInputListener;
-
-        //variable bullet
-        btDbvtBroadphase* m_pBroadphase;
-        btDefaultCollisionConfiguration* m_pCollisionConfiguration;
-        btCollisionDispatcher* m_pDispatcher;
-        btSequentialImpulseConstraintSolver* m_pSolver;
-        btDiscreteDynamicsWorld* m_pWorld;
+        //CEGUI::OgreRenderer* m_pRenderer;
 
         //autre
-        bool m_bShutDown;
-        llm::Level* m_pLevel;
+        bool m_bInGame;
+
+        llm::Game* m_pGame;
+        llm::Menu* m_pMenu;
+
+        //Fonction d'initialisation
+        void llm::Application::loadRessource();
 
     public:
         bool start( );
+        void setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName);
+
         bool quit(const CEGUI::EventArgs& e); 
+        bool quit(); 
+        
+        bool pause(const CEGUI::EventArgs &e);
+        void pause();
+
         inline Ogre::Root* root(){
             return m_pRoot;
         }  
         inline Ogre::RenderWindow* window(){
             return m_pWindow;
-        } 
-        inline Ogre::SceneManager* sceneManagerLevel(){
-            return m_pSceneManagerLevel;
         }  
-        inline Ogre::Camera* camera(){
-            return m_pCamera;
-        } 
-		inline btDiscreteDynamicsWorld* world(){
-            return m_pWorld;
-        } 
+        inline Game* game(){
+            return m_pGame;
+        }
+        inline bool inGame() {
+            return m_bInGame;
+        }
+       /* inline llm::Menu* menu(){
+            return m_pMenu;
+        } */
     };
 
 }

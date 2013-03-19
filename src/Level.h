@@ -3,25 +3,21 @@
 #define LEVEL_H
 
 #include "Player.h"
+#include "Object.h"
 #include "Cube.h"
 #include "Magnet.h"
 #include "Danger.h"
 #include "End.h"
-#include "Object.h"
 
 #include <vector>
 #include <Ogre.h>
-#include <btBulletDynamicsCommon.h>
-#include <Bullet-C-Api.h>
-#include <btBulletCollisionCommon.h>
-
 
 namespace llm {
 	class Level {
 
-		Player* m_pPlayer;
 		Ogre::Vector3 m_startPosition;
-		std::vector<Object*> m_statics;
+		std::vector<Asset*> m_statics;
+		std::vector<Object*> m_objects;
 		std::vector<Cube*> m_cubes;
 		std::vector<Magnet*> m_magnets;
 		std::vector<Danger*> m_dangers;
@@ -30,19 +26,12 @@ namespace llm {
 		bool m_bIsEnded;
 		bool m_bIsWon;
 
-
 	public:
 		Level( );
 		~Level( );
 
 		bool loop();
-		inline Player* player( ) {
-			return m_pPlayer;
-		}
-
-		inline void setPlayer( Player* p ) {
-			m_pPlayer = p;
-		}
+		void load();
 
 		inline Ogre::Vector3 startPosition( ) {
 			return m_startPosition;
@@ -52,12 +41,20 @@ namespace llm {
 			m_startPosition = sP;
 		}
 
-		inline std::vector<Object*> statics( ) {
+		inline std::vector<Asset*> statics( ) {
 			return m_statics;
 		}
 
-		inline void setStatics( std::vector<Object*> s ) {
+		inline void setStatics( std::vector<Asset*> s ) {
 			m_statics = s;
+		}
+
+		inline std::vector<Object*> objects( ) {
+			return m_objects;
+		}
+
+		inline void setObjects( std::vector<Object*> o ) {
+			m_objects = o;
 		}
 
 		inline std::vector<Cube*> cubes( ) {

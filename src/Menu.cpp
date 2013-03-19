@@ -1,18 +1,14 @@
 #include "Menu.h"
 #include "Application.h"
-#include <Ogre.h>
+
 #include <CEGUI.h>
 
 llm::Menu::Menu() {
 
 	llm::Application* app = llm::Application::getInstance();
-	m_pSceneManager = app->root()->createSceneManager("DefaultSceneManager", "Menu Scene Manager");
-	m_pCamera = m_pSceneManager->createCamera("PlayerCam");
+	 ///---------initialisation CEGUI -----------
+    CEGUI::OgreRenderer::bootstrapSystem();
 
-    m_pInputListener = new InputListenerCEGUI(app->window(), m_pCamera, m_pSceneManager);
-    app->root()->addFrameListener(m_pInputListener);
-
-	/*****CEGUI*****/
     //Chargement des ressources
 	Ogre::ResourceGroupManager& rgm = Ogre::ResourceGroupManager::getSingleton();
 
@@ -28,7 +24,8 @@ llm::Menu::Menu() {
 	rgm.addResourceLocation( "../res/CEGUI/layouts/", "FileSystem", "Layouts");
 	rgm.addResourceLocation( "../res/CEGUI/looknfeel/", "FileSystem", "LookNFeel");
  
-	Ogre::ResourceGroupManager::getSingleton( ).initialiseAllResourceGroups( );
+	rgm.initialiseAllResourceGroups( );
+	
  	//Linkage des ressources avec CEGUI
     CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
 	CEGUI::Font::setDefaultResourceGroup("Fonts");
@@ -41,29 +38,29 @@ llm::Menu::Menu() {
 	CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
 	CEGUI::MouseCursor::getSingleton().setImage( CEGUI::System::getSingleton().getDefaultMouseCursor());
 
-	//Affichage
-	CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
-	CEGUI::Window *sheet = wmgr.createWindow("DefaultWindow", "CEGUIDemo/Sheet"); //conteneur
+	CEGUI::WindowManager& wmgr = CEGUI::WindowManager::getSingleton();
+	/******StartMenu*****/
+	CEGUI::Window *startMenu = wmgr.createWindow("DefaultWindow", "StartMenu/Sheet"); //conteneur
+	CEGUI::System::getSingleton().setGUISheet(startMenu);//Linkage du conteneur a CEGUI
 
-	CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/QuitButton"); //bouton
+	CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "StartMenu/QuitButton"); //bouton
 	quit->setText("Quit");
 	quit->setSize(CEGUI::UVector2(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
-	sheet->addChildWindow(quit);//intégration du bouton dans le conteneur
+	startMenu->addChildWindow(quit);//intégration du bouton dans le conteneur
 
-	CEGUI::Window *start = wmgr.createWindow("TaharezLook/Button", "CEGUIDemo/StartButton"); //bouton
+	CEGUI::Window *start = wmgr.createWindow("TaharezLook/Button", "StartMenu/StartButton"); //bouton
 	start->setText("Start");
-	start->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.25f, 0 ), CEGUI::UDim( 0.25f, 0 ) ) );
+	start->setPosition(CEGUI::UVector2( CEGUI::UDim( 0, 0 ), CEGUI::UDim( 0.06f, 0 ) ) );
 	start->setSize(CEGUI::UVector2(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
-	sheet->addChildWindow(start);//intégration du bouton dans le conteneur
-
-	CEGUI::System::getSingleton().setGUISheet(sheet);//Linkage du conteneur a CEGUI
-
-	quit->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::quit, app));//event du bouton
-	start->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::quit, app));//event du bouton
+	startMenu->addChildWindow(start);//intégration du bouton dans le conteneur
+	
+	wmgr.getWindow("StartMenu/QuitButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::quit, app));//event du bouton
+	wmgr.getWindow("StartMenu/StartButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::pause, app));//event du bouton
 }
 
 llm::Menu::~Menu() { }
 
-void llm::Menu::loop() {
-
+void llm::Menu::startMenu(bool visible) {
+	CEGUI::WindowManager& wmgr = CEGUI::WindowManager::getSingleton();
+	visible ? wmgr.getWindow("StartMenu/Sheet")->setVisible(true) : wmgr.getWindow("StartMenu/Sheet")->setVisible(false);
 }
