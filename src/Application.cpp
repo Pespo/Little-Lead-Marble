@@ -44,7 +44,9 @@ bool llm::Application::quit() {
 	return true;
 }
 
+
 bool llm::Application::start( ) {	
+
 	m_pGame = new Game();
 	m_pMenu = new Menu();
 

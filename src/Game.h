@@ -31,6 +31,8 @@ namespace llm{
 
 		void loadLevel();
 		void loop();
+		bool cubeHit( int x, int y );
+		void cubeNextPosition( int x, int y );
 
 		inline Ogre::SceneManager* sceneManager(){
             return m_pSceneManager;
@@ -40,6 +42,9 @@ namespace llm{
         } 
         inline Ogre::Camera* camera(){
             return m_pCamera;
+        } 
+        inline llm::Level* level(){
+            return m_pLevel;
         } 
 
 	};

@@ -10,17 +10,20 @@
 #include "End.h"
 
 #include <vector>
+#include <string>
 #include <Ogre.h>
 
 namespace llm {
 	class Level {
 
 		Ogre::Vector3 m_startPosition;
+		Ogre::Plane m_plane;
 		std::vector<Asset*> m_statics;
 		std::vector<Object*> m_objects;
 		std::vector<Cube*> m_cubes;
 		std::vector<Magnet*> m_magnets;
 		std::vector<Danger*> m_dangers;
+		int m_indiceCubeSelected;
 		End* m_pEnd;
 		bool m_bIsMagnetized;
 		bool m_bIsEnded;
@@ -31,7 +34,19 @@ namespace llm {
 		~Level( );
 
 		bool loop();
-		void load();
+		bool load();
+
+		inline int cubeSelected() {
+			return m_indiceCubeSelected;
+		}
+
+		inline void cubeSelected(int indice) {
+			m_indiceCubeSelected = indice;
+		}
+
+		inline Ogre::Plane plane() {
+			return m_plane;
+		}
 
 		inline Ogre::Vector3 startPosition( ) {
 			return m_startPosition;
@@ -47,6 +62,11 @@ namespace llm {
 
 		inline void setStatics( std::vector<Asset*> s ) {
 			m_statics = s;
+		}
+
+		//Add one static
+		inline void addStatic(Asset *s){ 
+			m_statics.push_back(s);
 		}
 
 		inline std::vector<Object*> objects( ) {
@@ -65,12 +85,28 @@ namespace llm {
 			m_cubes = c;
 		}
 
-		inline std::vector<Magnet*> margnets( ) {
+		//Add a cube
+		inline void addCube( Cube* c ) {
+			m_cubes.push_back(c);
+		}
+
+		//Add a object
+		inline void addObject( Object* o ) {
+			m_objects.push_back(o);
+		}
+
+
+		inline std::vector<Magnet*> magnets( ) {
 			return m_magnets;
 		}
 
-		inline void setMargnets( std::vector<Magnet*> m ) {
+		inline void setMagnets( std::vector<Magnet*> m ) {
 			m_magnets = m;
+		}
+
+		//Add a magnet
+		inline void addMagnet( Magnet* m ) {
+			m_magnets.push_back(m);
 		}
 
 		inline std::vector<Danger*> dangers( ) {
@@ -79,6 +115,11 @@ namespace llm {
 
 		inline void setDangers( std::vector<Danger*> d ) {
 			m_dangers = d;
+		}
+
+		//Add a danger
+		inline void addDanger(Danger* d){
+			m_dangers.push_back(d);
 		}
 
 		inline End* end( ) {
@@ -112,6 +153,7 @@ namespace llm {
 		inline void setIsWon( bool bIW ) {
 			m_bIsWon = bIW;
 		}
+
 	};
 }
 

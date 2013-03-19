@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Application.h"
+#include "DotSceneLoader.h"
 
 llm::Game::Game() {
 
@@ -55,5 +56,38 @@ void llm::Game::loadLevel() {
 
 void llm::Game::loop() {
 	m_pWorld->stepSimulation(1.f/60, 10);
+}
+
+bool llm::Game::cubeHit( int x, int y ) {
+	llm::Application* app = llm::Application::getInstance();
+	Ogre::Real xNormalized = static_cast<Ogre::Real>(x) / static_cast<Ogre::Real>( app->window()->getWidth() );
+	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
+	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
+
+	if( m_pLevel->cubeSelected() == -1 ) { // No cube selected
+		for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
+			if( ray.intersects( m_pLevel->cubes()[i]->sceneNode()->_getWorldAABB() ).first) { 
+				m_pLevel->cubeSelected(i);
+				m_pLevel->cubes()[i]->selectCube();
+				return true;
+			}
+		}
+
+	}
+	else {
+		m_pLevel->cubes()[m_pLevel->cubeSelected()]->releaseCube();
+		m_pLevel->cubeSelected(-1);
+	}
+	return false;
+}
+
+void llm::Game::cubeNextPosition( int x, int y ) {
+	llm::Application* app = llm::Application::getInstance();
+	Ogre::Real xNormalized = static_cast<Ogre::Real>(x) / static_cast<Ogre::Real>( app->window()->getWidth() );
+	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
+	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
+
+	Ogre::Vector3 position = ray.getPoint( ray.intersects( m_pLevel->plane() ).second );
+	m_pLevel->cubes()[m_pLevel->cubeSelected()]->move( position );
 }
 

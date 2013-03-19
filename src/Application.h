@@ -38,6 +38,7 @@ namespace llm{
 
     public:
         bool start( );
+
         void setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName);
 
         bool quit(const CEGUI::EventArgs& e); 
@@ -49,6 +50,7 @@ namespace llm{
         inline Ogre::Root* root(){
             return m_pRoot;
         }  
+
         inline Ogre::RenderWindow* window(){
             return m_pWindow;
         }  
@@ -61,6 +63,7 @@ namespace llm{
        /* inline llm::Menu* menu(){
             return m_pMenu;
         } */
+
     };
 
 }

@@ -1,5 +1,7 @@
-#include "InputListener.h"
 #include "Application.h"
+#include "InputListener.h"
+#include <CEGUI.h>
+#include <string>
 
 llm::InputListener::InputListener(Ogre::RenderWindow *window) {
 	startOIS(window);
@@ -77,15 +79,25 @@ void llm::InputListener::windowClosed() {
 
 
 bool llm::InputListener::mouseMoved(const OIS::MouseEvent &e) {
-	// m_pCamera->yaw(Ogre::Degree(-m_vitesseRotation * e.state.X.rel));
- //    m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
-	CEGUI::System::getSingleton().injectMouseMove(e.state.X.rel, e.state.Y.rel);
+	//m_pCamera->yaw(Ogre::Degree(-m_vitesseRotation * e.state.X.rel));
+    //m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
+    CEGUI::System::getSingleton().injectMouseMove(e.state.X.rel, e.state.Y.rel);
+    llm::Application* app = llm::Application::getInstance();
+    if( app->game()->level()->cubeSelected() != -1 ) {
+		app->game()->cubeNextPosition( e.state.X.abs, e.state.Y.abs );
+    }
     return true;
 }
 
 bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
-	if(llm::Application::getInstance()->inGame()){
 
+	if(llm::Application::getInstance()->inGame()){
+		if( id == OIS::MB_Left ) {
+			llm::Application* app = llm::Application::getInstance();
+			int selectedCube = app->game()->level()->cubeSelected();
+			std::cout << "Clic, selectedCube: " << selectedCube << std::endl;
+			app->game()->cubeHit( e.state.X.abs, e.state.Y.abs );
+		} 
 	} else {
 		CEGUI::System::getSingleton().injectMouseButtonDown(convertButton(id));
 	}
@@ -162,7 +174,6 @@ void llm::InputListener::quit( ) {
 }
 
 CEGUI::MouseButton llm::InputListener::convertButton(OIS::MouseButtonID buttonID) {
-	std::cout << "Convert -------------" << std::endl;
     switch (buttonID) {
     case OIS::MB_Left:
         return CEGUI::LeftButton;
