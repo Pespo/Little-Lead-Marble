@@ -16,10 +16,6 @@ llm::Cube::~Cube( ) {
 
 }
 
-void llm::Cube::onClick( ) {
-
-}
-
 void llm::Cube::onCollision( ) {
 	//Keep that empty
 }
@@ -28,6 +24,21 @@ void llm::Cube::rotate( ) {
 
 }
 
-void llm::Cube::move( Ogre::Vector3 p ) {
-	
+void llm::Cube::move( Ogre::Vector3 position ) {
+	//Sets the physical position
+	btTransform transform = rigidBody()->getCenterOfMassTransform();
+	btVector3 btPosition = cvt( position );
+	transform.setOrigin( btPosition );
+	rigidBody()->setCenterOfMassTransform(transform);
+
+	//Sets the graphic position
+	sceneNode()->setPosition( position );
+}
+
+void llm::Cube::selectCube() {
+	m_bIsGhost = true;
+}
+
+void llm::Cube::releaseCube() {
+	m_bIsGhost = false;
 }

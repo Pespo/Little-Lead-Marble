@@ -8,6 +8,7 @@ namespace llm {
 	class Player {
 	private:
 		Magnet* m_pMagnet;
+		Object* m_pObject;
 
 	public:
 		Player( );
@@ -25,7 +26,7 @@ namespace llm {
 		}
 
 		inline void switchPole( ) {
-			m_pMagnet->setIsNorth( !( m_pMagnet->isNorth( ) ) );
+			m_pMagnet->setIsNorth( !( m_pMagnet->isNorth() ) );
 		}
 
 

@@ -60,7 +60,10 @@ namespace llm{
         } 
 		inline btDiscreteDynamicsWorld* world(){
             return m_pWorld;
-        } 
+        }
+        inline llm::Level* level() {
+            return m_pLevel;
+        }
     };
 
 }

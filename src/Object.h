@@ -29,7 +29,7 @@ namespace llm {
  
 		btRigidBody* rigidBody( );
         
-		void getMeshInformation( Ogre::MeshPtr mesh, size_t &vertex_count,Ogre::Vector3* &vertices,
+		void getMeshInformation( Ogre::MeshPtr mesh, size_t &vertex_count, Ogre::Vector3* &vertices,
 			size_t &index_count, unsigned* &indices,
 			const Ogre::Vector3 &scale = Ogre::Vector3::UNIT_SCALE,
 			const Ogre::Vector3 &position = Ogre::Vector3::ZERO,

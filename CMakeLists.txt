@@ -45,6 +45,8 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/End.h"
 	"src/InputListener.cpp"
 	"src/InputListener.h"
+	"src/InputListenerCEGUI.cpp"
+	"src/InputListenerCEGUI.h"
 	"src/Level.cpp"
 	"src/Level.h"
 	"src/Magnet.cpp"

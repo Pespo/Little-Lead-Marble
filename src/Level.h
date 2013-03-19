@@ -10,6 +10,7 @@
 #include "Object.h"
 
 #include <vector>
+#include <string>
 #include <Ogre.h>
 #include <btBulletDynamicsCommon.h>
 #include <Bullet-C-Api.h>
@@ -21,10 +22,12 @@ namespace llm {
 
 		Player* m_pPlayer;
 		Ogre::Vector3 m_startPosition;
+		Ogre::Plane m_plane;
 		std::vector<Object*> m_statics;
 		std::vector<Cube*> m_cubes;
 		std::vector<Magnet*> m_magnets;
 		std::vector<Danger*> m_dangers;
+		int m_indiceCubeSelected;
 		End* m_pEnd;
 		bool m_bIsMagnetized;
 		bool m_bIsEnded;
@@ -36,12 +39,23 @@ namespace llm {
 		~Level( );
 
 		bool loop();
+		bool cubeHit( int x, int y );
+		void cubeNextPosition( int x, int y );
+
 		inline Player* player( ) {
 			return m_pPlayer;
 		}
 
 		inline void setPlayer( Player* p ) {
 			m_pPlayer = p;
+		}
+
+		inline int cubeSelected() {
+			return m_indiceCubeSelected;
+		}
+
+		inline Ogre::Plane plane() {
+			return m_plane;
 		}
 
 		inline Ogre::Vector3 startPosition( ) {

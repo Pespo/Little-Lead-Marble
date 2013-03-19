@@ -5,7 +5,11 @@
 #include "MotionState.h"
 #include "Object.h"
 
-llm::Level::Level( ) {
+#include <CEGUI.h>
+#include <OgreRay.h>
+
+llm::Level::Level( ) : m_startPosition( Ogre::Vector3( 0, 0, 0 ) ), m_plane( Ogre::Vector3( 0, 0, 1 ), Ogre::Vector3( 0, 0, 0 ) ),
+						m_indiceCubeSelected(-1), m_bIsMagnetized( false ), m_bIsEnded( false ), m_bIsWon( false ) {
 
 	llm::Application* app = llm::Application::getInstance();
 
@@ -48,10 +52,39 @@ llm::Level::Level( ) {
  	//Création des pinguins
     for(int i=0; i<20; i++) {
 		//std::cout << "i " << i << std::endl;
-        Object* cube = new Object("penguin" + Ogre::StringConverter::toString(i), "penguin", app->world(), app->sceneManagerLevel(), Ogre::Vector3(10,10,10), 40);
+        Cube* cube = new Cube("penguin" + Ogre::StringConverter::toString(i), "penguin", app->world(), app->sceneManagerLevel(), Ogre::Vector3(10,10,10), 40);
         cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
-       	m_statics.push_back(cube);
+       	m_cubes.push_back(cube);
     }
+
+    /*****CEGUI*****/
+    //Chargement des ressources
+	Ogre::ResourceGroupManager& rgm = Ogre::ResourceGroupManager::getSingleton();
+
+	rgm.createResourceGroup("imagesets");
+	rgm.createResourceGroup("fonts");
+	rgm.createResourceGroup("layouts");
+	rgm.createResourceGroup("schemes");
+	rgm.createResourceGroup("looknfeels");
+
+	rgm.addResourceLocation( "../res/CEGUI/schemes/", "FileSystem", "Schemes");
+	rgm.addResourceLocation( "../res/CEGUI/imagesets/", "FileSystem", "Imagesets");
+	rgm.addResourceLocation( "../res/CEGUI/fonts/", "FileSystem", "Fonts");
+	rgm.addResourceLocation( "../res/CEGUI/layouts/", "FileSystem", "Layouts");
+	rgm.addResourceLocation( "../res/CEGUI/looknfeel/", "FileSystem", "LookNFeel");
+ 
+	Ogre::ResourceGroupManager::getSingleton( ).initialiseAllResourceGroups( );
+ 	//Linkage des ressources avec CEGUI
+    CEGUI::Imageset::setDefaultResourceGroup("Imagesets");
+	CEGUI::Font::setDefaultResourceGroup("Fonts");
+	CEGUI::Scheme::setDefaultResourceGroup("Schemes");
+	CEGUI::WidgetLookManager::setDefaultResourceGroup("LookNFeel");
+	CEGUI::WindowManager::setDefaultResourceGroup("Layouts");
+
+	//Définition
+	CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
+	CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+	CEGUI::MouseCursor::getSingleton().setImage( CEGUI::System::getSingleton().getDefaultMouseCursor());
 
 }
 
@@ -74,10 +107,45 @@ llm::Level::~Level( ) {
 
 }
 
+bool llm::Level::cubeHit( int x, int y ) {
+	llm::Application* app = llm::Application::getInstance();
+	Ogre::Real xNormalized = static_cast<Ogre::Real>(x) / static_cast<Ogre::Real>( app->window()->getWidth() );
+	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
+	Ogre::Ray ray = app->camera()->getCameraToViewportRay( xNormalized, yNormalized );
+
+	if( m_indiceCubeSelected == -1 ) { // No cube selected
+		for( int i = 0 ; i < m_cubes.size() ; ++i ) {
+			if( ray.intersects( m_cubes[i]->sceneNode()->_getWorldAABB() ).first) { 
+				m_indiceCubeSelected = i;
+				m_cubes[i]->selectCube();
+				return true;
+			}
+		}
+
+	}
+	else {
+		m_cubes[m_indiceCubeSelected]->releaseCube();
+		m_indiceCubeSelected = -1;
+	}
+	return false;
+}
+
+void llm::Level::cubeNextPosition( int x, int y ) {
+	llm::Application* app = llm::Application::getInstance();
+	Ogre::Real xNormalized = static_cast<Ogre::Real>(x) / static_cast<Ogre::Real>( app->window()->getWidth() );
+	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
+	Ogre::Ray ray = app->camera()->getCameraToViewportRay( xNormalized, yNormalized );
+
+	Ogre::Vector3 position = ray.getPoint( ray.intersects( plane() ).second );
+	m_cubes[m_indiceCubeSelected]->move( position );
+
+}
+
 bool llm::Level::loop() {
 	//Simuler l'application ( met à jours les corps )
 	llm::Application* app = llm::Application::getInstance();
     app->world()->stepSimulation(1.f/60, 10);
+    //updateMagnetism();
 
 	return true;
 }
