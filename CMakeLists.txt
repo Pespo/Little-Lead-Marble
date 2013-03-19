@@ -41,6 +41,8 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Cube.h"
 	"src/Danger.cpp"
 	"src/Danger.h"
+	"src/DotSceneLoader.cpp"
+	"src/DotSceneLoader.h"
 	"src/End.cpp"
 	"src/End.h"
 	"src/InputListener.cpp"
@@ -54,6 +56,7 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Object.h"
 	"src/Player.cpp"
 	"src/Player.h"
+	"src/rapidxml.hpp"
 	"src/Singleton.h"
 	"src/main.cpp"
 ) 

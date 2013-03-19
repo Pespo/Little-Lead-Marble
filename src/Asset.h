@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ASSET_H
 #define ASSET_H
 
@@ -19,11 +18,16 @@ namespace llm {
 		Ogre::Vector3 m_pHalfdim;
         
 	public:
-		Asset(const Ogre::String& name, const Ogre::String& mesh, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim);
+		Asset(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim);
+		Asset( Ogre::SceneNode* node, Ogre::Entity* ent = 0);
 		//~Asset();
  
 		Ogre::SceneNode* sceneNode();
 		Ogre::Entity* entity();
+
+		inline std::string getAssetName(){
+			return  m_pNode->getName();
+		}
         
 
 	};

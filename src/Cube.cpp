@@ -6,8 +6,14 @@ inline btVector3 cvt( const Ogre::Vector3 &V ) {
     return btVector3( V.x, V.y, V.z );
 }
 
-llm::Cube::Cube( const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim, float mass ) :
- Object( name, mesh, world, sceneManager, dim, mass ), m_bIsGhost( false ) {
+llm::Cube::Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass ) :
+ Object( name, mesh, dim, mass ), m_bIsGhost( false ) {
+
+}
+
+//Constructor called in DotSceneLoader
+llm::Cube::Cube(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass) : 
+Object(sNode, ent, mass) {
 
 }
 

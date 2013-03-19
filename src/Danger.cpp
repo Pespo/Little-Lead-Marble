@@ -1,7 +1,13 @@
 #include "Danger.h"
 
-llm::Danger::Danger( const Ogre::String& name, const Ogre::String& mesh, btDynamicsWorld* world, Ogre::SceneManager* sceneManager, Ogre::Vector3& dim, float mass ) :
- Object( name, mesh, world, sceneManager, dim, mass ) {
+llm::Danger::Danger( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass ) :
+ Object( name, mesh, dim, mass ) {
+
+}
+
+//Constructor called in DotSceneLoader
+llm::Danger::Danger(Ogre::SceneNode* sNode, Ogre::Entity* ent) : 
+Object(sNode, ent) {
 
 }
 

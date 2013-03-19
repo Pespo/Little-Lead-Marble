@@ -4,6 +4,7 @@
 
 #include "Object.h"
 #include "Singleton.h"
+#include "Level.h"
 #include <Ogre.h>
 #include <btBulletDynamicsCommon.h>
 #include <Bullet-C-Api.h>
@@ -38,7 +39,11 @@ namespace llm{
         btDiscreteDynamicsWorld* m_pWorld;
 
         //autre
-        std::vector<Object*> m_objectList;
+        //std::vector<Object*> m_objectList;
+
+		//variable level
+		Level* m_pCurrentLevel;
+		
         bool m_bShutDown;
 
     public:
@@ -46,6 +51,17 @@ namespace llm{
         void exit( );
         bool quit(const CEGUI::EventArgs& e);
         void createFrameListener( );
+
+		inline Ogre::SceneManager *sceneManager() {
+			return m_pSceneMgr;
+		}
+		inline btDiscreteDynamicsWorld *world() {
+			return m_pWorld;
+		}
+
+		inline llm::Level *level() {
+			return m_pCurrentLevel;
+		}
         
     };
 
