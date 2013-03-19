@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "Singleton.h"
 #include "Level.h"
+
 #include <Ogre.h>
 #include <btBulletDynamicsCommon.h>
 #include <Bullet-C-Api.h>
@@ -25,11 +26,11 @@ namespace llm{
         //Variable ogre3d
         Ogre::Root *m_pRoot;
         Ogre::RenderWindow* m_pWindow;
-        Ogre::Camera* m_pCamera;
-        Ogre::SceneManager* m_pSceneMgr;
-        Ogre::FrameListener* m_pInputListener;
-
         CEGUI::OgreRenderer* mRenderer;
+        Ogre::Camera* m_pCamera;
+        Ogre::SceneManager* m_pSceneManagerLevel;
+        Ogre::SceneManager* m_pSceneManagerMenu;
+        Ogre::FrameListener* m_pInputListener;
 
         //variable bullet
         btDbvtBroadphase* m_pBroadphase;
@@ -39,30 +40,33 @@ namespace llm{
         btDiscreteDynamicsWorld* m_pWorld;
 
         //autre
-        //std::vector<Object*> m_objectList;
-
-		//variable level
-		Level* m_pCurrentLevel;
-		
         bool m_bShutDown;
+        llm::Level* m_pLevel;
 
     public:
         bool start( );
-        void exit( );
-        bool quit(const CEGUI::EventArgs& e);
-        void createFrameListener( );
-
-		inline Ogre::SceneManager *sceneManager() {
-			return m_pSceneMgr;
-		}
-		inline btDiscreteDynamicsWorld *world() {
-			return m_pWorld;
-		}
 
 		inline llm::Level *level() {
-			return m_pCurrentLevel;
+			return m_pLevel;
 		}
         
+        bool quit(const CEGUI::EventArgs& e); 
+        inline Ogre::Root* root(){
+            return m_pRoot;
+        }  
+        inline Ogre::RenderWindow* window(){
+            return m_pWindow;
+        } 
+        inline Ogre::SceneManager* sceneManagerLevel(){
+            return m_pSceneManagerLevel;
+        }  
+        inline Ogre::Camera* camera(){
+            return m_pCamera;
+        } 
+		inline btDiscreteDynamicsWorld* world(){
+            return m_pWorld;
+        } 
+
     };
 
 }

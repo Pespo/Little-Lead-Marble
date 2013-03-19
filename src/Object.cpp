@@ -51,7 +51,7 @@ Asset(sNode, ent){
 
     Ogre::Vector3* vertices;
     unsigned* indices;
-	//if(static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0))) m_pEntity = static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0));
+
     getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, m_pHalfdim);
     Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
     Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);

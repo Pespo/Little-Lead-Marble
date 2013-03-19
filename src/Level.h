@@ -2,19 +2,23 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
-#include <vector>
-#include <Ogre.h>
-
 #include "Player.h"
-#include "Object.h"
 #include "Cube.h"
 #include "Magnet.h"
 #include "Danger.h"
 #include "End.h"
+#include "Object.h"
+
+#include <vector>
+#include <Ogre.h>
+#include <btBulletDynamicsCommon.h>
+#include <Bullet-C-Api.h>
+#include <btBulletCollisionCommon.h>
+
 
 namespace llm {
 	class Level {
-	private:
+
 		Player* m_pPlayer;
 		Ogre::Vector3 m_startPosition;
 		std::vector<Asset*> m_statics;
@@ -27,10 +31,13 @@ namespace llm {
 		bool m_bIsEnded;
 		bool m_bIsWon;
 
+
 	public:
 		Level( );
 		~Level( );
 
+		bool loop();
+		bool load();
 		inline Player* player( ) {
 			return m_pPlayer;
 		}
@@ -71,6 +78,19 @@ namespace llm {
 		//Add a cube
 		inline void addCube( Cube* c ) {
 			m_cubes.push_back(c);
+		}
+
+		inline std::vector<Object*> objects( ) {
+			return m_objects;
+		}
+
+		inline void setObjects( std::vector<Object*> o ) {
+			m_objects = o;
+		}
+
+		//Add a object
+		inline void addObject( Object* o ) {
+			m_objects.push_back(o);
 		}
 
 
