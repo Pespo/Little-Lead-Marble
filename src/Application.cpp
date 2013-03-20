@@ -15,10 +15,6 @@ llm::Application::Application( ) : m_pRoot(0) {
 	rs->setConfigOption("Video Mode", "1280 x 800 @ 32-bit colour");
 	rs->setConfigOption("VSync", "Yes");
 	m_pWindow = m_pRoot->initialise(true, "Little Lead Marble");	
-	
-	//initialisation frame listener
-	m_pInputListener = new InputListener( m_pWindow );
-    m_pRoot->addFrameListener(m_pInputListener);
 
     loadRessource();
 
@@ -49,6 +45,10 @@ bool llm::Application::start( ) {
 
 	m_pGame = new Game();
 	m_pMenu = new Menu();
+
+	//initialisation frame listener
+	m_pInputListener = new InputListener( m_pWindow );
+    m_pRoot->addFrameListener(m_pInputListener);
 
 	setupViewport(m_pGame->sceneManager(), Ogre::String("Camera"));
 	m_pGame->loadLevel();

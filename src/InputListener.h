@@ -12,9 +12,10 @@ namespace llm {
 	class InputListener : public Ogre::FrameListener, public Ogre::WindowEventListener, public OIS::KeyListener, public OIS::MouseListener {
 
 	protected :
-		Ogre::RenderWindow* m_pWindow;
-		Ogre::Camera*       m_pCamera;
-		Ogre::SceneManager* m_pSceneManager;
+		Ogre::RenderWindow* 	m_pWindow;
+		Ogre::Camera*       	m_pCamera;
+		Ogre::SceneManager* 	m_pSceneManager;
+		Ogre::DefaultRaySceneQuery*	m_pRaySceneQuery;
  
 		OIS::InputManager*  m_pInputManager;
 		OIS::Mouse*         m_pMouse;

@@ -47,22 +47,25 @@ namespace llm{
         bool pause(const CEGUI::EventArgs &e);
         void pause();
 
-        inline Ogre::Root* root(){
+        inline Ogre::Root* root() {
             return m_pRoot;
         }  
 
-        inline Ogre::RenderWindow* window(){
+        inline Ogre::RenderWindow* window() {
             return m_pWindow;
-        }  
-        inline Game* game(){
+        }
+
+        inline Game* game() {
             return m_pGame;
         }
+
         inline bool inGame() {
             return m_bInGame;
         }
-       /* inline llm::Menu* menu(){
+
+        inline Menu* menu() {
             return m_pMenu;
-        } */
+        }
 
     };
 
