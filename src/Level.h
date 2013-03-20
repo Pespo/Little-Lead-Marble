@@ -23,7 +23,6 @@ namespace llm {
 		std::vector<Cube*> m_cubes;
 		std::vector<Magnet*> m_magnets;
 		std::vector<Danger*> m_dangers;
-		int m_indiceCubeSelected;
 		End* m_pEnd;
 		bool m_bIsMagnetized;
 		bool m_bIsEnded;
@@ -35,14 +34,6 @@ namespace llm {
 
 		bool loop();
 		bool load();
-
-		inline int cubeSelected() {
-			return m_indiceCubeSelected;
-		}
-
-		inline void cubeSelected(int indice) {
-			m_indiceCubeSelected = indice;
-		}
 
 		inline Ogre::Plane plane() {
 			return m_plane;

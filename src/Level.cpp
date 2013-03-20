@@ -2,7 +2,7 @@
 #include "Application.h"
 
 llm::Level::Level( ) : m_startPosition( Ogre::Vector3( 0, 0, 0 ) ), m_plane( Ogre::Vector3( 0, 0, 1 ), Ogre::Vector3( 0, 0, 0 ) ),
-						m_indiceCubeSelected(-1), m_bIsMagnetized( false ), m_bIsEnded( false ), m_bIsWon( false ) {
+						m_bIsMagnetized( false ), m_bIsEnded( false ), m_bIsWon( false ) {
 	//m_pEnd = new End();
 }
 

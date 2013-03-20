@@ -25,6 +25,8 @@ namespace llm{
 		llm::Level* m_pLevel;
 		llm::Player* m_pPlayer;
 
+		int m_indiceCubeSelected;
+
 	public :
 		Game();
 		~Game();	
@@ -33,6 +35,13 @@ namespace llm{
 		void loop();
 		bool cubeHit( int x, int y );
 		void cubeNextPosition( int x, int y );
+
+		inline int cubeSelected() {
+			return m_indiceCubeSelected;
+		}
+		inline void cubeSelected(int indice) {
+			m_indiceCubeSelected = indice;
+		}
 
 		inline Ogre::SceneManager* sceneManager(){
             return m_pSceneManager;

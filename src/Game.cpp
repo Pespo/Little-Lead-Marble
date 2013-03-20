@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "DotSceneLoader.h"
 
-llm::Game::Game() {
+llm::Game::Game() : m_indiceCubeSelected(-1) {
 
 	//Init game scene manager 
 	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager("DefaultSceneManager", "Level Scene Manager");
@@ -64,10 +64,10 @@ bool llm::Game::cubeHit( int x, int y ) {
 	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
 	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
 
-	if( m_pLevel->cubeSelected() == -1 ) { // No cube selected
+	if( cubeSelected() == -1 ) { // No cube selected
 		for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
 			if( ray.intersects( m_pLevel->cubes()[i]->sceneNode()->_getWorldAABB() ).first) { 
-				m_pLevel->cubeSelected(i);
+				cubeSelected(i);
 				m_pLevel->cubes()[i]->selectCube();
 				return true;
 			}
@@ -75,8 +75,8 @@ bool llm::Game::cubeHit( int x, int y ) {
 
 	}
 	else {
-		m_pLevel->cubes()[m_pLevel->cubeSelected()]->releaseCube();
-		m_pLevel->cubeSelected(-1);
+		m_pLevel->cubes()[m_indiceCubeSelected]->releaseCube();
+		cubeSelected(-1);
 	}
 	return false;
 }
@@ -88,6 +88,6 @@ void llm::Game::cubeNextPosition( int x, int y ) {
 	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
 
 	Ogre::Vector3 position = ray.getPoint( ray.intersects( m_pLevel->plane() ).second );
-	m_pLevel->cubes()[m_pLevel->cubeSelected()]->move( position );
+	m_pLevel->cubes()[m_indiceCubeSelected]->move( position );
 }
 

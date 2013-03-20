@@ -83,7 +83,7 @@ bool llm::InputListener::mouseMoved(const OIS::MouseEvent &e) {
     //m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
     CEGUI::System::getSingleton().injectMouseMove(e.state.X.rel, e.state.Y.rel);
     llm::Application* app = llm::Application::getInstance();
-    if( app->game()->level()->cubeSelected() != -1 ) {
+    if( app->game()->cubeSelected() != -1 ) {
 		app->game()->cubeNextPosition( e.state.X.abs, e.state.Y.abs );
     }
     return true;
@@ -94,7 +94,7 @@ bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButton
 	if(llm::Application::getInstance()->inGame()){
 		if( id == OIS::MB_Left ) {
 			llm::Application* app = llm::Application::getInstance();
-			int selectedCube = app->game()->level()->cubeSelected();
+			int selectedCube = app->game()->cubeSelected();
 			std::cout << "Clic, selectedCube: " << selectedCube << std::endl;
 			app->game()->cubeHit( e.state.X.abs, e.state.Y.abs );
 		} 
