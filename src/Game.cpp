@@ -55,6 +55,10 @@ void llm::Game::loadLevel() {
 }
 
 void llm::Game::loop() {
+    if( level()->cubeSelected() != -1 ) {
+    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
+		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
+    }
 	m_pWorld->stepSimulation(1.f/60, 10);
 }
 
@@ -72,7 +76,6 @@ bool llm::Game::cubeHit( int x, int y ) {
 				return true;
 			}
 		}
-
 	}
 	else {
 		m_pLevel->cubes()[m_pLevel->cubeSelected()]->releaseCube();
@@ -81,7 +84,7 @@ bool llm::Game::cubeHit( int x, int y ) {
 	return false;
 }
 
-void llm::Game::cubeNextPosition( int x, int y ) {
+void llm::Game::cubeNextPosition( float x, float y ) {
 	llm::Application* app = llm::Application::getInstance();
 	Ogre::Real xNormalized = static_cast<Ogre::Real>(x) / static_cast<Ogre::Real>( app->window()->getWidth() );
 	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );

@@ -32,7 +32,7 @@ namespace llm{
 		void loadLevel();
 		void loop();
 		bool cubeHit( int x, int y );
-		void cubeNextPosition( int x, int y );
+		void cubeNextPosition( float x, float y );
 
 		inline Ogre::SceneManager* sceneManager(){
             return m_pSceneManager;
