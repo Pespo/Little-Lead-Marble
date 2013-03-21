@@ -4,10 +4,10 @@ material Penguin
     {
         pass
         {
-		    texture_unit
-			{
-			    texture penguin.jpg
-			}
+texture_unit
+{
+texture penguin.jpg
+}
         }
     }
 }

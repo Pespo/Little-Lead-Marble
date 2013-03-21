@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Application.h"
+#include "DotSceneLoader.h"
 
 llm::Level::Level( ) : m_startPosition( Ogre::Vector3( 0, 0, 0 ) ), m_plane( Ogre::Vector3( 0, 0, 1 ), Ogre::Vector3( 0, 0, 0 ) ),
 						m_bIsMagnetized( false ), m_bIsEnded( false ), m_bIsWon( false ) {
@@ -36,8 +37,8 @@ bool llm::Level::load() {
 	
 	//FUNCTION LOADING A SCENE FROM XML FILE
 	/*llm::Application* app = llm::Application::getInstance();
-	DotSceneLoader loader; */
-   // loader.parseDotScene("scene1_test2.xml",Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME , app->sceneManagerLevel());
+	DotSceneLoader loader; 
+    loader.parseDotScene("level2.xml", Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME , app->game()->sceneManager());*/
 
 	//Verif remplissage lvl
 	/*std::vector<Asset*> assetLvl = app->level()->statics();
@@ -45,13 +46,13 @@ bool llm::Level::load() {
 	for(int j=0; j<assetLvl.size(); ++j){
 		std::cout<<"NODE NAME :"<<assetLvl[j]->getAssetName()<<std::endl;
 		std::cout<<"ENTITY NAME :"<<assetLvl[j]->entity()->getName()<<std::endl;
-	}*/
+	}*
 
 	/***** TEST ENVIRONMENT *****/
 	srand(time(NULL));
 	//Création du sol
 	Object* ground = new Object("ground", "cube", Ogre::Vector3(200,1,200), 0);
-	//ground->entity()->setMaterialName("Cube");
+	ground->entity()->setMaterialName("Cube");
 	m_objects.push_back(ground);
  
  	//Création des pinguins
@@ -61,6 +62,11 @@ bool llm::Level::load() {
         cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
        	m_cubes.push_back(cube);
     }
+
+	//Just to see the "ball player"
+	Cube* billeT = new Cube("bille" + Ogre::StringConverter::toString(0), "bille", Ogre::Vector3(5.0,5.0,5.0), 100);
+    //bille->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
+    m_cubes.push_back(billeT);
 
 	return true;
 }

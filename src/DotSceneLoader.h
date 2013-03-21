@@ -64,6 +64,7 @@
         void processPlane(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
 
 		void processPhysicsAttrib(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode* pNode, Ogre::Entity* e = 0 );
+		void processBallStartPosition(rapidxml::xml_node<>* XMLNode);
  
        /* void processFog(rapidxml::xml_node<>* XMLNode);
         void processSkyBox(rapidxml::xml_node<>* XMLNode);

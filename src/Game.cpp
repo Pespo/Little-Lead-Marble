@@ -28,8 +28,9 @@ llm::Game::Game() : m_indiceCubeSelected(-1) {
     m_pWorld = new btDiscreteDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
     m_pWorld->setGravity(btVector3(0,-10,0));
 
+	m_pPlayer = new Player();
     m_pLevel = new Level();
-    m_pPlayer = new Player();
+   
 }
 
 llm::Game::~Game() {
@@ -52,6 +53,20 @@ void llm::Game::loadLevel() {
     light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
 
     m_pLevel->load();
+	// --  /!\ Only decomment this if your folder with level_2 XML and ressources is ready
+	//loadPlayer(); //load Player for the level's starting 
+}
+
+void llm::Game::loadPlayer() {
+	//to do  @ add parameters for dynamic construction
+	Ogre::Entity* bille_ent = m_pSceneManager->createEntity("bille_ent", "bille.mesh");
+    Ogre::SceneNode* bille_node = m_pSceneManager->getRootSceneNode()->createChildSceneNode("bille_node");
+    bille_node->attachObject(bille_ent);
+	bille_node->scale(Ogre::Vector3(0.03,0.03,0.03));
+	bille_node->yaw( Ogre::Degree( 90 ) );
+	Magnet* bille = new Magnet(bille_node, bille_ent, 40.0, false);
+	m_pPlayer->setMagnet(bille);
+	m_pPlayer->setPosition(m_pPlayer->getStartingPosition());
 }
 
 void llm::Game::loop() {

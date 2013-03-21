@@ -68,6 +68,11 @@ namespace llm {
 			m_objects = o;
 		}
 
+		//Add a object
+		inline void addObject( Object* o ) {
+			m_objects.push_back(o);
+		}
+
 		inline std::vector<Cube*> cubes( ) {
 			return m_cubes;
 		}
@@ -81,12 +86,7 @@ namespace llm {
 			m_cubes.push_back(c);
 		}
 
-		//Add a object
-		inline void addObject( Object* o ) {
-			m_objects.push_back(o);
-		}
-
-
+	
 		inline std::vector<Magnet*> magnets( ) {
 			return m_magnets;
 		}

@@ -32,6 +32,7 @@ namespace llm{
 		~Game();	
 
 		void loadLevel();
+		void loadPlayer();
 		void loop();
 		bool cubeHit( int x, int y );
 		void cubeNextPosition( int x, int y );
@@ -56,6 +57,9 @@ namespace llm{
             return m_pLevel;
         } 
 
+		 inline llm::Player* player(){
+            return m_pPlayer;
+        } 
 	};
 }
 
