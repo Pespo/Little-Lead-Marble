@@ -104,8 +104,6 @@ bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButton
 
 	if( llm::Application::getInstance()->inGame() ){
 		if( id == OIS::MB_Left ) {
-			int selectedCube = app->game()->level()->cubeSelected();
-			std::cout << "Clic, selectedCube: " << selectedCube << std::endl;
 			app->game()->cubeHit( e.state.X.abs, e.state.Y.abs );
 		} 
 	} else {
@@ -137,7 +135,7 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 				m_mouvement.z += 1;
 				break;
 			case OIS::KC_A:
-				m_mouvement.x -= 1;
+				m_mouvement.x -= 1; // tensor / torque
 				break;
 			case OIS::KC_D:
 				m_mouvement.x += 1;

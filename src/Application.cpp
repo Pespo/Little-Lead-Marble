@@ -55,7 +55,6 @@ bool llm::Application::start( ) {
 
 	while(true)	{
 		Ogre::WindowEventUtilities::messagePump( );
-
 		if(m_bInGame)
 			m_pGame->loop();
 

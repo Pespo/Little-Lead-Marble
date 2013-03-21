@@ -1,6 +1,11 @@
 #include "Game.h"
 #include "Application.h"
 #include "DotSceneLoader.h"
+#include "MotionState.h"
+
+#include <btBulletDynamicsCommon.h>
+#include <Bullet-C-Api.h>
+#include <btBulletCollisionCommon.h>
 
 llm::Game::Game() {
 
@@ -25,7 +30,7 @@ llm::Game::Game() {
     //the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)    
     m_pSolver = new btSequentialImpulseConstraintSolver;
  	//initialize world with previous configuration
-    m_pWorld = new btDiscreteDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
+    m_pWorld = new btSimpleDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
     m_pWorld->setGravity(btVector3(0,-10,0));
 
     m_pLevel = new Level();
@@ -59,6 +64,8 @@ void llm::Game::loop() {
     	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
+    std::cout << level()->cubes()[0]->position().x() << std::endl;
+    
 	m_pWorld->stepSimulation(1.f/60, 10);
 }
 
@@ -73,11 +80,15 @@ bool llm::Game::cubeHit( int x, int y ) {
 			if( ray.intersects( m_pLevel->cubes()[i]->sceneNode()->_getWorldAABB() ).first) { 
 				m_pLevel->cubeSelected(i);
 				m_pLevel->cubes()[i]->selectCube();
+				m_pLevel->cubes()[i]->rigidBody()->setAngularVelocity(btVector3(0,0,0));
+				world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
 				return true;
 			}
 		}
 	}
 	else {
+		world()->addRigidBody( m_pLevel->cubes()[m_pLevel->cubeSelected()]->rigidBody() );
+		m_pLevel->cubes()[m_pLevel->cubeSelected()]->rigidBody()->setLinearVelocity(btVector3(0,0,0));
 		m_pLevel->cubes()[m_pLevel->cubeSelected()]->releaseCube();
 		m_pLevel->cubeSelected(-1);
 	}
