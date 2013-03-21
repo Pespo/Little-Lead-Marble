@@ -11,20 +11,15 @@
 #pragma warning(disable:4305)
 
 
-DotSceneLoader::DotSceneLoader() : mSceneMgr(0)//, mTerrainGroup(0) 
+DotSceneLoader::DotSceneLoader() : mSceneMgr(0)
 {
-    //mTerrainGlobalOptions = OGRE_NEW Ogre::TerrainGlobalOptions();
+   
 }
 
 
 DotSceneLoader::~DotSceneLoader()
 {
-   /* if(mTerrainGroup)
-    {
-        OGRE_DELETE mTerrainGroup;
-    }
 
-    OGRE_DELETE mTerrainGlobalOptions;*/
 }
 
 void DotSceneLoader::parseDotScene(const Ogre::String &SceneName, const Ogre::String &groupName, Ogre::SceneManager *yourSceneMgr, Ogre::SceneNode *pAttachNode, const Ogre::String &sPrependNode)
@@ -33,8 +28,6 @@ void DotSceneLoader::parseDotScene(const Ogre::String &SceneName, const Ogre::St
     m_sGroupName = groupName;
     mSceneMgr = yourSceneMgr;
     m_sPrependNode = sPrependNode;
-    staticObjects.clear();
-    dynamicObjects.clear();
 
     rapidxml::xml_document<> XMLDoc;    // character type defaults to char
 
@@ -100,17 +93,6 @@ void DotSceneLoader::processScene(rapidxml::xml_node<>* XMLRoot)
     if(pElement)
         processNodes(pElement);
 
-    // Process externals (?)
-   /* pElement = XMLRoot->first_node("externals");
-    if(pElement)
-        processExternals(pElement);*/
-
-
-    // Process octree (?)
-   /* pElement = XMLRoot->first_node("octree");
-    if(pElement)
-        processOctree(pElement);*/
-
     // Process light (?)
     //pElement = XMLRoot->first_node("light");
     //if(pElement)
@@ -125,7 +107,6 @@ void DotSceneLoader::processScene(rapidxml::xml_node<>* XMLRoot)
 void DotSceneLoader::processNodes(rapidxml::xml_node<>* XMLNode)
 {
     rapidxml::xml_node<>* pElement;
-
     // Process node (*)
     pElement = XMLNode->first_node("node");
     while(pElement)
@@ -158,7 +139,6 @@ void DotSceneLoader::processNodes(rapidxml::xml_node<>* XMLNode)
         mAttachNode->setInitialState();
     }
 
-
 }
 
 
@@ -182,12 +162,6 @@ void DotSceneLoader::processEnvironment(rapidxml::xml_node<>* XMLNode)
     if(pElement)
         mSceneMgr->setAmbientLight(parseColour(pElement));
 
-    // Process colourBackground (?)
-    //! @todo Set the background colour of all viewports (RenderWindow has to be provided then)
-    pElement = XMLNode->first_node("colourBackground");
-    if(pElement)
-        ;//mSceneMgr->set(parseColour(pElement));
-
 }
 
 //Process ball start position
@@ -198,7 +172,6 @@ void DotSceneLoader::processBallStartPosition(rapidxml::xml_node<>* XMLNode)
     if(pElement)
 	//to do @ add test for player's existance
 	llm::Application::getInstance()->game()->player()->setStartingPosition(parseVector3(pElement));
-	
 }
 
 
@@ -268,10 +241,7 @@ void DotSceneLoader::processLight(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode
         if(pElement)
             processLightAttenuation(pElement, pLight);*/
     }
-    // Process userDataReference (?)
-   /* pElement = XMLNode->first_node("userDataReference");
-    if(pElement)
-        ;//processUserDataReference(pElement, pLight);*/
+ 
 }
 
 void DotSceneLoader::processCamera(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent)
@@ -428,11 +398,21 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
         pElement = pElement->next_sibling("node");
     }
 
+	//Stock asset type and attributes
+	Ogre::String assetType;
+	Ogre::Real mass = 0.0;
+	pElement = XMLNode->first_node("type");
+	if(pElement){
+			assetType = getAttrib(pElement, "name");
+			mass = getAttribReal(pElement, "mass");
+	}
+
+	std::cout<<"TYPE :: "<<assetType<<std::endl;
     // Process entity (*)
     pElement = XMLNode->first_node("entity");
     while(pElement)
     {
-        processEntity(pElement, pNode);
+        processEntity(pElement, pNode, assetType, mass);
         pElement = pElement->next_sibling("entity");
     }
 
@@ -453,13 +433,6 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
         pElement = pElement->next_sibling("camera");
     }
 
-    // Process particleSystem (*)
-    pElement = XMLNode->first_node("particleSystem");
-    while(pElement)
-    {
-        processParticleSystem(pElement, pNode);
-        pElement = pElement->next_sibling("particleSystem");
-    }
 
     // Process billboardSet (*)
     pElement = XMLNode->first_node("billboardSet");
@@ -476,12 +449,6 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
         processPlane(pElement, pNode);
         pElement = pElement->next_sibling("plane");
     }
-
-	//Process physic and create objects needed to complete level
-    pElement = XMLNode->first_node("type");
-	if(pElement){
-		processPhysicsAttrib(pElement,pNode);
-	}
 
   
 }
@@ -564,7 +531,7 @@ void DotSceneLoader::processTrackTarget(rapidxml::xml_node<>* XMLNode, Ogre::Sce
     }
 }
 
-void DotSceneLoader::processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent)
+void DotSceneLoader::processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent, Ogre::String assetType, Ogre::Real mass)
 {
     // Process attributes
     Ogre::String name = getAttrib(XMLNode, "name");
@@ -573,12 +540,6 @@ void DotSceneLoader::processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNod
     Ogre::String materialFile = getAttrib(XMLNode, "materialFile");
     bool isStatic = getAttribBool(XMLNode, "static", false);;
     bool castShadows = getAttribBool(XMLNode, "castShadows", true);
-
-    // TEMP: Maintain a list of static and dynamic objects
-    if(isStatic)
-        staticObjects.push_back(name);
-    else
-        dynamicObjects.push_back(name);
 
     rapidxml::xml_node<>* pElement;
 
@@ -604,6 +565,9 @@ void DotSceneLoader::processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNod
 		
         if(!materialFile.empty())
             pEntity->setMaterialName(materialFile);
+
+		//Create asset with physics attri and add it to the game's current level
+		processPhysicsAttrib(pParent, pEntity, assetType, mass);
     }
     catch(Ogre::Exception &/*e*/)
     {
@@ -613,46 +577,47 @@ void DotSceneLoader::processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNod
     
 }
 
-void DotSceneLoader::processPhysicsAttrib(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode* pNode, Ogre::Entity* e ){
-	Ogre::String assetType = getAttrib(XMLNode, "name");
-	Ogre::Real mass = getAttribReal(XMLNode, "mass");
-	
+void DotSceneLoader::processPhysicsAttrib(Ogre::SceneNode* pNode, Ogre::Entity* e, Ogre::String assetType, float mass){
+	/*Ogre::String assetType = getAttrib(XMLNode, "name");
+	Ogre::Real mass = getAttribReal(XMLNode, "mass");*/
+	Ogre::Vector3 dim(1.0,1.0,1.0);
 		if (assetType.compare("asset") == 0)
 		{
-			//std::cout<<"Its an asset "<<std::endl;
-			llm::Asset *a = new llm::Asset(pNode, e);
+			std::cout<<"Its an asset "<<std::endl;
+			llm::Asset *a = new llm::Asset(pNode, dim, e);
 			llm::Application::getInstance()->game()->level()->addStatic(a);
 	
 		}
 		
 		else if (assetType.compare("object") == 0)
 		{
-			llm::Object *o = new llm::Object(pNode, e, mass);
-			llm::Application::getInstance()->game()->level()->addObject(o);
+			llm::Object *pObject = new llm::Object(pNode, dim, e, mass);
+			llm::Application::getInstance()->game()->level()->addObject(pObject);
 		}
 		
 		else if (assetType.compare("cube") == 0)
 		{
-			llm::Cube *c = new llm::Cube(pNode, e, mass);
-			llm::Application::getInstance()->game()->level()->addCube(c);
+			llm::Cube *pCube = new llm::Cube(pNode, dim, e, mass);
+			llm::Application::getInstance()->game()->level()->addCube(pCube);
 		}
 
 		else if (assetType.compare("magnet") == 0)
 		{
-			llm::Magnet *m = new llm::Magnet(pNode, e, mass);
-			llm::Application::getInstance()->game()->level()->addMagnet(m);
+			llm::Magnet *pMagnet = new llm::Magnet(pNode, dim, e, mass, true);
+			llm::Application::getInstance()->game()->level()->addMagnet(pMagnet);
 		}
 		
 		else if (assetType.compare("danger") == 0)
 		{
-			llm::Danger *d = new llm::Danger(pNode, e);
-			llm::Application::getInstance()->game()->level()->addDanger(d);
+			llm::Danger *pDanger = new llm::Danger(pNode,dim, e, mass);
+			llm::Application::getInstance()->game()->level()->addDanger(pDanger);
 		}
 
 		else if (assetType.compare("end") == 0)
 		{
-			llm::End *d = new llm::End(pNode, e);
-			llm::Application::getInstance()->game()->level()->setEnd(d);
+			//std::cout<<"Its the END !!"<<std::endl;
+			llm::End *pEnd = new llm::End(pNode,dim, e, mass);
+			llm::Application::getInstance()->game()->level()->setEnd(pEnd);
 		}
 		else
 		{

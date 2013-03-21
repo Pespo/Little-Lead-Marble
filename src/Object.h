@@ -25,7 +25,7 @@ namespace llm {
 
 	public:
 		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass );
-		Object(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass=0);
+		Object(Ogre::SceneNode* sNode,Ogre::Vector3& dim, Ogre::Entity* ent, float mass);
 		~Object(); 
  
 		btRigidBody* rigidBody( );

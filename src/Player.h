@@ -9,7 +9,7 @@ namespace llm {
 	private:
 		Magnet* m_pMagnet;
 		Object* m_pObject;
-		Ogre::Vector3 m_pStartingPosition;
+		Ogre::Vector3 m_startingPosition;
 
 	public:
 		Player( );
@@ -46,14 +46,18 @@ namespace llm {
 
 		//set the player's starting position (one for each level)
 		inline void setStartingPosition( Ogre::Vector3 v ) {
-			m_pStartingPosition = v;
+			m_startingPosition = v;
 		}
 
 		//set the player's starting position (one for each level)
 		inline Ogre::Vector3 getStartingPosition() {
-			return m_pStartingPosition;
+			return m_startingPosition;
 		}
 
+		//reset position
+		inline void resetPosition() {
+			m_pMagnet->sceneNode()->setPosition(m_startingPosition);
+		}
 	};
 }
 

@@ -19,7 +19,7 @@ namespace llm {
         
 	public:
 		Asset(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim);
-		Asset( Ogre::SceneNode* node, Ogre::Entity* ent = 0);
+		Asset( Ogre::SceneNode* node, Ogre::Vector3& dim, Ogre::Entity* ent = 0);
 		~Asset();
  
 		Ogre::SceneNode* sceneNode();

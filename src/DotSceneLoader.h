@@ -16,8 +16,6 @@
     {
         class SceneManager;
         class SceneNode;
-        //class TerrainGroup;
-        //class TerrainGlobalOptions;
     }
  
     class nodeProperty
@@ -44,8 +42,7 @@
 
  
         std::vector<nodeProperty> nodeProperties;
-        std::vector<Ogre::String> staticObjects;
-        std::vector<Ogre::String> dynamicObjects;
+
  
     protected:
         void processScene(rapidxml::xml_node<>* XMLRoot);
@@ -58,12 +55,12 @@
         void processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent = 0);
         void processLookTarget(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
         void processTrackTarget(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
-        void processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
+        void processEntity(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent, Ogre::String assetType=0, Ogre::Real mass=0);
         void processParticleSystem(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
         void processBillboardSet(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
         void processPlane(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent);
 
-		void processPhysicsAttrib(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode* pNode, Ogre::Entity* e = 0 );
+		void processPhysicsAttrib(Ogre::SceneNode* pNode, Ogre::Entity* e, Ogre::String assetType, float mass);
 		void processBallStartPosition(rapidxml::xml_node<>* XMLNode);
  
        /* void processFog(rapidxml::xml_node<>* XMLNode);

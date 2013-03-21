@@ -64,9 +64,10 @@ void llm::Game::loadPlayer() {
     bille_node->attachObject(bille_ent);
 	bille_node->scale(Ogre::Vector3(0.03,0.03,0.03));
 	bille_node->yaw( Ogre::Degree( 90 ) );
-	Magnet* bille = new Magnet(bille_node, bille_ent, 40.0, false);
+	Magnet* bille = new Magnet(bille_node, Ogre::Vector3(1.0,1.0,1.0), bille_ent, 5.0, true);
 	m_pPlayer->setMagnet(bille);
-	m_pPlayer->setPosition(m_pPlayer->getStartingPosition());
+	m_pPlayer->resetPosition();
+	m_pCamera->setPosition(Ogre::Vector3(m_pPlayer->getStartingPosition().x, m_pPlayer->getStartingPosition().y, 10.));
 }
 
 void llm::Game::loop() {

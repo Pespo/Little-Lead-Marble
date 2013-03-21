@@ -48,6 +48,8 @@ bool llm::Level::load() {
 		std::cout<<"ENTITY NAME :"<<assetLvl[j]->entity()->getName()<<std::endl;
 	}*
 
+	//std::cout<<"END NAME :"<<app->game()->level()->end()->sceneNode()->getName()<<std::endl;
+
 	/***** TEST ENVIRONMENT *****/
 	srand(time(NULL));
 	//Création du sol
@@ -64,9 +66,13 @@ bool llm::Level::load() {
     }
 
 	//Just to see the "ball player"
-	Cube* billeT = new Cube("bille" + Ogre::StringConverter::toString(0), "bille", Ogre::Vector3(5.0,5.0,5.0), 100);
+	llm::Application* app = llm::Application::getInstance();
+	Ogre::SceneNode *node = app->game()->sceneManager()->getRootSceneNode( )->createChildSceneNode("billeT_node");
+	Ogre::Entity *enti =  app->game()->sceneManager()->createEntity("billeT", "bille.mesh");
+    node->attachObject(enti);
+	Magnet* billeT = new Magnet(node, Ogre::Vector3(2.0, 2.0, 2.0),enti, 10, true);
     //bille->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
-    m_cubes.push_back(billeT);
+    m_magnets.push_back(billeT);
 
 	return true;
 }

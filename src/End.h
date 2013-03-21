@@ -11,7 +11,7 @@ namespace llm {
 
 	public:
 		End( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass );
-		End( Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass=0);
+		End( Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent, float mass);
 		virtual ~End( );
 
 		virtual void onCollision( );
