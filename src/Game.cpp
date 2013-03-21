@@ -7,7 +7,7 @@
 #include <Bullet-C-Api.h>
 #include <btBulletCollisionCommon.h>
 
-llm::Game::Game() {
+llm::Game::Game() : m_indiceCubeSelected(-1) {
 
 	//Init game scene manager 
 	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager("DefaultSceneManager", "Level Scene Manager");
@@ -33,8 +33,9 @@ llm::Game::Game() {
     m_pWorld = new btSimpleDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
     m_pWorld->setGravity(btVector3(0,-10,0));
 
+	m_pPlayer = new Player();
     m_pLevel = new Level();
-    m_pPlayer = new Player();
+   
 }
 
 llm::Game::~Game() {
@@ -57,10 +58,24 @@ void llm::Game::loadLevel() {
     light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
 
     m_pLevel->load();
+	// --  /!\ Only decomment this if your folder with level_2 XML and ressources is ready
+	//loadPlayer(); //load Player for the level's starting 
+}
+
+void llm::Game::loadPlayer() {
+	//to do  @ add parameters for dynamic construction
+	Ogre::Entity* bille_ent = m_pSceneManager->createEntity("bille_ent", "bille.mesh");
+    Ogre::SceneNode* bille_node = m_pSceneManager->getRootSceneNode()->createChildSceneNode("bille_node");
+    bille_node->attachObject(bille_ent);
+	bille_node->scale(Ogre::Vector3(0.03,0.03,0.03));
+	bille_node->yaw( Ogre::Degree( 90 ) );
+	Magnet* bille = new Magnet(bille_node, bille_ent, 40.0, false);
+	m_pPlayer->setMagnet(bille);
+	m_pPlayer->setPosition(m_pPlayer->getStartingPosition());
 }
 
 void llm::Game::loop() {
-    if( level()->cubeSelected() != -1 ) {
+    if( m_indiceCubeSelected != -1 ) {
     	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
@@ -75,10 +90,10 @@ bool llm::Game::cubeHit( int x, int y ) {
 	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
 	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
 
-	if( m_pLevel->cubeSelected() == -1 ) { // No cube selected
+	if( m_indiceCubeSelected == -1 ) { // No cube selected
 		for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
 			if( ray.intersects( m_pLevel->cubes()[i]->sceneNode()->_getWorldAABB() ).first) { 
-				m_pLevel->cubeSelected(i);
+				m_indiceCubeSelected = i;
 				m_pLevel->cubes()[i]->selectCube();
 				m_pLevel->cubes()[i]->rigidBody()->setAngularVelocity(btVector3(0,0,0));
 				world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
@@ -87,10 +102,10 @@ bool llm::Game::cubeHit( int x, int y ) {
 		}
 	}
 	else {
-		world()->addRigidBody( m_pLevel->cubes()[m_pLevel->cubeSelected()]->rigidBody() );
-		m_pLevel->cubes()[m_pLevel->cubeSelected()]->rigidBody()->setLinearVelocity(btVector3(0,0,0));
-		m_pLevel->cubes()[m_pLevel->cubeSelected()]->releaseCube();
-		m_pLevel->cubeSelected(-1);
+		world()->addRigidBody( m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody() );
+		m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody()->setLinearVelocity(btVector3(0,0,0));
+		m_pLevel->cubes()[m_indiceCubeSelected]->releaseCube();
+		m_indiceCubeSelected = -1;
 	}
 	return false;
 }
@@ -102,6 +117,6 @@ void llm::Game::cubeNextPosition( float x, float y ) {
 	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
 
 	Ogre::Vector3 position = ray.getPoint( ray.intersects( m_pLevel->plane() ).second );
-	m_pLevel->cubes()[m_pLevel->cubeSelected()]->move( position );
+	m_pLevel->cubes()[m_indiceCubeSelected]->move( position );
 }
 

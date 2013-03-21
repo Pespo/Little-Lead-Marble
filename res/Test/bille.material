@@ -1,0 +1,29 @@
+material 02-Default
+{
+	technique
+	{
+		pass
+		{
+			specular 0 0 0 1 10
+		}
+
+	}
+
+}
+
+
+
+material Matériau#0
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.121569 0.121569 0.121569 1
+			diffuse 0.121569 0.121569 0.121569 1
+			specular 0.585 0.585 0.585 1 20
+		}
+
+	}
+
+}

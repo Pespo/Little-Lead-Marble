@@ -90,7 +90,7 @@ bool llm::InputListener::mouseMoved(const OIS::MouseEvent &e) {
     //m_pCamera->pitch(Ogre::Degree(-m_vitesseRotation * e.state.Y.rel));
     CEGUI::System::getSingleton().injectMouseMove(e.state.X.rel, e.state.Y.rel);
     llm::Application* app = llm::Application::getInstance();
-    if( app->game()->level()->cubeSelected() != -1 ) {
+    if( app->game()->cubeSelected() != -1 ) {
 		app->game()->cubeNextPosition( e.state.X.abs, e.state.Y.abs );
     }
     return true;

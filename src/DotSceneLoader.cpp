@@ -90,6 +90,11 @@ void DotSceneLoader::processScene(rapidxml::xml_node<>* XMLRoot)
     if(pElement)
         processEnvironment(pElement);
 
+	//Process ball start_position
+	pElement = XMLRoot->first_node("ball");
+	 if(pElement)
+        processBallStartPosition(pElement);
+
     // Process nodes (?)
     pElement = XMLRoot->first_node("nodes");
     if(pElement)
@@ -184,6 +189,18 @@ void DotSceneLoader::processEnvironment(rapidxml::xml_node<>* XMLNode)
         ;//mSceneMgr->set(parseColour(pElement));
 
 }
+
+//Process ball start position
+void DotSceneLoader::processBallStartPosition(rapidxml::xml_node<>* XMLNode)
+{
+	rapidxml::xml_node<>* pElement;
+	pElement = XMLNode->first_node("position");
+    if(pElement)
+	//to do @ add test for player's existance
+	llm::Application::getInstance()->game()->player()->setStartingPosition(parseVector3(pElement));
+	
+}
+
 
 
 void DotSceneLoader::processLight(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent)
@@ -421,12 +438,12 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 
 
     // Process light (*)
-    //pElement = XMLNode->first_node("light");
-    //while(pElement)
-    //{
-    //    processLight(pElement, pNode);
-    //    pElement = pElement->next_sibling("light");
-    //}
+    pElement = XMLNode->first_node("light");
+    while(pElement)
+    {
+        processLight(pElement, pNode);
+        pElement = pElement->next_sibling("light");
+    }
 
     // Process camera (*)
     pElement = XMLNode->first_node("camera");
@@ -608,10 +625,22 @@ void DotSceneLoader::processPhysicsAttrib(rapidxml::xml_node<>* XMLNode, Ogre::S
 	
 		}
 		
+		else if (assetType.compare("object") == 0)
+		{
+			llm::Object *o = new llm::Object(pNode, e, mass);
+			llm::Application::getInstance()->game()->level()->addObject(o);
+		}
+		
 		else if (assetType.compare("cube") == 0)
 		{
 			llm::Cube *c = new llm::Cube(pNode, e, mass);
 			llm::Application::getInstance()->game()->level()->addCube(c);
+		}
+
+		else if (assetType.compare("magnet") == 0)
+		{
+			llm::Magnet *m = new llm::Magnet(pNode, e, mass);
+			llm::Application::getInstance()->game()->level()->addMagnet(m);
 		}
 		
 		else if (assetType.compare("danger") == 0)

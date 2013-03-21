@@ -10,7 +10,7 @@ namespace llm {
 
 	public:
 		Magnet( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass, bool north );
-		Magnet(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass, bool north);
+		Magnet(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass = 0, bool north = 0);
 		virtual ~Magnet( );
 
 		virtual void onCollision( );
