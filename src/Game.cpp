@@ -1,6 +1,11 @@
 #include "Game.h"
 #include "Application.h"
 #include "DotSceneLoader.h"
+#include "MotionState.h"
+
+#include <btBulletDynamicsCommon.h>
+#include <Bullet-C-Api.h>
+#include <btBulletCollisionCommon.h>
 
 llm::Game::Game() : m_indiceCubeSelected(-1) {
 
@@ -25,7 +30,7 @@ llm::Game::Game() : m_indiceCubeSelected(-1) {
     //the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)    
     m_pSolver = new btSequentialImpulseConstraintSolver;
  	//initialize world with previous configuration
-    m_pWorld = new btDiscreteDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
+    m_pWorld = new btSimpleDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
     m_pWorld->setGravity(btVector3(0,-10,0));
 
 	m_pPlayer = new Player();
@@ -71,6 +76,12 @@ void llm::Game::loadPlayer() {
 }
 
 void llm::Game::loop() {
+    if( m_indiceCubeSelected != -1 ) {
+    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
+		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
+    }
+    std::cout << level()->cubes()[0]->position().x() << std::endl;
+    
 	m_pWorld->stepSimulation(1.f/60, 10);
 }
 
@@ -80,24 +91,27 @@ bool llm::Game::cubeHit( int x, int y ) {
 	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );
 	Ogre::Ray ray = m_pCamera->getCameraToViewportRay( xNormalized, yNormalized );
 
-	if( cubeSelected() == -1 ) { // No cube selected
+	if( m_indiceCubeSelected == -1 ) { // No cube selected
 		for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
 			if( ray.intersects( m_pLevel->cubes()[i]->sceneNode()->_getWorldAABB() ).first) { 
-				cubeSelected(i);
+				m_indiceCubeSelected = i;
 				m_pLevel->cubes()[i]->selectCube();
+				m_pLevel->cubes()[i]->rigidBody()->setAngularVelocity(btVector3(0,0,0));
+				world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
 				return true;
 			}
 		}
-
 	}
 	else {
+		world()->addRigidBody( m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody() );
+		m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody()->setLinearVelocity(btVector3(0,0,0));
 		m_pLevel->cubes()[m_indiceCubeSelected]->releaseCube();
-		cubeSelected(-1);
+		m_indiceCubeSelected = -1;
 	}
 	return false;
 }
 
-void llm::Game::cubeNextPosition( int x, int y ) {
+void llm::Game::cubeNextPosition( float x, float y ) {
 	llm::Application* app = llm::Application::getInstance();
 	Ogre::Real xNormalized = static_cast<Ogre::Real>(x) / static_cast<Ogre::Real>( app->window()->getWidth() );
 	Ogre::Real yNormalized = static_cast<Ogre::Real>(y) / static_cast<Ogre::Real>( app->window()->getHeight() );

@@ -8,6 +8,13 @@ llm::InputListener::InputListener(Ogre::RenderWindow *window) {
 	windowResized(window);
 	Ogre::WindowEventUtilities::addWindowEventListener(window, this);
 
+	m_pRaySceneQuery = new Ogre::DefaultRaySceneQuery( llm::Application::getInstance()->game()->sceneManager() );
+
+	CEGUI::Point mousePos = CEGUI::MouseCursor::getSingleton().getPosition();
+	OIS::MouseState &mutableMouseState = const_cast<OIS::MouseState &>(m_pMouse->getMouseState());
+	mutableMouseState.X.abs = mousePos.d_x;
+	mutableMouseState.Y.abs = mousePos.d_y;
+
     m_bContinue = true;
  
     m_mouvement = Ogre::Vector3::ZERO;
@@ -90,12 +97,13 @@ bool llm::InputListener::mouseMoved(const OIS::MouseEvent &e) {
 }
 
 bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id) {
+	llm::Application* app = llm::Application::getInstance();
 
-	if(llm::Application::getInstance()->inGame()){
+	Ogre::Ray mouseRay = app->game()->camera()->getCameraToViewportRay( e.state.X.abs / float(e.state.width ), e.state.Y.abs / float( e.state.height ) );
+ 	m_pRaySceneQuery->setRay( mouseRay );
+
+	if( llm::Application::getInstance()->inGame() ){
 		if( id == OIS::MB_Left ) {
-			llm::Application* app = llm::Application::getInstance();
-			int selectedCube = app->game()->cubeSelected();
-			std::cout << "Clic, selectedCube: " << selectedCube << std::endl;
 			app->game()->cubeHit( e.state.X.abs, e.state.Y.abs );
 		} 
 	} else {
@@ -127,7 +135,7 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 				m_mouvement.z += 1;
 				break;
 			case OIS::KC_A:
-				m_mouvement.x -= 1;
+				m_mouvement.x -= 1; // tensor / torque
 				break;
 			case OIS::KC_D:
 				m_mouvement.x += 1;

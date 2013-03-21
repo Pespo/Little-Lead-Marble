@@ -20,7 +20,7 @@ namespace llm{
         btDefaultCollisionConfiguration* m_pCollisionConfiguration;
         btCollisionDispatcher* m_pDispatcher;
         btSequentialImpulseConstraintSolver* m_pSolver;
-        btDiscreteDynamicsWorld* m_pWorld;
+        btSimpleDynamicsWorld* m_pWorld;
 
 		llm::Level* m_pLevel;
 		llm::Player* m_pPlayer;
@@ -35,7 +35,7 @@ namespace llm{
 		void loadPlayer();
 		void loop();
 		bool cubeHit( int x, int y );
-		void cubeNextPosition( int x, int y );
+		void cubeNextPosition( float x, float y );
 
 		inline int cubeSelected() {
 			return m_indiceCubeSelected;
@@ -47,7 +47,7 @@ namespace llm{
 		inline Ogre::SceneManager* sceneManager(){
             return m_pSceneManager;
         } 
-        inline btDiscreteDynamicsWorld* world(){
+        inline btSimpleDynamicsWorld* world(){
             return m_pWorld;
         } 
         inline Ogre::Camera* camera(){

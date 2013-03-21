@@ -18,7 +18,10 @@ namespace llm {
 		void pauseMenu();
 		void startMenu(bool visible);
 		void levelMenu();
-
+		
+		inline Ogre::SceneManager* sceneManager(){
+            return m_pSceneManager;
+        } 
 	};
 }
 #endif

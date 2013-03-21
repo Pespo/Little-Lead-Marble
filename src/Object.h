@@ -29,6 +29,10 @@ namespace llm {
 		~Object(); 
  
 		btRigidBody* rigidBody( );
+
+		inline btVector3 position() {
+			return m_pBody->getCenterOfMassTransform().getOrigin();
+		}
         
 		void getMeshInformation( Ogre::MeshPtr mesh, size_t &vertex_count, Ogre::Vector3* &vertices,
 			size_t &index_count, unsigned* &indices,
