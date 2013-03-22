@@ -36,9 +36,9 @@ bool llm::Level::load() {
 	//Import Scene
 	
 	//FUNCTION LOADING A SCENE FROM XML FILE
-	/*llm::Application* app = llm::Application::getInstance();
-	DotSceneLoader loader; 
-    loader.parseDotScene("level2.xml", Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME , app->game()->sceneManager());*/
+	// llm::Application* app = llm::Application::getInstance();
+	// DotSceneLoader loader; 
+ //    loader.parseDotScene("level2.xml", Ogre::ResourceGroupManager::AUTODETECT_RESOURCE_GROUP_NAME , app->game()->sceneManager());
 
 	//Verif remplissage lvl
 	/*std::vector<Asset*> assetLvl = app->level()->statics();
@@ -46,34 +46,25 @@ bool llm::Level::load() {
 	for(int j=0; j<assetLvl.size(); ++j){
 		std::cout<<"NODE NAME :"<<assetLvl[j]->getAssetName()<<std::endl;
 		std::cout<<"ENTITY NAME :"<<assetLvl[j]->entity()->getName()<<std::endl;
-	}*
+	}*/
 
-	//std::cout<<"END NAME :"<<app->game()->level()->end()->sceneNode()->getName()<<std::endl;
-
-	/***** TEST ENVIRONMENT *****/
+	/***** TEST ENVIRONMENT ****/
 	srand(time(NULL));
 	//Création du sol
 	Object* ground = new Object("ground", "cube", Ogre::Vector3(200,1,200), 0);
-	ground->entity()->setMaterialName("Cube");
+	//ground->entity()->setMaterialName("ground");
 	m_objects.push_back(ground);
- 
+
  	//Création des pinguins
-    for(int i=0; i<20; i++) {
+    for(int i=0; i<3; i++) {
 		//std::cout << "i " << i << std::endl;
-        Cube* cube = new Cube("penguin" + Ogre::StringConverter::toString(i), "penguin", Ogre::Vector3(10,10,10), 40);
-        cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
+        Cube* cube = new Cube("cube" + Ogre::StringConverter::toString(i), "cube", Ogre::Vector3(10,10,10), 500);
+        //cube->entity()->setMaterialName("cube");
+        cube->position(btVector3(rand( )%20-10, rand( )%100+50, 0.));
        	m_cubes.push_back(cube);
     }
 
-	//Just to see the "ball player"
-	llm::Application* app = llm::Application::getInstance();
-	Ogre::SceneNode *node = app->game()->sceneManager()->getRootSceneNode( )->createChildSceneNode("billeT_node");
-	Ogre::Entity *enti =  app->game()->sceneManager()->createEntity("billeT", "bille.mesh");
-    node->attachObject(enti);
-	Magnet* billeT = new Magnet(node, Ogre::Vector3(2.0, 2.0, 2.0),enti, 10, true);
-    //bille->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
-    m_magnets.push_back(billeT);
-
+    m_startPosition = Ogre::Vector3( 0., 20., 0.);
 	return true;
 }
 

@@ -12,7 +12,7 @@ llm::Application::Application( ) : m_pRoot(0) {
 
 	//Set options
 	rs->setConfigOption("Full Screen", "No");
-	rs->setConfigOption("Video Mode", "1280 x 800 @ 32-bit colour");
+	rs->setConfigOption("Video Mode", "800 x 600 @ 32-bit colour");
 	rs->setConfigOption("VSync", "Yes");
 	m_pWindow = m_pRoot->initialise(true, "Little Lead Marble");	
 
@@ -28,18 +28,6 @@ llm::Application::~Application( ) {
 	delete m_pMenu;
 	delete m_pRoot;
 }
-
-bool llm::Application::quit(const CEGUI::EventArgs &e) {
-	std::cout << "Quit" << std::endl;
-	((InputListener*)m_pInputListener)->quit();
-	return true;
-}
-
-bool llm::Application::quit() {
-	((InputListener*)m_pInputListener)->quit();
-	return true;
-}
-
 
 bool llm::Application::start( ) {	
 
@@ -68,27 +56,6 @@ bool llm::Application::start( ) {
  	return true;
 }
 
-void llm::Application::setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName) {
-	m_pWindow->removeAllViewports();
- 
-	Ogre::Camera *cam = current->getCamera(cameraName); //The Camera
-	Ogre::Viewport *vp = m_pWindow->addViewport(cam); //Our Viewport linked to the camera
-	 
-	vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
-	cam->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
-}
-
-bool llm::Application::pause(const CEGUI::EventArgs &e) {
-	m_bInGame = m_bInGame ? false : true;
-	m_pMenu->startMenu(!m_bInGame);
-	return true;
-}
-
-void llm::Application::pause() {
-	m_bInGame = m_bInGame ? false : true;
-	m_pMenu->startMenu(!m_bInGame);
-}
-
 void llm::Application::loadRessource() {
 	Ogre::ConfigFile configFile;
 	configFile.load("../res/resources.cfg"); //Permet de charger les ressources
@@ -107,4 +74,36 @@ void llm::Application::loadRessource() {
 
 	Ogre::TextureManager::getSingleton( ).setDefaultNumMipmaps(5);
 	Ogre::ResourceGroupManager::getSingleton( ).initialiseAllResourceGroups( );
+}
+
+void llm::Application::setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName) {
+	m_pWindow->removeAllViewports();
+ 
+	Ogre::Camera *cam = current->getCamera(cameraName); //The Camera
+	Ogre::Viewport *vp = m_pWindow->addViewport(cam); //Our Viewport linked to the camera
+	 
+	vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+	cam->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
+}
+
+bool llm::Application::quit(const CEGUI::EventArgs &e) {
+	std::cout << "Quit" << std::endl;
+	((InputListener*)m_pInputListener)->quit();
+	return true;
+}
+
+bool llm::Application::quit() {
+	((InputListener*)m_pInputListener)->quit();
+	return true;
+}
+
+bool llm::Application::pause(const CEGUI::EventArgs &e) {
+	m_bInGame = m_bInGame ? false : true;
+	m_pMenu->startMenu(!m_bInGame);
+	return true;
+}
+
+void llm::Application::pause() {
+	m_bInGame = m_bInGame ? false : true;
+	m_pMenu->startMenu(!m_bInGame);
 }

@@ -8,6 +8,10 @@ inline btVector3 cvt(const Ogre::Vector3 &V){
     return btVector3(V.x, V.y, V.z);
 }
 
+inline Ogre::Vector3 cvt(const btVector3 &V){
+	return Ogre::Vector3(V.getX(), V.getY(), V.getZ());
+}
+
 llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& halfdim, float mass) : 
 Asset(name, mesh, halfdim) {
 	m_pWorld = llm::Application::getInstance()->game()->world();
@@ -70,9 +74,11 @@ Asset(sNode, dim, ent){
     m_pShape = new btConvexHullShape(*btVertices,vertex_count);
     btVector3 inertia;
     m_pShape->calculateLocalInertia(mass, inertia);
-    MotionState* motionState = new MotionState(m_pNode);
-    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
+    m_pMotionState = new MotionState(m_pNode);
+    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, m_pMotionState, m_pShape, inertia);
     m_pBody = new btRigidBody(BodyCI);
+    // m_pBody->translate(cvt(sNode->getPosition()));
+    // std::cout << "TEST --------" << sNode->getPosition() << std::endl;
     m_pWorld->addRigidBody(m_pBody);
 
     delete [] btVertices;
@@ -80,7 +86,7 @@ Asset(sNode, dim, ent){
     delete indices;
 
 }
- 
+
 llm::Object::~Object( ) {
     
     delete m_pBody->getMotionState( );
@@ -89,9 +95,26 @@ llm::Object::~Object( ) {
      
     delete m_pShape;
 }
- 
-btRigidBody* llm::Object::rigidBody( ) {
-    return m_pBody;
+
+void llm::Object::position(Ogre::Vector3 position) {
+    btTransform transform = m_pBody->getCenterOfMassTransform();
+    transform.setOrigin(cvt( position ));
+    m_pBody->setCenterOfMassTransform(transform);
+
+    node()->setPosition(position);
+}
+
+void llm::Object::position(btVector3& position) {
+    btTransform transform = m_pBody->getCenterOfMassTransform();
+    transform.setOrigin( position );
+    m_pBody->setCenterOfMassTransform(transform);
+
+    node()->setPosition(cvt(position));
+
+}
+
+void llm::Object::position(int x, int y, int z) {
+    position(btVector3(x, y, z));
 }
  
 void llm::Object::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre::Vector3* &vertices,

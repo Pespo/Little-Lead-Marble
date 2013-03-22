@@ -1,5 +1,4 @@
 #include "Asset.h"
-#include <Ogre.h>
 #include "Application.h"
 
 llm::Asset::Asset( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim) {
@@ -17,18 +16,6 @@ llm::Asset::Asset( Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent
 	m_pHalfdim = dim;
 	//if(static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0))) m_pEntity = static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0));
 }
- 
-llm::Asset::~Asset( ) {
-	/*delete m_pNode;
-	delete m_pEntity;
-	delete m_pSceneManager;*/
-}
- 
 
-Ogre::SceneNode* llm::Asset::sceneNode( ) {
-    return m_pNode;
-}
- 
-Ogre::Entity* llm::Asset::entity( ) {
-    return m_pEntity;
-}
+
+llm::Asset::~Asset( ) { }

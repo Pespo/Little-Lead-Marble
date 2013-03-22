@@ -130,15 +130,17 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 				llm::Application::getInstance()->pause();
 				break;
 			case OIS::KC_W:
-				m_mouvement.z -= 1;
+				m_mouvement.y += 1;
 				break;
 			case OIS::KC_S:
-				m_mouvement.z += 1;
+				m_mouvement.y -= 1;
 				break;
 			case OIS::KC_A:
-				m_mouvement.x -= 1; // tensor / torque
+				//llm::Application::getInstance()->game()->player()->goLeft();
+				m_mouvement.x -= 1;
 				break;
 			case OIS::KC_D:
+				//llm::Application::getInstance()->game()->player()->goRight();
 				m_mouvement.x += 1;
 				break;
 			case OIS::KC_Q:
@@ -165,10 +167,10 @@ bool llm::InputListener::keyReleased(const OIS::KeyEvent &e) {
 	if(llm::Application::getInstance()->inGame()) {
 		switch(e.key) {
 			case OIS::KC_W:
-				m_mouvement.z += 1;
+				m_mouvement.y -= 1;
 				break;
 			case OIS::KC_S:
-				m_mouvement.z -= 1;
+				m_mouvement.y += 1;
 				break;
 			case OIS::KC_A:
 				m_mouvement.x += 1;

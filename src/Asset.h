@@ -18,15 +18,28 @@ namespace llm {
 		Ogre::Vector3 m_pHalfdim;
         
 	public:
-		Asset(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim);
-		Asset( Ogre::SceneNode* node, Ogre::Vector3& dim, Ogre::Entity* ent = 0);
+		Asset(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim = Ogre::Vector3(1., 1., 1.));
+		Asset( Ogre::SceneNode* node, Ogre::Vector3& dim = Ogre::Vector3(1., 1., 1.), Ogre::Entity* ent = 0);
 		~Asset();
  
-		Ogre::SceneNode* sceneNode();
-		Ogre::Entity* entity();
+		inline Ogre::SceneNode* node() {
+			return m_pNode;
+		}
 
-		inline std::string getAssetName(){
-			return  m_pNode->getName();
+		inline void position(Ogre::Vector3 position){
+			m_pNode->setPosition(position);
+		}
+
+		inline void position(int x, int y, int z) {
+			position(Ogre::Vector3(x, y, z));
+		}
+
+		inline Ogre::Entity* entity() {
+			return m_pEntity;
+		}
+
+		inline std::string assetName(){
+			return m_pNode->getName();
 		}
         
 
