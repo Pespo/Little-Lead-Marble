@@ -38,6 +38,7 @@ Asset(name, mesh, halfdim) {
     btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
     m_pBody = new btRigidBody(BodyCI);
     m_pBody->setLinearFactor(btVector3(1.0, 1.0, 0.0));
+    m_pBody->setAngularFactor(btVector3(0.0, 0.0, 1.0));
     m_pWorld->addRigidBody(m_pBody);
 
     delete [] btVertices;
