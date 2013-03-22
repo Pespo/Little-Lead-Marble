@@ -1,6 +1,5 @@
 #include "Application.h"
 #include <iostream>
-#include "alut.h"
 
 
 using namespace std;
