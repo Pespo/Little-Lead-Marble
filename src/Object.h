@@ -24,8 +24,7 @@ namespace llm {
 		btRigidBody* m_pBody;
 
 	public:
-		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass );
-		Object(Ogre::SceneNode* sNode,Ogre::Vector3& dim, Ogre::Entity* ent, float mass);
+		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass =0 );
 		~Object(); 
  
 		btRigidBody* rigidBody( );
@@ -33,6 +32,9 @@ namespace llm {
 		inline btVector3 position() {
 			return m_pBody->getCenterOfMassTransform().getOrigin();
 		}
+
+		void setPosition(Ogre::Vector3 position);
+		void setOrientation(Ogre::Quaternion rotation);
         
 		void getMeshInformation( Ogre::MeshPtr mesh, size_t &vertex_count, Ogre::Vector3* &vertices,
 			size_t &index_count, unsigned* &indices,

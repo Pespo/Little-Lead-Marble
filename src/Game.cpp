@@ -64,7 +64,7 @@ void llm::Game::loadLevel() {
 
 void llm::Game::loadPlayer() {
 	//to do  @ add parameters for dynamic construction
-	Ogre::Entity* bille_ent = m_pSceneManager->createEntity("bille_ent", "bille.mesh");
+	/*Ogre::Entity* bille_ent = m_pSceneManager->createEntity("bille_ent", "bille.mesh");
     Ogre::SceneNode* bille_node = m_pSceneManager->getRootSceneNode()->createChildSceneNode("bille_node");
     bille_node->attachObject(bille_ent);
 	bille_node->scale(Ogre::Vector3(0.03,0.03,0.03));
@@ -72,7 +72,7 @@ void llm::Game::loadPlayer() {
 	Magnet* bille = new Magnet(bille_node, Ogre::Vector3(1.0,1.0,1.0), bille_ent, 5.0, true);
 	m_pPlayer->setMagnet(bille);
 	m_pPlayer->resetPosition();
-	m_pCamera->setPosition(Ogre::Vector3(m_pPlayer->getStartingPosition().x, m_pPlayer->getStartingPosition().y, 10.));
+	m_pCamera->setPosition(Ogre::Vector3(m_pPlayer->getStartingPosition().x, m_pPlayer->getStartingPosition().y, 10.));*/
 }
 
 void llm::Game::loop() {

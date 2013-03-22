@@ -46,41 +46,26 @@ Asset(name, mesh, halfdim) {
     delete indices;
 }
 
-//Constructor called in DotSceneLoader
-llm::Object::Object(Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent,  float mass) : 
-Asset(sNode, dim, ent){
-	m_pWorld = llm::Application::getInstance()->game()->world();
 
-    size_t vertex_count, index_count;
+ void llm::Object::setPosition(Ogre::Vector3 position) {
+   btTransform transform = m_pBody->getCenterOfMassTransform();
+   transform.setOrigin(cvt( position ));
+   m_pBody->setCenterOfMassTransform(transform);
 
-    Ogre::Vector3* vertices;
-    unsigned* indices;
-
-    getMeshInformation(m_pEntity->getMesh( ),vertex_count,vertices,index_count,indices, m_pHalfdim);
-    Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Vertices in mesh: %u",vertex_count);
-    Ogre::LogManager::getSingleton( ).logMessage(Ogre::LML_NORMAL,"Triangles in mesh: %u",index_count / 3);
-
-    btVector3* btVertices;
-
-    btVertices = new btVector3[vertex_count];
-
-    for(int i = 0; i < vertex_count; i++){
-        btVertices[i] = cvt(vertices[i]);
-    }
-
-    m_pShape = new btConvexHullShape(*btVertices,vertex_count);
-    btVector3 inertia;
-    m_pShape->calculateLocalInertia(mass, inertia);
-    MotionState* motionState = new MotionState(m_pNode);
-    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
-    m_pBody = new btRigidBody(BodyCI);
-    m_pWorld->addRigidBody(m_pBody);
-
-    delete [] btVertices;
-    delete vertices;
-    delete indices;
-
+   sceneNode()->setPosition(position);
 }
+
+  void llm::Object::setOrientation(Ogre::Quaternion rotation) {
+   btTransform transform = m_pBody->getCenterOfMassTransform();
+   transform.setIdentity();
+   btQuaternion quat;
+   quat.setEuler(rotation.x,rotation.y,rotation.z);
+   transform.setRotation(quat);
+   m_pBody->setCenterOfMassTransform(transform);
+
+   sceneNode()->setOrientation(rotation);
+}
+
  
 llm::Object::~Object( ) {
     

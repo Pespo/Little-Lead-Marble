@@ -5,12 +5,7 @@ llm::End::End( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3
 
 }
 
- //Constructor called in DotSceneLoader
- llm::End::End( Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent, float mass ) :
- Object(sNode, dim, ent, mass) {
-
-}
-
+ 
 llm::End::~End( ) {
 
 }
