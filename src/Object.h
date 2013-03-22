@@ -19,22 +19,26 @@ namespace llm {
 
 	protected:
 		btDynamicsWorld* m_pWorld;
-        
 		btCollisionShape* m_pShape;
 		btRigidBody* m_pBody;
 
 	public:
 		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass =0 );
 		~Object(); 
- 
-		btRigidBody* rigidBody( );
 
-		inline btVector3 position() {
-			return m_pBody->getCenterOfMassTransform().getOrigin();
+		inline btRigidBody* body( ) {
+    		return m_pBody;
 		}
 
-		void setPosition(Ogre::Vector3 position);
-		void setOrientation(Ogre::Quaternion rotation);
+		void position(Ogre::Vector3 position);
+		void position(btVector3& position);
+		void position(int x, int y, int z);
+		inline btVector3 position(){ return m_pBody->getCenterOfMassTransform().getOrigin(); }
+		//inline Ogre::Vector3 position() { return cvt(position()); }
+
+		void orientation(Ogre::Quaternion orientation);
+		void orientation(btQuaternion& orientation);
+		inline btQuaternion orientation(){ return m_pBody->getCenterOfMassTransform().getRotation(); }
         
 		void getMeshInformation( Ogre::MeshPtr mesh, size_t &vertex_count, Ogre::Vector3* &vertices,
 			size_t &index_count, unsigned* &indices,

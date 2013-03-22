@@ -40,7 +40,7 @@ bool llm::Level::load() {
 	DotSceneLoader loader; 
 	loader.loadScene("../res/3dsmax/level_2/level2.xml");
 	std::cout<<"start positon"<<app->game()->player()->getStartingPosition().x<<std::endl;*/
-	
+
 	//Verif remplissage lvl
 	/*std::vector<Cube*> assetLvl = app->game()->level()->cubes();
 	std::cout<<"Vector statics size ::: "<<assetLvl.size()<<std::endl;
@@ -49,20 +49,19 @@ bool llm::Level::load() {
 		std::cout<<"ENTITY NAME :"<<assetLvl[j]->entity()->getName()<<std::endl;
 	}*/
 
-	//std::cout<<"END NAME :"<<app->game()->level()->end()->sceneNode()->getName()<<std::endl;
-
-	/***** TEST ENVIRONMENT *****/
+	/***** TEST ENVIRONMENT ****/
 	srand(time(NULL));
 	//Création du sol
 	Object* ground = new Object("ground", "cube.mesh", Ogre::Vector3(200,1,200), 0);
-	ground->entity()->setMaterialName("Cube");
+	//ground->entity()->setMaterialName("ground");
 	m_objects.push_back(ground);
- 
+
  	//Création des pinguins
-    for(int i=0; i<20; i++) {
+    for(int i=0; i<3; i++) {
 		//std::cout << "i " << i << std::endl;
-        Cube* cube = new Cube("penguin" + Ogre::StringConverter::toString(i), "penguin.mesh", Ogre::Vector3(10,10,10), 40);
-        cube->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
+		Cube* cube = new Cube("cube" + Ogre::StringConverter::toString(i), "cube.mesh", Ogre::Vector3(10,10,10), 500);
+        //cube->entity()->setMaterialName("cube");
+        cube->position(btVector3(rand( )%20-10, rand( )%100+50, 0.));
        	m_cubes.push_back(cube);
     }
 
@@ -74,6 +73,9 @@ bool llm::Level::load() {
 	Magnet* billeT = new Magnet(node, Ogre::Vector3(2.0, 2.0, 2.0),enti, 10, true);
     //bille->rigidBody( )->translate(btVector3(rand( )%20-10, rand( )%100+50, rand( )%20-10));
     m_magnets.push_back(billeT);*/
+
+
+    m_startPosition = Ogre::Vector3( 0., 20., 0.);
 
 	return true;
 }
