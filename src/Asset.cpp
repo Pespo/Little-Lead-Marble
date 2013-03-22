@@ -7,7 +7,7 @@ llm::Asset::Asset( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vec
     m_pEntity = sceneManager->createEntity(name + "_ent", mesh);
     m_pNode = sceneManager->getRootSceneNode( )->createChildSceneNode(name + "_node");
     m_pNode->attachObject(m_pEntity);
-    m_pNode->scale(m_pHalfdim);
+    m_pNode->scale(m_pHalfdim); // dim pour la scene
 }
 
 

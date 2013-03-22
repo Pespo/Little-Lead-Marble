@@ -149,13 +149,15 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 		{
 			//std::cout<<"Its an asset "<<std::endl;
 			llm::Asset *pAsset = new llm::Asset(entityName, meshFileName, scale);
+			pAsset->position(position);
+			pAsset->orientation(rotation);
 			llm::Application::getInstance()->game()->level()->addStatic(pAsset);
 	
 		}
 		
 		else if (assetType.compare("object") == 0)
 		{
-			llm::Object *pObject = new llm::Object(entityName, meshFileName, scale, 0.05);
+			llm::Object *pObject = new llm::Object(entityName, meshFileName, scale);
 			pObject->position(position);
 			pObject->orientation(rotation);
 			llm::Application::getInstance()->game()->level()->addObject(pObject);
@@ -163,7 +165,7 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 		
 		else if (assetType.compare("cube") == 0)
 		{
-			llm::Cube *pCube = new llm::Cube(entityName, meshFileName, scale, 0.00005);
+			llm::Cube *pCube = new llm::Cube(entityName, meshFileName, scale);
 			pCube->position(position);
 			pCube->orientation(rotation);
 			llm::Application::getInstance()->game()->level()->addCube(pCube);
@@ -171,7 +173,7 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 
 		else if (assetType.compare("magnet") == 0)
 		{
-			llm::Magnet *pMagnet = new llm::Magnet(entityName, meshFileName, enumPole, scale, 0.00005);
+			llm::Magnet *pMagnet = new llm::Magnet(entityName, meshFileName, enumPole, scale);
 			pMagnet->position(position);
 			pMagnet->orientation(rotation);
 			llm::Application::getInstance()->game()->level()->addMagnet(pMagnet);
