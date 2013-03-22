@@ -36,9 +36,8 @@ Asset(name, mesh, halfdim) {
     m_pShape->calculateLocalInertia(mass, inertia);
     MotionState* motionState = new MotionState(m_pNode);
     btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
-    std::cout << "-----------------------------qfsdq----------------" << std::endl;
     m_pBody = new btRigidBody(BodyCI);
-    std::cout << "-----------------------------qfsdq----------------" << std::endl;
+    m_pBody->setLinearFactor(btVector3(1.0, 1.0, 0.0));
     m_pWorld->addRigidBody(m_pBody);
 
     delete [] btVertices;

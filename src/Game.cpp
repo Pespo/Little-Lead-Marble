@@ -79,7 +79,6 @@ void llm::Game::loop() {
     	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
-    std::cout << level()->cubes()[0]->position().x() << std::endl;
     
 	m_pWorld->stepSimulation(1.f/60, 10);
 }
@@ -96,13 +95,13 @@ bool llm::Game::cubeHit( int x, int y ) {
 				m_indiceCubeSelected = i;
 				m_pLevel->cubes()[i]->selectCube();
 				m_pLevel->cubes()[i]->rigidBody()->setAngularVelocity(btVector3(0,0,0));
-				world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
+				//world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
 				return true;
 			}
 		}
 	}
 	else {
-		world()->addRigidBody( m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody() );
+		//world()->addRigidBody( m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody() );
 		m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody()->setLinearVelocity(btVector3(0,0,0));
 		m_pLevel->cubes()[m_indiceCubeSelected]->releaseCube();
 		m_indiceCubeSelected = -1;

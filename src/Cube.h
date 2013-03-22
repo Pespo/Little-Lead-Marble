@@ -11,8 +11,6 @@ namespace llm {
 	class Cube : public Object {
 	private:
 		bool m_bIsGhost; // Useless? Level stocks the indice of the selected Cube (-1 if no Cube selected)
-		Magnet* m_pNorthMagnet;
-		Magnet* m_pSouthMagnet;
 
 		virtual void onCollision( );
 
@@ -21,7 +19,8 @@ namespace llm {
 		Cube( Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass );
 		virtual ~Cube( );
 
-		void rotate( );
+		void rotateLeft( );
+		void rotateRight( );
 		void move( Ogre::Vector3 position );
 		void selectCube();
 		void releaseCube();

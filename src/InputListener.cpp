@@ -102,7 +102,7 @@ bool llm::InputListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButton
 	Ogre::Ray mouseRay = app->game()->camera()->getCameraToViewportRay( e.state.X.abs / float(e.state.width ), e.state.Y.abs / float( e.state.height ) );
  	m_pRaySceneQuery->setRay( mouseRay );
 
-	if( llm::Application::getInstance()->inGame() ){
+	if( app->inGame() ){
 		if( id == OIS::MB_Left ) {
 			app->game()->cubeHit( e.state.X.abs, e.state.Y.abs );
 		} 
@@ -123,7 +123,8 @@ bool llm::InputListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButto
   
 bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 	std::cout << "keyPressed" << std::endl;
-	if(llm::Application::getInstance()->inGame()) {
+	llm::Application* app = llm::Application::getInstance();
+	if(app->inGame()) {
 		switch(e.key) {
 			case OIS::KC_ESCAPE:
 				llm::Application::getInstance()->pause();
@@ -139,6 +140,14 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 				break;
 			case OIS::KC_D:
 				m_mouvement.x += 1;
+				break;
+			case OIS::KC_Q:
+				if( app->game()->cubeSelected() != -1 )
+					app->game()->level()->cubes()[app->game()->cubeSelected()]->rotateLeft();
+				break;
+			case OIS::KC_E:
+				if( app->game()->cubeSelected() != -1 )
+					app->game()->level()->cubes()[app->game()->cubeSelected()]->rotateRight();
 				break;
 			case OIS::KC_LSHIFT:
 				m_vitesse *= 2;

@@ -40,6 +40,7 @@ namespace llm{
 		inline int cubeSelected() {
 			return m_indiceCubeSelected;
 		}
+		
 		inline void cubeSelected(int indice) {
 			m_indiceCubeSelected = indice;
 		}
