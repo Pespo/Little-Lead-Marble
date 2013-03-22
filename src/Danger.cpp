@@ -6,8 +6,8 @@ llm::Danger::Danger( const Ogre::String& name, const Ogre::String& mesh, Ogre::V
 }
 
 //Constructor called in DotSceneLoader
-llm::Danger::Danger(Ogre::SceneNode* sNode, Ogre::Entity* ent) : 
-Object(sNode, ent) {
+llm::Danger::Danger(Ogre::SceneNode* sNode,  Ogre::Vector3& dim, Ogre::Entity* ent, float mass) : 
+Object(sNode, dim, ent, mass) {
 
 }
 

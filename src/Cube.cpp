@@ -15,8 +15,8 @@ llm::Cube::Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vecto
 }
 
 //Constructor called in DotSceneLoader
-llm::Cube::Cube(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass) : 
-Object(sNode, ent, mass) {
+llm::Cube::Cube(Ogre::SceneNode* sNode,Ogre::Vector3& dim, Ogre::Entity* ent, float mass) : 
+Object(sNode, dim, ent, mass) {
 
 }
 

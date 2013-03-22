@@ -3,7 +3,7 @@
 llm::Player::Player( ) 
 {
 	m_pMagnet = NULL;
-	m_pStartingPosition = Ogre::Vector3(0.0); //Default position (0,0,0);
+	m_startingPosition = Ogre::Vector3(0.0); //Default position (0,0,0);
 	
 }
 

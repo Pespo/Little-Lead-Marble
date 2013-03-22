@@ -46,8 +46,8 @@ Asset(name, mesh, halfdim) {
 }
 
 //Constructor called in DotSceneLoader
-llm::Object::Object(Ogre::SceneNode* sNode, Ogre::Entity* ent, float mass) : 
-Asset(sNode, ent){
+llm::Object::Object(Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent,  float mass) : 
+Asset(sNode, dim, ent){
 	m_pWorld = llm::Application::getInstance()->game()->world();
 
     size_t vertex_count, index_count;

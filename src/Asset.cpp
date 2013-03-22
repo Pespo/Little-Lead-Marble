@@ -11,10 +11,11 @@ llm::Asset::Asset( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vec
     m_pNode->scale(m_pHalfdim);
 }
 
-llm::Asset::Asset( Ogre::SceneNode* sNode, Ogre::Entity* ent) {
+llm::Asset::Asset( Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent) {
     m_pNode = sNode;
-	if(ent) m_pEntity = ent;
-	if(static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0))) m_pEntity = static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0));
+	m_pEntity = ent;
+	m_pHalfdim = dim;
+	//if(static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0))) m_pEntity = static_cast<Ogre::Entity*>(m_pNode->getAttachedObject(0));
 }
  
 llm::Asset::~Asset( ) {

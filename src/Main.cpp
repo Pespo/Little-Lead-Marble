@@ -1,5 +1,7 @@
 #include "Application.h"
 #include <iostream>
+#include "alut.h"
+
 
 using namespace std;
 
@@ -42,7 +44,7 @@ int main(int argc, char *argv[]) {
 		#endif
 
         execution( );
-
+		
 		return 0;
     }
  
