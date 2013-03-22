@@ -12,7 +12,7 @@ namespace llm {
 	class Asset {
 
 	protected:
-		Ogre::SceneManager* m_pSceneManager;
+		//Ogre::SceneManager* m_pSceneManager;
 		Ogre::Entity* m_pEntity;
 		Ogre::SceneNode* m_pNode;
 		Ogre::Vector3 m_pHalfdim;
@@ -26,13 +26,12 @@ namespace llm {
 			return m_pNode;
 		}
 
-		inline void position(Ogre::Vector3 position){
-			m_pNode->setPosition(position);
-		}
+		inline void position(Ogre::Vector3 position) { m_pNode->setPosition(position); }
+		inline void position(int x, int y, int z) { position(Ogre::Vector3(x, y, z)); }
+		inline Ogre::Vector3 position() { return m_pNode->getPosition(); }
 
-		inline void position(int x, int y, int z) {
-			position(Ogre::Vector3(x, y, z));
-		}
+		inline void orientation(Ogre::Quaternion rotation) { m_pNode->setOrientation(rotation); }
+		inline Ogre::Quaternion orientation() { return m_pNode->getOrientation(); }
 
 		inline Ogre::Entity* entity() {
 			return m_pEntity;

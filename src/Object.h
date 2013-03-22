@@ -21,7 +21,6 @@ namespace llm {
 		btDynamicsWorld* m_pWorld;
 		btCollisionShape* m_pShape;
 		btRigidBody* m_pBody;
-		MotionState* m_pMotionState;
 
 	public:
 		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass );
@@ -35,10 +34,13 @@ namespace llm {
 		void position(Ogre::Vector3 position);
 		void position(btVector3& position);
 		void position(int x, int y, int z);
+		inline btVector3 position(){ return m_pBody->getCenterOfMassTransform().getOrigin(); }
+		//inline Ogre::Vector3 position() { return cvt(position()); }
 
-		inline btVector3 position(){
-			return m_pBody->getCenterOfMassTransform().getOrigin();
-		}
+		void orientation(Ogre::Quaternion orientation);
+		void orientation(btQuaternion& orientation);
+		inline btQuaternion orientation(){ return m_pBody->getCenterOfMassTransform().getRotation(); }
+
         
 		void getMeshInformation( Ogre::MeshPtr mesh, size_t &vertex_count, Ogre::Vector3* &vertices,
 			size_t &index_count, unsigned* &indices,

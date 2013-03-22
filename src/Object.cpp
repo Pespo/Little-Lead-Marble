@@ -12,6 +12,14 @@ inline Ogre::Vector3 cvt(const btVector3 &V){
 	return Ogre::Vector3(V.getX(), V.getY(), V.getZ());
 }
 
+inline btQuaternion cvt(const Ogre::Quaternion &V){
+	return btQuaternion(V.w, V.x, V.y, V.z );
+}
+
+inline Ogre::Quaternion cvt(const btQuaternion &V){
+    return Ogre::Quaternion(V.getW(), V.getX(), V.getY(), V.getZ());
+}
+
 llm::Object::Object(const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& halfdim, float mass) : 
 Asset(name, mesh, halfdim) {
 	m_pWorld = llm::Application::getInstance()->game()->world();
@@ -74,8 +82,8 @@ Asset(sNode, dim, ent){
     m_pShape = new btConvexHullShape(*btVertices,vertex_count);
     btVector3 inertia;
     m_pShape->calculateLocalInertia(mass, inertia);
-    m_pMotionState = new MotionState(m_pNode);
-    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, m_pMotionState, m_pShape, inertia);
+    MotionState* motionState = new MotionState(m_pNode);
+    btRigidBody::btRigidBodyConstructionInfo BodyCI(mass, motionState, m_pShape, inertia);
     m_pBody = new btRigidBody(BodyCI);
     // m_pBody->translate(cvt(sNode->getPosition()));
     // std::cout << "TEST --------" << sNode->getPosition() << std::endl;
@@ -110,13 +118,26 @@ void llm::Object::position(btVector3& position) {
     m_pBody->setCenterOfMassTransform(transform);
 
     node()->setPosition(cvt(position));
-
 }
 
 void llm::Object::position(int x, int y, int z) {
     position(btVector3(x, y, z));
 }
- 
+
+void llm::Object::orientation(Ogre::Quaternion orientation) {
+    btTransform transform = m_pBody->getCenterOfMassTransform();
+    transform.setRotation(cvt( orientation ));
+    m_pBody->setCenterOfMassTransform(transform);
+    node()->setOrientation(orientation);
+}
+
+void llm::Object::orientation(btQuaternion& orientation) {
+    btTransform transform = m_pBody->getCenterOfMassTransform();
+    transform.setRotation(orientation );
+    m_pBody->setCenterOfMassTransform(transform);
+    node()->setOrientation(cvt( orientation));
+}
+
 void llm::Object::getMeshInformation(Ogre::MeshPtr mesh,size_t &vertex_count,Ogre::Vector3* &vertices,
     size_t &index_count, unsigned* &indices, const Ogre::Vector3 &scale, 
     const Ogre::Vector3 &position,
