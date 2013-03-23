@@ -7,10 +7,10 @@ llm::Danger::Danger( const Ogre::String& name, const Ogre::String& mesh, Ogre::V
 
 
 
-llm::Danger::~Danger( ) {
+llm::Danger::~Danger() {
 
 }
 
-void llm::Danger::onCollision( ) {
+void llm::Danger::onCollision() {
 	//TODO: restart level
 }

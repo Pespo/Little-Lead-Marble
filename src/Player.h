@@ -3,65 +3,46 @@
 #define PLAYER_H
 
 #include "Magnet.h"
+#include "Singleton.h"
+
+enum Direction { L, R, NONE };
 
 namespace llm {
-	class Player {
-	private:
-		Magnet* m_pMagnet;
+	class Player : public Singleton<Player>{	
+
+		friend class Singleton<Player>;	
+
+		Player();
+		~Player();
+
+		Magnet m_pMagnet;
 		Ogre::Vector3 m_pStartingPosition;
+		btVector3 m_vitesse;
+		Direction m_direction;
 
 	public:
-		Player( );
-		Player( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass, bool north) ;
-		Player( btVector3& startPosition );
-		~Player( );
+		static const float step;
+		static const float vitMax;
 
-		void goLeft( );
-		void goRight( );
+		void init( btVector3& startingPosition, Ogre::Vector3 scale = Ogre::Vector3( 1., 1., 1.), int mass = 20, bool isNorth = false);
+		void init( Ogre::Vector3 startingPosition, Ogre::Vector3 scale = Ogre::Vector3( 1., 1., 1.), int mass = 20, bool isNorth = false);
+		void move();
 
-		inline Magnet* magnet( ) {
-			return m_pMagnet;
-		}
+		inline Direction direction() { return m_direction; }
+		inline void direction(Direction direction) { m_direction = direction; }
 
-		inline void magnet( Magnet* pM ) {
-			m_pMagnet = pM;
-		}
+		inline void vitesse( float vitesse ) { m_vitesse = btVector3( 0., 0., vitesse ); }
+		inline float vitesse() { return m_vitesse.getZ(); }
 
-		/*inline btVector3* position() {
-			return m_pMagnet->
-		}*/
+		inline void switchPole() { m_pMagnet.isNorth( !( m_pMagnet.isNorth() ) ); }
+		inline void isNorth() { m_pMagnet.isNorth(); }
 
-		inline void switchPole( ) {
-			m_pMagnet->setIsNorth( !( m_pMagnet->isNorth() ) );
-		}
+		inline btVector3& position() { return m_pMagnet.position(); }
+		inline void position( btVector3& newPosition) { m_pMagnet.position(newPosition); }
 
-		//set the player's current position 
-		// inline void setPosition( Ogre::Vector3 &v ) {
-		// 	if(m_pMagnet->node())
-		// 		m_pMagnet->node()->setPosition(v);
-		// }
-
-
-		// //return the player's current position (i.e the ball magnet's node position)
-		// inline Ogre::Vector3 getPosition( ) {
-		// 	return m_pMagnet->node()->getPosition();
-		// }
-
-
-		//set the player's starting position (one for each level)
-		inline void setStartingPosition( Ogre::Vector3 v ) {
-			m_pStartingPosition = v;
-		}
-
-		//set the player's starting position (one for each level)
-		inline Ogre::Vector3 getStartingPosition() {
-			return m_pStartingPosition;
-		}
-
-		//reset position
-		inline void resetPosition() {
-			m_pMagnet->node()->setPosition(m_pStartingPosition);
-		}
+		inline void startingPosition( Ogre::Vector3 startingPosition ) { m_pStartingPosition = startingPosition; }
+		inline Ogre::Vector3 startingPosition() { return m_pStartingPosition; }
+		inline void resetPosition() { m_pMagnet.node()->setPosition(m_pStartingPosition); }
 	};
 }
 

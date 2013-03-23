@@ -61,6 +61,7 @@ add_executable( "${project_description}" ${PLATFORM_SPECIFIC_CONTROL}
 	"src/Player.cpp"
 	"src/Player.h"
 	"src/rapidxml.hpp"
+	"src/Tools.h"
 	"src/Singleton.h"
 	"src/main.cpp"
 ) 
@@ -69,4 +70,8 @@ target_link_libraries("${project_description}" ${OGRE_LIBRARIES} ${OIS_LIBRARIES
 if( MSVC )
 	# Deactivate warning C4251
 	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4275" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4193" )
+	set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4305" )
 endif( )

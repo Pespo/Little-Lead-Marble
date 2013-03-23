@@ -1,28 +1,23 @@
-#include <LinearMath/btVector3.h>
-
+#include "Tools.h"
 #include "Cube.h"
+
+#include <LinearMath/btVector3.h>
 
 #ifndef M_PI
    #define M_PI 3.14159265358979323846
 #endif
 
-inline btVector3 cvt( const Ogre::Vector3 &V ) {
-    return btVector3( V.x, V.y, V.z );
-}
-
 llm::Cube::Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass ) :
  Object( name, mesh, dim, mass ), m_bIsGhost( false ) { }
 
 
-llm::Cube::~Cube( ) {
+llm::Cube::~Cube() { }
 
-}
-
-void llm::Cube::onCollision( ) {
+void llm::Cube::onCollision() {
 	//Keep that empty
 }
 
-void llm::Cube::rotateLeft( ) {
+void llm::Cube::rotateLeft() {
 	btTransform transformation;
 	transformation.setIdentity();
 	btQuaternion rotation;
@@ -30,10 +25,10 @@ void llm::Cube::rotateLeft( ) {
 	transformation.setRotation(rotation);
 	btTransform actualTransformation = body()->getCenterOfMassTransform();
 	transformation *= actualTransformation;
-	body()->setCenterOfMassTransform(transformation);
+	body()->setCenterOfMassTransform( transformation);
 }
 
-void llm::Cube::rotateRight( ) {
+void llm::Cube::rotateRight() {
 	btTransform transformation;
 	transformation.setIdentity();
 	btQuaternion rotation;
@@ -48,13 +43,12 @@ void llm::Cube::rotateRight( ) {
 	std::cout << transformation.getRotation() << std::endl;
 
 	body()->setCenterOfMassTransform(transformation);
-
 }
 
 void llm::Cube::move( Ogre::Vector3 position ) {
 	//Sets the physical position
 	btTransform transform = body()->getCenterOfMassTransform();
-	btVector3 btPosition = cvt( position );
+	btVector3 btPosition = convert( position );
 	transform.setOrigin( btPosition );
 	body()->setCenterOfMassTransform(transform);
 

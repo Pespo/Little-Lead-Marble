@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "InputListener.h"
 
-llm::Application::Application( ) : m_pRoot(0) {
+llm::Application::Application() : m_pRoot(0) {
 
 	//Définition du root(fichier de plugins à charger, fichier de configuration d'Ogre, fichier de log).
 	m_pRoot = new Ogre::Root("../res/plugins.cfg", "../res/resources.cfg", "/Ogre.log");
@@ -21,7 +21,7 @@ llm::Application::Application( ) : m_pRoot(0) {
     m_bInGame = false;
 }
 
-llm::Application::~Application( ) {
+llm::Application::~Application() {
 	CEGUI::OgreRenderer::destroySystem();
 	delete m_pInputListener;
 	delete m_pGame;
@@ -29,27 +29,27 @@ llm::Application::~Application( ) {
 	delete m_pRoot;
 }
 
-bool llm::Application::start( ) {	
+bool llm::Application::start() {	
 
 	m_pGame = new Game();
 	m_pMenu = new Menu();
-
-	//initialisation frame listener
 	m_pInputListener = new InputListener( m_pWindow );
+
     m_pRoot->addFrameListener(m_pInputListener);
 
 	setupViewport(m_pGame->sceneManager(), Ogre::String("Camera"));
+	
 	m_pGame->loadLevel();
 
 	while(true)	{
-		Ogre::WindowEventUtilities::messagePump( );
+		Ogre::WindowEventUtilities::messagePump();
 		if(m_bInGame)
 			m_pGame->loop();
 
-		if(m_pWindow->isClosed( ))
+		if(m_pWindow->isClosed())
 			return false; 
 
-		if(!m_pRoot->renderOneFrame( ))
+		if(!m_pRoot->renderOneFrame())
 			return false;
 	}
 
@@ -59,21 +59,21 @@ bool llm::Application::start( ) {
 void llm::Application::loadRessource() {
 	Ogre::ConfigFile configFile;
 	configFile.load("../res/resources.cfg"); //Permet de charger les ressources
-	Ogre::ConfigFile::SectionIterator seci = configFile.getSectionIterator( ); //iterteur qui va permettre de parcourir le fichier ressource.cfg
+	Ogre::ConfigFile::SectionIterator seci = configFile.getSectionIterator(); //iterteur qui va permettre de parcourir le fichier ressource.cfg
 	Ogre::String secName, typeName, archName;
-	while (seci.hasMoreElements( )) {
-		secName = seci.peekNextKey( );
-		Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext( );
+	while (seci.hasMoreElements()) {
+		secName = seci.peekNextKey();
+		Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
 		Ogre::ConfigFile::SettingsMultiMap::iterator i;
-		for (i = settings->begin( ); i != settings->end( ); ++i) {
+		for (i = settings->begin(); i != settings->end(); ++i) {
 			typeName = i->first;
 			archName = i->second;
-			Ogre::ResourceGroupManager::getSingleton( ).addResourceLocation(archName, typeName, secName);
+			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
 		}
 	}
 
-	Ogre::TextureManager::getSingleton( ).setDefaultNumMipmaps(5);
-	Ogre::ResourceGroupManager::getSingleton( ).initialiseAllResourceGroups( );
+	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
 void llm::Application::setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName) {

@@ -20,9 +20,9 @@ namespace llm {
 		*/
 		MotionState(Ogre::SceneNode* node) {
 			m_pNode = node;
-			m_transform.setIdentity( );
+			m_transform.setIdentity();
 		}
-		virtual ~MotionState( ) { }
+		virtual ~MotionState() { }
 
 		/**
 		* getWorldTransform
@@ -42,13 +42,13 @@ namespace llm {
 		*/
 		virtual void setWorldTransform(const btTransform &worldTrans) {
 			m_transform = worldTrans;
-			btQuaternion ori = m_transform.getRotation( );
-			btVector3 pos = m_transform.getOrigin( );
-			m_pNode->setPosition(Ogre::Vector3(pos.x( ),pos.y( ),pos.z( )));
-			m_pNode->setOrientation(Ogre::Quaternion(ori.w( ),ori.x( ),ori.y( ),ori.z( )));
+			btQuaternion ori = m_transform.getRotation();
+			btVector3 pos = m_transform.getOrigin();
+			m_pNode->setPosition(Ogre::Vector3(pos.x(),pos.y(),pos.z()));
+			m_pNode->setOrientation(Ogre::Quaternion(ori.w(),ori.x(),ori.y(),ori.z()));
 		}
 
-		btTransform transform( ) {
+		btTransform transform() {
 			return m_transform;
 		}
 

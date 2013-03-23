@@ -2,11 +2,7 @@
 #include "Application.h"
 #include "DotSceneLoader.h"
 #include "Magnet.h"
-
-
-inline btVector3 cvt(const Ogre::Vector3 &V){
-    return btVector3(V.x, V.y, V.z);
-}
+#include "Tools.h"
 
 llm::Game::Game() : m_indiceCubeSelected(-1) {
 
@@ -23,22 +19,21 @@ llm::Game::Game() : m_indiceCubeSelected(-1) {
 	m_pCamera->setNearClipDistance(5);
 
 	//collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
-	m_pCollisionConfiguration = new btDefaultCollisionConfiguration( );
+	m_pCollisionConfiguration = new btDefaultCollisionConfiguration();
 	//use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
 	m_pDispatcher = new btCollisionDispatcher(m_pCollisionConfiguration);
 	//btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
-	m_pBroadphase = new btDbvtBroadphase( );
+	m_pBroadphase = new btDbvtBroadphase();
     //the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)    
     m_pSolver = new btSequentialImpulseConstraintSolver;
  	//initialize world with previous configuration
-    m_pWorld = new btSimpleDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
+    m_pWorld = new btDiscreteDynamicsWorld(m_pDispatcher, m_pBroadphase, m_pSolver, m_pCollisionConfiguration);
     m_pWorld->setGravity(btVector3(0,-10,0));
-
-	m_pPlayer = new Player();
 }
 
 llm::Game::~Game() {
-	delete m_pPlayer;
+	//delete m_pPlayer;
+	m_pPlayer->kill();
 	delete m_pLevel;
 	delete m_pWorld;
 	delete m_pSolver;
@@ -55,28 +50,31 @@ void llm::Game::loadLevel() {
     light0->setType(Ogre::Light::LT_SPOTLIGHT);
     light0->setDirection(0,-1,0);
     light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
+
  	m_pLevel = new Level();
     m_pLevel->load();
-	// --  /!\ Only decomment this if your folder with level_2 XML and ressources is ready
-	//loadPlayer(); //load Player for the level's starting 
+	loadPlayer(); //load Player for the level's starting 
 }
 
 void llm::Game::loadPlayer() {
+	m_pPlayer = llm::Player::getInstance();
 	//to do  @ add parameters for dynamic construction
-	Magnet* bille = new Magnet("player", "bille", MARBLE, Ogre::Vector3(10., 10., 10.), 10, false, 50);
-	m_pPlayer->magnet(bille);
-	m_pPlayer->magnet()->body()->translate(cvt(m_pPlayer->getStartingPosition()));
-	//m_pCamera->setPosition(Ogre::Vector3(m_pPlayer->getStartingPosition().x, m_pPlayer->getStartingPosition().y, 10.));
-
+	//m_pPlayer->magnet()->entity()->setMaterialName("cube");
+	//m_pPlayer->magnet()->position(m_pLevel->startPosition());
+	//m_pPlayer->magnet()->body()->setFriction(200.);
+	//llm::Player::getInstance()->init(m_pLevel->startPosition());
+	//m_pCamera->setPosition(m_pLevel->startPosition().x, m_pLevel->startPosition().y, 50.);
 }
 
 void llm::Game::loop() {
+	m_pWorld->stepSimulation(1.f/60, 10);
     if( m_indiceCubeSelected != -1 ) {
     	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
-
-	m_pWorld->stepSimulation(1.f/60, 10);
+    m_pPlayer->move();
+   // m_pCamera->setPosition(m_pPlayer->position().getX(), m_pPlayer->position().getY()+5, 30);
+	
 }
 
 bool llm::Game::cubeHit( int x, int y ) {

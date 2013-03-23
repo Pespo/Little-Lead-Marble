@@ -11,9 +11,9 @@ namespace llm {
 
 	public:
 		End( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass=0 );
-		virtual ~End( );
+		virtual ~End();
 
-		virtual void onCollision( );
+		virtual void onCollision();
 	};
 }
 

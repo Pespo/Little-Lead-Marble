@@ -11,18 +11,18 @@ class Singleton {
 
 protected:
     // Constructeur/destructeur
-    Singleton( ) { }
-    ~Singleton( ) { }
+    Singleton() { }
+    ~Singleton() { }
 
 public:
   // Interface publique
-    static T *getInstance( ) {
+    static T *getInstance() {
         if (NULL == _singleton)
             _singleton = new T;
         return (static_cast<T*> (_singleton));
     }
 
-    static void kill( ){
+    static void kill(){
         if (NULL != _singleton) {
             delete _singleton;
             _singleton = NULL;

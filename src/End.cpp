@@ -6,10 +6,10 @@ llm::End::End( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3
 }
 
  
-llm::End::~End( ) {
+llm::End::~End() {
 
 }
 
-void llm::End::onCollision( ) {
+void llm::End::onCollision() {
 	//TODO: Level finished, load next level!
 }

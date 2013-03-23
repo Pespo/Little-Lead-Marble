@@ -30,7 +30,7 @@ void DotSceneLoader::loadScene(const Ogre::String &SceneName){
     rapidxml::xml_node<>* XMLRoot;
 
 	if(file){
-		std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>( ));
+		std::vector<char> buffer((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
 		buffer.push_back('\0');
 		//std::cout<<&buffer[0]<<std::endl; /*test the buffer */
 		XMLDoc.parse<0>(&buffer[0]); 
@@ -75,7 +75,7 @@ void DotSceneLoader::processBallStartPosition(rapidxml::xml_node<>* XMLNode)
 	pElement = XMLNode->first_node("position");
 	if(pElement)
 	//to do @ add test for player's existance
-	llm::Application::getInstance()->game()->player()->setStartingPosition(parseVector3(pElement));
+	llm::Application::getInstance()->game()->level()->setStartPosition(parseVector3(pElement));
 }
 
 
@@ -157,7 +157,7 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 		
 		else if (assetType.compare("object") == 0)
 		{
-			llm::Object *pObject = new llm::Object(entityName, meshFileName, scale);
+			llm::Object *pObject = new llm::Object(entityName, meshFileName, scale, 0);
 			pObject->position(position);
 			pObject->orientation(rotation);
 			llm::Application::getInstance()->game()->level()->addObject(pObject);
@@ -165,7 +165,7 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 		
 		else if (assetType.compare("cube") == 0)
 		{
-			llm::Cube *pCube = new llm::Cube(entityName, meshFileName, scale);
+			llm::Cube *pCube = new llm::Cube(entityName, meshFileName, scale, 100);
 			pCube->position(position);
 			pCube->orientation(rotation);
 			llm::Application::getInstance()->game()->level()->addCube(pCube);

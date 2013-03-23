@@ -12,14 +12,14 @@ namespace llm {
 	private:
 		bool m_bIsGhost; // Useless? Level stocks the indice of the selected Cube (-1 if no Cube selected)
 
-		virtual void onCollision( );
+		virtual void onCollision();
 
 	public:
-		Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass=0 );
-		virtual ~Cube( );
+		Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass = 500 );
+		virtual ~Cube();
 
-		void rotateLeft( );
-		void rotateRight( );
+		void rotateLeft();
+		void rotateRight();
 		void move( Ogre::Vector3 position );
 		void selectCube();
 		void releaseCube();

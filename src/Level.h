@@ -29,8 +29,8 @@ namespace llm {
 		bool m_bIsWon;
 
 	public:
-		Level( );
-		~Level( );
+		Level();
+		~Level();
 
 		bool loop();
 		bool load();
@@ -39,7 +39,7 @@ namespace llm {
 			return m_plane;
 		}
 
-		inline Ogre::Vector3 startPosition( ) {
+		inline Ogre::Vector3 startPosition() {
 			return m_startPosition;
 		}
 
@@ -47,7 +47,7 @@ namespace llm {
 			m_startPosition = sP;
 		}
 
-		inline std::vector<Asset*> statics( ) {
+		inline std::vector<Asset*> statics() {
 			return m_statics;
 		}
 
@@ -60,7 +60,7 @@ namespace llm {
 			m_statics.push_back(s);
 		}
 
-		inline std::vector<Object*> objects( ) {
+		inline std::vector<Object*> objects() {
 			return m_objects;
 		}
 
@@ -73,7 +73,7 @@ namespace llm {
 			m_objects.push_back(o);
 		}
 
-		inline std::vector<Cube*> cubes( ) {
+		inline std::vector<Cube*> cubes() {
 			return m_cubes;
 		}
 
@@ -87,7 +87,7 @@ namespace llm {
 		}
 
 	
-		inline std::vector<Magnet*> magnets( ) {
+		inline std::vector<Magnet*> magnets() {
 			return m_magnets;
 		}
 
@@ -100,7 +100,7 @@ namespace llm {
 			m_magnets.push_back(m);
 		}
 
-		inline std::vector<Danger*> dangers( ) {
+		inline std::vector<Danger*> dangers() {
 			return m_dangers;
 		}
 
@@ -113,7 +113,7 @@ namespace llm {
 			m_dangers.push_back(d);
 		}
 
-		inline End* end( ) {
+		inline End* end() {
 			return m_pEnd;
 		}
 
@@ -121,7 +121,7 @@ namespace llm {
 			m_pEnd = pE;
 		}
 
-		inline bool isMagnetized( ) {
+		inline bool isMagnetized() {
 			return m_bIsMagnetized;
 		}
 
@@ -129,7 +129,7 @@ namespace llm {
 			m_bIsMagnetized = bIM;
 		}
 
-		inline bool isEnded( ) {
+		inline bool isEnded() {
 			return m_bIsEnded;
 		}
 
@@ -137,7 +137,7 @@ namespace llm {
 			m_bIsEnded = bIE;
 		}
 
-		inline bool isWon( ) {
+		inline bool isWon() {
 			return m_bIsWon;
 		}
 
