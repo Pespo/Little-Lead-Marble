@@ -7,7 +7,7 @@ using namespace std;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 	#define WIN32_LEAN_AND_MEAN
 	#include "windows.h"
-#endif
+#endif	
 
 #ifdef _DEBUG
 	#define _CRTDBG_MAPALLOC
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 		#ifdef _DEBUG
 			_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 			_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
-			//_crtBreakAlloc = 106158;
+			//_crtBreakAlloc = 20103;
 		#endif
 
         execution( );
