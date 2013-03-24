@@ -3,7 +3,7 @@
 llm::Player::Player( ) 
 {
 	m_pMagnet = NULL;
-	m_pStartingPosition = Ogre::Vector3(0.0); //Default position (0,0,0);
+	m_startingPosition = Ogre::Vector3(0.0); //Default position (0,0,0);
 	
 }
 
@@ -17,13 +17,17 @@ llm::Player::~Player( ) {
 	if(m_pMagnet) delete m_pMagnet;
 }
 
+void llm::Player::addImpulse( btVector3& impulse ) {
+	m_pMagnet->body()->applyCentralImpulse(impulse);
+}
+
 
 void llm::Player::goLeft( ) {
-	m_pMagnet->body()->applyCentralImpulse(btVector3(-100., 0., 0.));
+	addImpulse(btVector3(-100., 0., 0.));
 	std::cout << " test L-------- " << std::endl;
 }
 
 void llm::Player::goRight( ) {
-	m_pMagnet->body()->applyTorqueImpulse(btVector3(0., 0., 1000.));
+	addImpulse(btVector3(0., 0., 100.));
 	std::cout << " test R-------- " << std::endl;
 }

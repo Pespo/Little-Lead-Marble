@@ -11,10 +11,9 @@ namespace llm {
 	class Magnet : public Object {
 
 	protected:
-
 		Orientation m_orientation;
 		bool m_bIsNorth;
-		int m_force;
+		float m_force;
 
 	public:
 
@@ -32,11 +31,11 @@ namespace llm {
 			m_bIsNorth = bIN;
 		}
 
-		inline int force( ) {
+		inline float force( ) {
 			return m_force;
 		}
 
-		inline void force( int force ) {
+		inline void force( float force ) {
 			m_force = force;
 		}
 	};

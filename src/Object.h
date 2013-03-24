@@ -24,7 +24,7 @@ namespace llm {
 
 	public:
 		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass =0 );
-		~Object(); 
+		~Object();
 
 		inline btRigidBody* body( ) {
     		return m_pBody;

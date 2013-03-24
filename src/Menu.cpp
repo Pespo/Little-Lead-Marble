@@ -40,21 +40,48 @@ llm::Menu::Menu() {
 
 	CEGUI::WindowManager& wmgr = CEGUI::WindowManager::getSingleton();
 	/******StartMenu*****/
-	CEGUI::Window *startMenu = wmgr.createWindow("DefaultWindow", "StartMenu/Sheet"); //conteneur
+    CEGUI::Window *startMenu = wmgr.createWindow("TaharezLook/StaticImage", "StartMenu/Sheet"); //conteneur
 	CEGUI::System::getSingleton().setGUISheet(startMenu);//Linkage du conteneur a CEGUI
 
-	CEGUI::Window *quit = wmgr.createWindow("TaharezLook/Button", "StartMenu/QuitButton"); //bouton
-	quit->setText("Quit");
-	quit->setSize(CEGUI::UVector2(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+
+    CEGUI::ImagesetManager::getSingleton().createFromImageFile("BackgroundImage","MenuBackground.tga");
+	//CEGUI::Window *startMenu = wmgr.createWindow("Taharez/StaticImage", "StartMenu/Background"); //conteneur
+	//CEGUI::System::getSingleton().setGUISheet(startMenu);//Linkage du conteneur a CEGUI
+    startMenu->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.0f, 0.0f), CEGUI::UDim( 0.0f, 0.0f ) ) );
+	startMenu->setSize( CEGUI::UVector2( CEGUI::UDim( 1.0f, 0.0f), CEGUI::UDim( 1.0f, 0.0f ) ) );
+	startMenu->setProperty( "Image", "set:BackgroundImage image:full_image" );
+
+    // BACKGROUND IMAGE
+    /*CEGUI::ImagesetManager::getSingleton().createFromImageFile("BackgroundImage","MenuBackground.tga");
+    CEGUI::Window *background = wmgr.createWindow("TaharezLook/StaticImage", "StartMenu/MenuBackground");
+    background->setPosition( CEGUI::UVector2( CEGUI::UDim( 0, 0 ), CEGUI::UDim( 0, 0 ) ) );
+    background->setSize(CEGUI::UVector2(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
+    startMenu->addChildWindow( background );*/
+	
+
+	// OPTIONS BUTTON
+	CEGUI::Window *options = wmgr.createWindow("TaharezLook/OptionsButton", "StartMenu/OptionsButton"); 
+	//quit->setText("Options");
+	options->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.2f, 0 ), CEGUI::UDim( 0.8f, 0 ) ) );
+	options->setSize(CEGUI::UVector2(CEGUI::UDim(0.18, 0), CEGUI::UDim(0.16, 0)));
+	startMenu->addChildWindow(options);//intégration du bouton dans le conteneur
+
+	// QUIT BUTTON
+	CEGUI::Window *quit = wmgr.createWindow("TaharezLook/QuitButton", "StartMenu/QuitButton"); 
+	//quit->setText("Quit");
+	quit->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.62f, 0 ), CEGUI::UDim( 0.8f, 0 ) ) );
+	quit->setSize(CEGUI::UVector2(CEGUI::UDim(0.18, 0), CEGUI::UDim(0.16, 0)));
 	startMenu->addChildWindow(quit);//intégration du bouton dans le conteneur
 
-	CEGUI::Window *start = wmgr.createWindow("TaharezLook/Button", "StartMenu/StartButton"); //bouton
-	start->setText("Start");
-	start->setPosition(CEGUI::UVector2( CEGUI::UDim( 0, 0 ), CEGUI::UDim( 0.06f, 0 ) ) );
-	start->setSize(CEGUI::UVector2(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
+	// START BUTTON
+	CEGUI::Window *start = wmgr.createWindow("TaharezLook/PlayButton", "StartMenu/StartButton"); //bouton
+	//start->setText("Start");
+	start->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.4f, 0 ), CEGUI::UDim( 0.75f, 0 ) ) );
+	start->setSize(CEGUI::UVector2(CEGUI::UDim(0.2, 0), CEGUI::UDim(0.19f, 0)));
 	startMenu->addChildWindow(start);//intégration du bouton dans le conteneur
 	
 	wmgr.getWindow("StartMenu/QuitButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::quit, app));//event du bouton
+	//wmgr.getWindow("StartMenu/OptionsButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::options, app));//event du bouton
 	wmgr.getWindow("StartMenu/StartButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::pause, app));//event du bouton
 }
 

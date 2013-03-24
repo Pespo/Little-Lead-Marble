@@ -8,7 +8,7 @@ namespace llm {
 	class Player {
 	private:
 		Magnet* m_pMagnet;
-		Ogre::Vector3 m_pStartingPosition;
+		Ogre::Vector3 m_startingPosition;
 
 	public:
 		Player( );
@@ -18,6 +18,7 @@ namespace llm {
 
 		void goLeft( );
 		void goRight( );
+		void addImpulse( btVector3& impulse );
 
 		inline Magnet* magnet( ) {
 			return m_pMagnet;
@@ -43,24 +44,24 @@ namespace llm {
 
 
 		// //return the player's current position (i.e the ball magnet's node position)
-		// inline Ogre::Vector3 getPosition( ) {
-		// 	return m_pMagnet->node()->getPosition();
-		// }
+		inline Ogre::Vector3 getPosition( ) {
+		 	return m_pMagnet->node()->getPosition();
+		}
 
 
 		//set the player's starting position (one for each level)
 		inline void setStartingPosition( Ogre::Vector3 v ) {
-			m_pStartingPosition = v;
+			m_startingPosition = v;
 		}
 
 		//set the player's starting position (one for each level)
 		inline Ogre::Vector3 getStartingPosition() {
-			return m_pStartingPosition;
+			return m_startingPosition;
 		}
 
 		//reset position
 		inline void resetPosition() {
-			m_pMagnet->node()->setPosition(m_pStartingPosition);
+			m_pMagnet->node()->setPosition(m_startingPosition);
 		}
 	};
 }

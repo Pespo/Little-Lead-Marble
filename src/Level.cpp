@@ -54,22 +54,21 @@ bool llm::Level::load() {
 	//Création du sol
 
 	Object* ground = new Object("ground", "cube.mesh", Ogre::Vector3(200,1,200), 0);
-	//ground->entity()->setMaterialName("ground");
+	ground->entity()->setMaterialName("ground");
 	m_objects.push_back(ground);
 
  	//Création des pinguins
-    for(int i=0; i<3; i++) {
+    for(int i=0; i<1; i++) {
 		//std::cout << "i " << i << std::endl;
-		Cube* cube = new Cube("cube" + Ogre::StringConverter::toString(i), "cube.mesh", Ogre::Vector3(10,10,10), 500);
-        //cube->entity()->setMaterialName("cube");
-        cube->position(btVector3(rand( )%20-10, rand( )%100+50, 0.));
+		Cube* cube = new Cube("cube" + Ogre::StringConverter::toString(i), "cube.mesh", Ogre::Vector3(10,10,10), 5);
+        cube->entity()->setMaterialName("cube");
+        cube->position(btVector3(10, 50, 0.));
        	m_cubes.push_back(cube);
     }
 
 	//Just to see the "ball player"
-
-	//llm::Application* app = llm::Application::getInstance();
-	/*Ogre::SceneNode *node = app->game()->sceneManager()->getRootSceneNode( )->createChildSceneNode("billeT_node");
+	/*llm::Application* app = llm::Application::getInstance();
+	Ogre::SceneNode *node = app->game()->sceneManager()->getRootSceneNode( )->createChildSceneNode("billeT_node");
 
 	Ogre::Entity *enti =  app->game()->sceneManager()->createEntity("billeT", "bille.mesh");
     node->attachObject(enti);

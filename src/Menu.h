@@ -15,13 +15,14 @@ namespace llm {
 		Menu();
 		~Menu();
 
-		void pauseMenu();
+		//void pauseMenu();
 		void startMenu(bool visible);
-		void levelMenu();
+		/*void levelMenu();
+		void myRoot(bool visible);
 		
 		inline Ogre::SceneManager* sceneManager(){
             return m_pSceneManager;
-        } 
+        } */
 	};
 }
 #endif
