@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+        <Property Name="UnifiedAreaRect" Value="{{0.00253905,0},{-0.00117769,0},{1.00254,0},{0.998822,0}}" />
+        <Window Type="LLM/StaticImage" Name="MenuBackground" >
+            <Property Name="Font" Value="Commonwealth-10" />
+            <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Window Type="LLM/Button" Name="playButton" >
+                <Property Name="UnifiedAreaRect" Value="{{0,497},{0,493},{0.623438,0},{0.891098,0}}" />
+                <Property Name="NormalImage" Value="set:llm image:playButtonNormal"/>
+                <Property Name="HoverImage" Value="set:llm image:playButtonHover"/>
+                <Property Name="PushedImage" Value="set:llm image:playButtonHover"/>
+            </Window>
+
+            <Window Type="LLM/Button" Name="quitButton" >
+                <Property Name="UnifiedAreaRect" Value="{{0.7,0},{0.78813,0},{0.933594,0},{0.889762,0}}" />
+                <Property Name="NormalImage" Value="set:llm image:quitButtonNormal"/>
+                <Property Name="HoverImage" Value="set:llm image:quitButtonHover"/>
+                <Property Name="PushedImage" Value="set:llm image:quitButtonHover"/>
+
+            </Window>
+            <Window Type="LLM/Button" Name="optionsButton" >
+                <Property Name="UnifiedAreaRect" Value="{{0.0757812,0},{0.790208,0},{0.310156,0},{0.894807,0}}" />
+                <Property Name="NormalImage" Value="set:llm image:optionsButtonNormal"/>
+                <Property Name="HoverImage" Value="set:llm image:optionsButtonHover"/>
+                <Property Name="PushedImage" Value="set:llm image:optionsButtonHover"/>
+
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>

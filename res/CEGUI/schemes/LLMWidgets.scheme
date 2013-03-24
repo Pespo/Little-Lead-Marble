@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<GUIScheme Name="LLMWidgets">
+	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+  <FalagardMapping WindowType="LLM/backgroundImage"      TargetType="CEGUI/DefaultWindow"  Renderer="Falagard/StaticImage"       LookNFeel="LLM/StaticImage" />
+  <FalagardMapping WindowType="LLM/quitButtonNormal" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="LLM/ImageButton" />
+  <FalagardMapping WindowType="LLM/playButtonNormal" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="LLM/ImageButton" />
+  <FalagardMapping WindowType="LLM/optionsButtonNormal" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="LLM/ImageButton" />
+  <!-- -->
+  <FalagardMapping WindowType="LLM/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="LLM/Button" />
+	<FalagardMapping WindowType="LLM/ImageButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="LLM/ImageButton" />
+	<FalagardMapping WindowType="LLM/FrameWindow"  TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow"  LookNFeel="LLM/FrameWindow" />
+	<FalagardMapping WindowType="LLM/Titlebar"     TargetType="CEGUI/Titlebar"    Renderer="Falagard/Titlebar"     LookNFeel="LLM/Titlebar" />
+	<FalagardMapping WindowType="LLM/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button" LookNFeel="LLM/Button" />
+	<FalagardMapping WindowType="LLM/AlternateProgressBar" TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="LLM/AltProgressBar" />
+	<FalagardMapping WindowType="LLM/StaticImage" TargetType="DefaultWindow" Renderer="Falagard/StaticImage" LookNFeel="LLM/StaticImage" />
+	<FalagardMapping WindowType="LLM/StaticText"  TargetType="DefaultWindow" Renderer="Falagard/StaticText"  LookNFeel="LLM/StaticText" />
+</GUIScheme>
