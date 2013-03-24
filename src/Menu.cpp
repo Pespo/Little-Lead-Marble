@@ -42,21 +42,10 @@ llm::Menu::Menu() {
 	/******StartMenu*****/
     CEGUI::Window *startMenu = wmgr.createWindow("TaharezLook/StaticImage", "StartMenu/Sheet"); //conteneur
 	CEGUI::System::getSingleton().setGUISheet(startMenu);//Linkage du conteneur a CEGUI
-
-
-    CEGUI::ImagesetManager::getSingleton().createFromImageFile("BackgroundImage","MenuBackground.tga");
-	//CEGUI::Window *startMenu = wmgr.createWindow("Taharez/StaticImage", "StartMenu/Background"); //conteneur
-	//CEGUI::System::getSingleton().setGUISheet(startMenu);//Linkage du conteneur a CEGUI
-    startMenu->setPosition( CEGUI::UVector2( CEGUI::UDim( 0.0f, 0.0f), CEGUI::UDim( 0.0f, 0.0f ) ) );
-	startMenu->setSize( CEGUI::UVector2( CEGUI::UDim( 1.0f, 0.0f), CEGUI::UDim( 1.0f, 0.0f ) ) );
-	startMenu->setProperty( "Image", "set:BackgroundImage image:full_image" );
-
-    // BACKGROUND IMAGE
-    /*CEGUI::ImagesetManager::getSingleton().createFromImageFile("BackgroundImage","MenuBackground.tga");
-    CEGUI::Window *background = wmgr.createWindow("TaharezLook/StaticImage", "StartMenu/MenuBackground");
-    background->setPosition( CEGUI::UVector2( CEGUI::UDim( 0, 0 ), CEGUI::UDim( 0, 0 ) ) );
-    background->setSize(CEGUI::UVector2(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
-    startMenu->addChildWindow( background );*/
+	CEGUI::ImagesetManager::getSingleton().createFromImageFile("BackgroundImage","MenuBackground.tga");
+    startMenu->setPosition( CEGUI::UVector2( CEGUI::UDim( 0, 0 ), CEGUI::UDim( 0, 0 ) ) );
+    startMenu->setSize(CEGUI::UVector2(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));   
+    startMenu->setProperty( "Image", "set:BackgroundImage image:full_image" );
 	
 
 	// OPTIONS BUTTON
