@@ -8,7 +8,7 @@
 #endif
 
 llm::Cube::Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass ) :
- Object( name, mesh, dim, mass ), m_bIsGhost( false ) { }
+ Object( name, mesh, dim, mass ), m_bIsGhost( false ) { body()->setActivationState(DISABLE_DEACTIVATION); }
 
 
 llm::Cube::~Cube() { }

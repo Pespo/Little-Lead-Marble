@@ -7,15 +7,13 @@
 llm::Game::Game() : m_indiceCubeSelected(-1) {
 
 	//Init game scene manager 
-	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager("DefaultSceneManager", "Level Scene Manager");
-	m_pSceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
-	m_pSceneManager->setShadowColour(Ogre::ColourValue(0.2, 0.2, 0.2));
-	m_pSceneManager->setAmbientLight(Ogre::ColourValue(0.6, 0.6, 0.6));
+	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager( "DefaultSceneManager", "Game" );
+	m_pSceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
+	m_pSceneManager->setShadowColour( Ogre::ColourValue( 0.2, 0.2, 0.2 ) );
+	m_pSceneManager->setAmbientLight( Ogre::ColourValue( 0.6, 0.6, 0.6 ) );
 
 	//Init camera
-	m_pCamera = m_pSceneManager->createCamera("Camera");
-	m_pCamera->setPosition(0,50,200);	
-    m_pCamera->lookAt(0,20,0);
+	m_pCamera = m_pSceneManager->createCamera( "Camera" );
 	m_pCamera->setNearClipDistance(5);
 
 	//collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
@@ -44,26 +42,18 @@ llm::Game::~Game() {
 
 void llm::Game::loadLevel() {
 
-	Ogre::Light* light0 = m_pSceneManager->createLight("light0");
-    light0->setPosition(Ogre::Vector3(0,200,0));
-    light0->setDiffuseColour(0.8,0.8,0.8);
-    light0->setType(Ogre::Light::LT_SPOTLIGHT);
-    light0->setDirection(0,-1,0);
-    light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
+	// Ogre::Light* light0 = m_pSceneManager->createLight("Light0");
+    // light0->setPosition(Ogre::Vector3(0,200,0));
+    // light0->setDiffuseColour(0.8,0.8,0.8);
+    // light0->setType(Ogre::Light::LT_SPOTLIGHT);
+    // light0->setDirection(0,-1,0);
+    // light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
 
  	m_pLevel = new Level();
     m_pLevel->load();
-	loadPlayer(); //load Player for the level's starting 
-}
-
-void llm::Game::loadPlayer() {
-	m_pPlayer = llm::Player::getInstance();
-	//to do  @ add parameters for dynamic construction
-	//m_pPlayer->magnet()->entity()->setMaterialName("cube");
-	//m_pPlayer->magnet()->position(m_pLevel->startPosition());
-	//m_pPlayer->magnet()->body()->setFriction(200.);
-	//llm::Player::getInstance()->init(m_pLevel->startPosition());
-	//m_pCamera->setPosition(m_pLevel->startPosition().x, m_pLevel->startPosition().y, 50.);
+	m_pPlayer = llm::Player::getInstance()->init( m_pLevel->startingPosition() );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
+    m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
 }
 
 void llm::Game::loop() {
@@ -73,8 +63,8 @@ void llm::Game::loop() {
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
     m_pPlayer->move();
-   // m_pCamera->setPosition(m_pPlayer->position().getX(), m_pPlayer->position().getY()+5, 30);
-	
+   	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 20 );
+   	m_pCamera->lookAt( m_pPlayer->position().getX(), m_pPlayer->position().getY(), 0 );	
 }
 
 bool llm::Game::cubeHit( int x, int y ) {
