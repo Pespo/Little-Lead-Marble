@@ -18,8 +18,8 @@ namespace llm{
 
 		friend class Singleton<Application>;
 
-		Application( );
-        ~Application( );
+		Application();
+        ~Application();
 
         //Variable ogre3d
         Ogre::Root *m_pRoot;
@@ -37,7 +37,7 @@ namespace llm{
         void llm::Application::loadRessource();
 
     public:
-        bool start( );
+        bool start();
 
         void setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName);
 

@@ -18,26 +18,14 @@ namespace llm {
 	public:
 
 		Magnet( const Ogre::String& name, const Ogre::String& mesh, Orientation orientation, Ogre::Vector3& dim = Ogre::Vector3(1., 1., 1.), float mass = 0, bool north = false, int force = 1);
+		~Magnet();
 
-		virtual ~Magnet( );
+		virtual void onCollision();
 
-		virtual void onCollision( );
-
-		inline bool isNorth( ) {
-			return m_bIsNorth;
-		}
-
-		inline void setIsNorth( bool bIN ) {
-			m_bIsNorth = bIN;
-		}
-
-		inline float force( ) {
-			return m_force;
-		}
-
-		inline void force( float force ) {
-			m_force = force;
-		}
+		inline bool isNorth() { return m_bIsNorth; }
+		inline void isNorth( bool bIN ) { m_bIsNorth = bIN; }
+		inline int force() { return m_force; }
+		inline void force( int force ) { m_force = force; }
 	};
 }
 

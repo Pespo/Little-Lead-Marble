@@ -38,7 +38,7 @@ namespace llm {
 		* @param [sceneManager] : [Pointer to a scene manager]
 		*/
 		InputListener( Ogre::RenderWindow *window );
-		~InputListener( );
+		~InputListener();
 	
 		/**
 		* frameRenderingQueued

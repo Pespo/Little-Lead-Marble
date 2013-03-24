@@ -20,7 +20,7 @@ namespace llm{
         btDefaultCollisionConfiguration* m_pCollisionConfiguration;
         btCollisionDispatcher* m_pDispatcher;
         btSequentialImpulseConstraintSolver* m_pSolver;
-        btSimpleDynamicsWorld* m_pWorld;
+        btDiscreteDynamicsWorld* m_pWorld;
 
 		llm::Level* m_pLevel;
 		llm::Player* m_pPlayer;
@@ -48,7 +48,7 @@ namespace llm{
 		inline Ogre::SceneManager* sceneManager(){
             return m_pSceneManager;
         } 
-        inline btSimpleDynamicsWorld* world(){
+        inline btDiscreteDynamicsWorld* world(){
             return m_pWorld;
         } 
         inline Ogre::Camera* camera(){

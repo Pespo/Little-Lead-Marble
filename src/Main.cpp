@@ -15,16 +15,16 @@ using namespace std;
 	#include <crtdbg.h>
 #endif    // DEBUG
 
-void execution( ) {
+void execution() {
     try {
             llm::Application* app = llm::Application::getInstance();
-            app->start( );
-            app->kill( );
+            app->start();
+            app->kill();
         } catch( Ogre::Exception& e ) {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-    MessageBoxA( NULL, e.getFullDescription( ).c_str( ), "An exception has occured!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
+    MessageBoxA( NULL, e.getFullDescription().c_str(), "An exception has occured!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
 #else
-    std::cerr << "An exception has occured: " << e.getFullDescription( ).c_str( ) << std::endl;
+    std::cerr << "An exception has occured: " << e.getFullDescription().c_str() << std::endl;
 #endif
         
         }
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
 			//_crtBreakAlloc = 20103;
 		#endif
 
-        execution( );
+        execution();
 		
 		return 0;
     }

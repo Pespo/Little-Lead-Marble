@@ -32,16 +32,15 @@ namespace llm {
 		PointRef nearestMagnetPoint( const btVector3& marble, btConvexHullShape* shape );
 		btVector3 ortho( const btVector3& marble, const btVector3& point, const btVector3& point2 );
 		btVector3 getNormal( const btVector3& magnetVector );
-		
 
 	public:
-		Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass=0 );
-		virtual ~Cube( );
+		Cube( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass = 500 );
+		virtual ~Cube();
 
 		void rotateLeft();
 		void rotateRight();
 		void move( Ogre::Vector3 position );
-		btVector3 getMagneticForce( btVector3& point );
+		btVector3 getMagneticForce( const btVector3& point );
 	};
 }
 

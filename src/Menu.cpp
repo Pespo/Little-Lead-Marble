@@ -24,7 +24,7 @@ llm::Menu::Menu() {
 	rgm.addResourceLocation( "../res/CEGUI/layouts/", "FileSystem", "Layouts");
 	rgm.addResourceLocation( "../res/CEGUI/looknfeel/", "FileSystem", "LookNFeel");
  
-	rgm.initialiseAllResourceGroups( );
+	rgm.initialiseAllResourceGroups();
 	
  	//Linkage des ressources avec CEGUI
     CEGUI::Imageset::setDefaultResourceGroup("Imagesets");

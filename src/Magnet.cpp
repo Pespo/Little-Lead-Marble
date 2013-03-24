@@ -4,10 +4,10 @@ llm::Magnet::Magnet( const Ogre::String& name, const Ogre::String& mesh, Orienta
  Object( name, mesh, dim, mass ), m_orientation(orientation), m_bIsNorth(north), m_force(north ? -1 * force : force) {} 
 
 
-llm::Magnet::~Magnet( ) {
+llm::Magnet::~Magnet() {
 
 }
 
-void llm::Magnet::onCollision( ) {
+void llm::Magnet::onCollision() {
 	//Keep that empty
 }

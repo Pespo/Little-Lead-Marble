@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "InputListener.h"
+#include "Player.h"
 #include <CEGUI.h>
 #include <string>
 
@@ -25,20 +26,20 @@ llm::InputListener::InputListener(Ogre::RenderWindow *window) {
 	m_pKeyboard->setEventCallback(this);
 }
 
-llm::InputListener::~InputListener( ){
+llm::InputListener::~InputListener(){
 	Ogre::WindowEventUtilities::removeWindowEventListener(llm::Application::getInstance()->window(), this);
 	windowClosed();
 }
 
 bool llm::InputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 //	std::cout << "Frame Rendering Queued" << std::endl;
-	if(llm::Application::getInstance()->window()->isClosed( ))
+	if(llm::Application::getInstance()->window()->isClosed())
 		return false;
 
 	if(m_pMouse)
-        m_pMouse->capture( );
+        m_pMouse->capture();
     if(m_pKeyboard)
-        m_pKeyboard->capture( );
+        m_pKeyboard->capture();
  
     Ogre::Vector3 deplacement = Ogre::Vector3::ZERO;
     deplacement = m_mouvement * m_vitesse * evt.timeSinceLastFrame;
@@ -48,7 +49,7 @@ bool llm::InputListener::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 }
 
 void llm::InputListener::startOIS( Ogre::RenderWindow *window ) {
-	Ogre::LogManager::getSingletonPtr( )->logMessage("*** Initializing OIS ***");
+	Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
 
 	OIS::ParamList pl;
 	size_t windowHnd = 0;
@@ -56,7 +57,7 @@ void llm::InputListener::startOIS( Ogre::RenderWindow *window ) {
 	  
 	window->getCustomAttribute("WINDOW", &windowHnd);
 	windowHndStr << windowHnd;
-	pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str( )));
+	pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
 	m_pInputManager = OIS::InputManager::createInputSystem( pl );
 
@@ -69,7 +70,7 @@ void llm::InputListener::windowResized(Ogre::RenderWindow* window) {
     int left, top;
     window->getMetrics(width, height, depth, left, top);
   
-    const OIS::MouseState &ms = m_pMouse->getMouseState( );
+    const OIS::MouseState &ms = m_pMouse->getMouseState();
     ms.width = width;
     ms.height = height;
 }
@@ -130,17 +131,27 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 				llm::Application::getInstance()->pause();
 				break;
 			case OIS::KC_W:
-				m_mouvement.y += 1;
+				m_mouvement.z -= 1;
 				break;
 			case OIS::KC_S:
-				m_mouvement.y -= 1;
+				m_mouvement.z += 1;
 				break;
 			case OIS::KC_A:
-				//llm::Application::getInstance()->game()->player()->goLeft();
-				m_mouvement.x -= 1;
+				llm::Application::getInstance()->game()->player()->direction(L);
 				break;
 			case OIS::KC_D:
-				//llm::Application::getInstance()->game()->player()->goRight();
+				llm::Application::getInstance()->game()->player()->direction(R);
+				break;
+			case OIS::KC_UP:
+				m_mouvement.y += 1;
+				break;
+			case OIS::KC_DOWN:
+				m_mouvement.y -= 1;
+				break;
+			case OIS::KC_LEFT:
+				m_mouvement.x -= 1;
+				break;
+			case OIS::KC_RIGHT:
 				m_mouvement.x += 1;
 				break;
 			case OIS::KC_Q:
@@ -167,15 +178,29 @@ bool llm::InputListener::keyReleased(const OIS::KeyEvent &e) {
 	if(llm::Application::getInstance()->inGame()) {
 		switch(e.key) {
 			case OIS::KC_W:
-				m_mouvement.y -= 1;
+				m_mouvement.z += 1;
 				break;
 			case OIS::KC_S:
-				m_mouvement.y += 1;
+				m_mouvement.z -= 1;
 				break;
 			case OIS::KC_A:
-				m_mouvement.x += 1;
+				llm::Application::getInstance()->game()->player()->direction(llm::Application::getInstance()->game()->player()->direction() == L ? NONE :llm::Application::getInstance()->game()->player()->direction() );
+				//m_mouvement.y += 1;
 				break;
 			case OIS::KC_D:
+				llm::Application::getInstance()->game()->player()->direction(llm::Application::getInstance()->game()->player()->direction() == R ? NONE :llm::Application::getInstance()->game()->player()->direction() );
+				//m_mouvement.y -= 1;
+				break;
+			case OIS::KC_UP:
+				m_mouvement.y -= 1;
+				break;
+			case OIS::KC_DOWN:
+				m_mouvement.y += 1;
+				break;
+			case OIS::KC_LEFT:
+				m_mouvement.x += 1;
+				break;
+			case OIS::KC_RIGHT:
 				m_mouvement.x -= 1;
 				break;
 			case OIS::KC_LSHIFT:
@@ -188,7 +213,7 @@ bool llm::InputListener::keyReleased(const OIS::KeyEvent &e) {
     return true;
 }
 
-void llm::InputListener::quit( ) {
+void llm::InputListener::quit() {
 	m_bContinue = false;
 }
 
@@ -213,5 +238,7 @@ CEGUI::Key::Scan llm::InputListener::convertKey(OIS::KeyEvent e) {
 	case OIS::KC_ESCAPE:
 		quit();
 		return CEGUI::Key::Scan::Escape;
+	default:
+		return CEGUI::Key::Scan::A;
 	}
 }
