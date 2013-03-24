@@ -63,26 +63,35 @@ void llm::Game::loadLevel() {
 void llm::Game::loop() {
 	m_pWorld->stepSimulation(1.f/60, 10);
 
-	int size = level()->cubes().size();
+	btVector3 magnetImpulse(0, 0, 0);
 
-	/*if( level()->cubes().size() != 0 ) {
+	if( level()->magnets().size() != 0 ) {
+	    for( int i = 0 ; i < m_pLevel->magnets().size() ; ++i ) {
+	    	if(m_pPlayer->isNorth())
+	    		magnetImpulse += m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
+	    	else
+	    		magnetImpulse -= m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
+	    }
+	    m_pPlayer->addImpulse(magnetImpulse); // Error in received value
+	    std::cout << magnetImpulse.getX() << std::endl;
+	}
+
+	if( level()->cubes().size() != 0 ) {
 		if( m_indiceCubeSelected != -1 ) {
 	    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
 			cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
 	    }
 
 
-	    btVector3 playerImpulse(0, 0, 0);
-
-	    for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
+	    /*for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
 	    	if(m_pPlayer->isNorth())
-	    		playerImpulse += m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
+	    		magnetImpulse += m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
 	    	else
-	    		playerImpulse -= m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
+	    		magnetImpulse -= m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
 	    }
-	    //m_pPlayer->addImpulse(playerImpulse); // Error in received value
-	    //std::cout << playerImpulse.getX() << std::endl;
-	}*/
+	    //m_pPlayer->addImpulse(magnetImpulse); // Error in received value
+	    //std::cout << magnetImpulse.getX() << std::endl;*/
+	}
 
     m_pPlayer->move();
    	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 20 );

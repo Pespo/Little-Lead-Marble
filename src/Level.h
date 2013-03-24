@@ -41,6 +41,7 @@ namespace llm {
 		inline Ogre::Vector3 startingPosition() { return m_startingPosition; }
 		inline void startingPosition( Ogre::Vector3 sP ) { m_startingPosition = sP; }
 		inline std::vector<Cube*> cubes() { return m_cubes; }
+		inline std::vector<Magnet*> magnets() { return m_magnets; }
 		inline void addStatic(Asset *s){ m_statics.push_back(s); }
 		inline void addObject( Object* o ) { m_objects.push_back(o); }
 		inline void addCube( Cube* c ) { m_cubes.push_back(c); }

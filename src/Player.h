@@ -27,6 +27,8 @@ namespace llm {
 		llm::Player* init( Ogre::Vector3 startingPosition, bool isNorth = false);
 		void move();
 
+		inline void addImpulse( const btVector3& impulse ) { m_pBody->applyCentralImpulse( impulse ); }
+
 		inline Direction direction() { return m_direction; }
 		inline void direction(Direction direction) { m_direction = direction; }
 

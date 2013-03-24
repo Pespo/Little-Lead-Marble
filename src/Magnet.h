@@ -14,6 +14,7 @@ namespace llm {
 		Orientation m_orientation;
 		bool m_bIsNorth;
 		float m_force;
+		const float m_distanceMax;
 
 	public:
 
@@ -21,6 +22,10 @@ namespace llm {
 		~Magnet();
 
 		virtual void onCollision();
+
+		btVector3 getMagneticForce( const btVector3& marble );
+		btVector3 ortho( const btVector3& marble, const btVector3& point, const btVector3& point2 );
+
 
 		inline bool isNorth() { return m_bIsNorth; }
 		inline void isNorth( bool bIN ) { m_bIsNorth = bIN; }
