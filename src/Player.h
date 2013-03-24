@@ -8,14 +8,13 @@
 enum Direction { L, R, NONE };
 
 namespace llm {
-	class Player : public Singleton<Player>{	
+	class Player : public Magnet, public Singleton<Player> {	
 
 		friend class Singleton<Player>;	
 
 		Player();
 		~Player();
 
-		Magnet m_pMagnet;
 		Ogre::Vector3 m_pStartingPosition;
 		btVector3 m_vitesse;
 		Direction m_direction;
@@ -24,8 +23,8 @@ namespace llm {
 		static const float step;
 		static const float vitMax;
 
-		void init( btVector3& startingPosition, Ogre::Vector3 scale = Ogre::Vector3( 1., 1., 1.), int mass = 20, bool isNorth = false);
-		void init( Ogre::Vector3 startingPosition, Ogre::Vector3 scale = Ogre::Vector3( 1., 1., 1.), int mass = 20, bool isNorth = false);
+		llm::Player* init( btVector3& startingPosition, bool isNorth = false);
+		llm::Player* init( Ogre::Vector3 startingPosition, bool isNorth = false);
 		void move();
 
 		inline Direction direction() { return m_direction; }
@@ -34,15 +33,13 @@ namespace llm {
 		inline void vitesse( float vitesse ) { m_vitesse = btVector3( 0., 0., vitesse ); }
 		inline float vitesse() { return m_vitesse.getZ(); }
 
-		inline void switchPole() { m_pMagnet.isNorth( !( m_pMagnet.isNorth() ) ); }
-		inline bool isNorth() { return m_pMagnet.isNorth(); }
+		inline bool isNorth() { return m_bIsNorth; }
+		inline void isNorth( bool bIN ) { m_bIsNorth = bIN; }
+		inline void switchPole() { isNorth( !isNorth() ); }
 
-		inline btVector3& position() { return m_pMagnet.position(); }
-		inline void position( btVector3& newPosition) { m_pMagnet.position(newPosition); }
-
-		inline void startingPosition( Ogre::Vector3 startingPosition ) { m_pStartingPosition = startingPosition; }
+		inline void startingPosition( Ogre::Vector3 startingPosition ) { m_pStartingPosition = startingPosition; position( startingPosition );}
 		inline Ogre::Vector3 startingPosition() { return m_pStartingPosition; }
-		inline void resetPosition() { m_pMagnet.node()->setPosition(m_pStartingPosition); }
+		inline void resetPosition() { position(m_pStartingPosition); }
 	};
 }
 

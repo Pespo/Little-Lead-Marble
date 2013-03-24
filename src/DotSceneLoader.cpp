@@ -11,16 +11,8 @@
 #pragma warning(disable:4305)
 
 
-DotSceneLoader::DotSceneLoader()
-{
-   
-}
-
-
-DotSceneLoader::~DotSceneLoader()
-{
-
-}
+DotSceneLoader::DotSceneLoader() { }
+DotSceneLoader::~DotSceneLoader() { }
 
 //Parse and load scene from XML file
 void DotSceneLoader::loadScene(const Ogre::String &SceneName){
@@ -62,26 +54,21 @@ void DotSceneLoader::loadScene(const Ogre::String &SceneName){
 				pNode = pNode->next_sibling("node");
 			}
 		}
-
 	}
-		
 }
 
 
 //Process ball start position
-void DotSceneLoader::processBallStartPosition(rapidxml::xml_node<>* XMLNode)
-{
+void DotSceneLoader::processBallStartPosition(rapidxml::xml_node<>* XMLNode) {
 	rapidxml::xml_node<>* pElement;
 	pElement = XMLNode->first_node("position");
 	if(pElement)
 	//to do @ add test for player's existance
-	llm::Application::getInstance()->game()->level()->setStartPosition(parseVector3(pElement));
+	llm::Application::getInstance()->game()->level()->startingPosition(parseVector3(pElement));
 }
 
-
 //Process node
-void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent)
-{
+void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode *pParent) {
 	//Atributes
 	Ogre::String assetType;
 	Ogre::String magnetPole;
@@ -193,7 +180,7 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 			llm::End *pEnd = new llm::End(entityName, meshFileName, scale);
 			pEnd->position(position);
 			pEnd->orientation(rotation);
-			llm::Application::getInstance()->game()->level()->setEnd(pEnd);
+			llm::Application::getInstance()->game()->level()->end(pEnd);
 		}
 		else
 		{
@@ -211,24 +198,21 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 
 
 
-Ogre::String DotSceneLoader::getAttrib(rapidxml::xml_node<>* XMLNode, const Ogre::String &attrib, const Ogre::String &defaultValue)
-{
+Ogre::String DotSceneLoader::getAttrib(rapidxml::xml_node<>* XMLNode, const Ogre::String &attrib, const Ogre::String &defaultValue) {
     if(XMLNode->first_attribute(attrib.c_str()))
         return XMLNode->first_attribute(attrib.c_str())->value();
     else
         return defaultValue;
 }
 
-Ogre::Real DotSceneLoader::getAttribReal(rapidxml::xml_node<>* XMLNode, const Ogre::String &attrib, Ogre::Real defaultValue)
-{
+Ogre::Real DotSceneLoader::getAttribReal(rapidxml::xml_node<>* XMLNode, const Ogre::String &attrib, Ogre::Real defaultValue) {
     if(XMLNode->first_attribute(attrib.c_str()))
         return Ogre::StringConverter::parseReal(XMLNode->first_attribute(attrib.c_str())->value());
     else
         return defaultValue;
 }
 
-bool DotSceneLoader::getAttribBool(rapidxml::xml_node<>* XMLNode, const Ogre::String &attrib, bool defaultValue)
-{
+bool DotSceneLoader::getAttribBool(rapidxml::xml_node<>* XMLNode, const Ogre::String &attrib, bool defaultValue) {
     if(!XMLNode->first_attribute(attrib.c_str()))
         return defaultValue;
 
@@ -238,8 +222,7 @@ bool DotSceneLoader::getAttribBool(rapidxml::xml_node<>* XMLNode, const Ogre::St
     return false;
 }
 
-Ogre::Vector3 DotSceneLoader::parseVector3(rapidxml::xml_node<>* XMLNode)
-{
+Ogre::Vector3 DotSceneLoader::parseVector3(rapidxml::xml_node<>* XMLNode) {
     return Ogre::Vector3(
         Ogre::StringConverter::parseReal(XMLNode->first_attribute("x")->value()),
         Ogre::StringConverter::parseReal(XMLNode->first_attribute("y")->value()),
@@ -247,8 +230,7 @@ Ogre::Vector3 DotSceneLoader::parseVector3(rapidxml::xml_node<>* XMLNode)
     );
 }
 
-Ogre::Quaternion DotSceneLoader::parseQuaternion(rapidxml::xml_node<>* XMLNode)
-{
+Ogre::Quaternion DotSceneLoader::parseQuaternion(rapidxml::xml_node<>* XMLNode) {
     //! @todo Fix this crap!
 
     Ogre::Quaternion orientation;
@@ -303,8 +285,7 @@ Ogre::Quaternion DotSceneLoader::parseQuaternion(rapidxml::xml_node<>* XMLNode)
     return orientation;
 }
 
-Ogre::ColourValue DotSceneLoader::parseColour(rapidxml::xml_node<>* XMLNode)
-{
+Ogre::ColourValue DotSceneLoader::parseColour(rapidxml::xml_node<>* XMLNode) {
     return Ogre::ColourValue(
         Ogre::StringConverter::parseReal(XMLNode->first_attribute("r")->value()),
         Ogre::StringConverter::parseReal(XMLNode->first_attribute("g")->value()),

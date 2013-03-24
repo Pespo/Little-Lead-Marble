@@ -11,15 +11,13 @@ inline Ogre::Vector3 cvt(const btVector3 &V){
 llm::Game::Game() : m_indiceCubeSelected(-1) {
 
 	//Init game scene manager 
-	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager("DefaultSceneManager", "Level Scene Manager");
-	m_pSceneManager->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
-	m_pSceneManager->setShadowColour(Ogre::ColourValue(0.2, 0.2, 0.2));
-	m_pSceneManager->setAmbientLight(Ogre::ColourValue(0.6, 0.6, 0.6));
+	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager( "DefaultSceneManager", "Game" );
+	m_pSceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
+	m_pSceneManager->setShadowColour( Ogre::ColourValue( 0.2, 0.2, 0.2 ) );
+	m_pSceneManager->setAmbientLight( Ogre::ColourValue( 0.6, 0.6, 0.6 ) );
 
 	//Init camera
-	m_pCamera = m_pSceneManager->createCamera("Camera");
-	m_pCamera->setPosition(0,50,200);	
-    m_pCamera->lookAt(0,20,0);
+	m_pCamera = m_pSceneManager->createCamera( "Camera" );
 	m_pCamera->setNearClipDistance(5);
 
 	//collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
@@ -48,60 +46,47 @@ llm::Game::~Game() {
 
 void llm::Game::loadLevel() {
 
-	Ogre::Light* light0 = m_pSceneManager->createLight("light0");
-    light0->setPosition(Ogre::Vector3(0,200,0));
-    light0->setDiffuseColour(0.8,0.8,0.8);
-    light0->setType(Ogre::Light::LT_SPOTLIGHT);
-    light0->setDirection(0,-1,0);
-    light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
+	// Ogre::Light* light0 = m_pSceneManager->createLight("Light0");
+    // light0->setPosition(Ogre::Vector3(0,200,0));
+    // light0->setDiffuseColour(0.8,0.8,0.8);
+    // light0->setType(Ogre::Light::LT_SPOTLIGHT);
+    // light0->setDirection(0,-1,0);
+    // light0->setSpotlightRange (Ogre::Radian(3.14/8.), Ogre::Radian(3.14/8.), 5);
 
  	m_pLevel = new Level();
     m_pLevel->load();
-	loadPlayer(); //load Player for the level's starting 
-}
-
-void llm::Game::loadPlayer() {
-	m_pPlayer = llm::Player::getInstance();
-	//to do  @ add parameters for dynamic construction
-
-	/*Magnet* bille = new Magnet("player", "sphere.mesh", MARBLE, Ogre::Vector3(5., 5., 5.), 600, false, 50);
-	m_pPlayer->magnet(bille);
-	m_pPlayer->setStartingPosition(Ogre::Vector3(0, 10, 0));
-	m_pPlayer->magnet()->body()->translate(cvt(m_pPlayer->getStartingPosition()));*/
-	//m_pCamera->setPosition(Ogre::Vector3(m_pPlayer->getStartingPosition().x, m_pPlayer->getStartingPosition().y, 10.));
-
-	//m_pPlayer->magnet()->entity()->setMaterialName("cube");
-	//m_pPlayer->magnet()->position(m_pLevel->startPosition());
-	//m_pPlayer->magnet()->body()->setFriction(200.);
-	//llm::Player::getInstance()->init(m_pLevel->startPosition());
-	//m_pCamera->setPosition(m_pLevel->startPosition().x, m_pLevel->startPosition().y, 50.);
-
+	m_pPlayer = llm::Player::getInstance()->init( m_pLevel->startingPosition() );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
+    m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
 }
 
 void llm::Game::loop() {
 	m_pWorld->stepSimulation(1.f/60, 10);
-    if( m_indiceCubeSelected != -1 ) {
-    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
-		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
-    }
 
-    btVector3 playerImpulse(0, 0, 0);
+	int size = level()->cubes().size();
 
-    for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
-    	if(m_pPlayer->isNorth())
-    		playerImpulse += m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
-    	else
-    		playerImpulse -= m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
-    }
-    //m_pPlayer->addImpulse(playerImpulse);
+	/*if( level()->cubes().size() != 0 ) {
+		if( m_indiceCubeSelected != -1 ) {
+	    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
+			cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
+	    }
 
-    //std::cout << playerImpulse.getX() << std::endl;
 
-	m_pWorld->stepSimulation(1.f/60, 10);
+	    btVector3 playerImpulse(0, 0, 0);
+
+	    for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
+	    	if(m_pPlayer->isNorth())
+	    		playerImpulse += m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
+	    	else
+	    		playerImpulse -= m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
+	    }
+	    //m_pPlayer->addImpulse(playerImpulse); // Error in received value
+	    //std::cout << playerImpulse.getX() << std::endl;
+	}*/
+
     m_pPlayer->move();
-   // m_pCamera->setPosition(m_pPlayer->position().getX(), m_pPlayer->position().getY()+5, 30);
-	
-
+   	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 20 );
+   	m_pCamera->lookAt( m_pPlayer->position().getX(), m_pPlayer->position().getY(), 0 );	
 }
 
 bool llm::Game::cubeHit( int x, int y ) {
