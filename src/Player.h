@@ -33,6 +33,8 @@ namespace llm {
 		inline void vitesse( float vitesse ) { m_vitesse = btVector3( 0., 0., vitesse ); }
 		inline float vitesse() { return m_vitesse.getZ(); }
 
+		inline bool isNorth() { return m_bIsNorth; }
+		inline void isNorth( bool bIN ) { m_bIsNorth = bIN; }
 		inline void switchPole() { isNorth( !isNorth() ); }
 
 		inline void startingPosition( Ogre::Vector3 startingPosition ) { m_pStartingPosition = startingPosition; position( startingPosition );}

@@ -21,7 +21,7 @@ namespace llm {
 		btDynamicsWorld* m_pWorld;
 		btCollisionShape* m_pShape;
 		btRigidBody* m_pBody;
-
+	
 	public:
 		Object( const Ogre::String& name, const Ogre::String& mesh, Ogre::Vector3& dim, float mass = 0 );
 		~Object(); 

@@ -71,7 +71,26 @@ void llm::Game::restart() {
 
 void llm::Game::loop() {
 	m_pWorld->stepSimulation(1.f/60, 10);
-    if( m_indiceCubeSelected != -1 ) {
+
+	/*if( level()->cubes().size() != 0 ) {
+		if( m_indiceCubeSelected != -1 ) {
+	    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
+			cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
+	    }
+
+
+	    btVector3 playerImpulse(0, 0, 0);
+
+	    for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
+	    	if(m_pPlayer->isNorth())
+	    		playerImpulse += m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
+	    	else
+	    		playerImpulse -= m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
+	    }
+	    //m_pPlayer->addImpulse(playerImpulse); // Error in received value
+	    //std::cout << playerImpulse.getX() << std::endl;
+	}*/
+	if( m_indiceCubeSelected != -1 ) {
     	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
@@ -92,13 +111,12 @@ bool llm::Game::cubeHit( int x, int y ) {
 				m_indiceCubeSelected = i;
 				m_pLevel->cubes()[i]->selectCube();
 				m_pLevel->cubes()[i]->body()->setAngularVelocity(btVector3(0,0,0));
-				//world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
+				m_pLevel->cubes()[i]->body()->setLinearVelocity(btVector3(0,0,0));
 				return true;
 			}
 		}
-	}
-	else {
-		//world()->addRigidBody( m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody() );
+	} else {
+		m_pLevel->cubes()[m_indiceCubeSelected]->body()->setAngularVelocity(btVector3(0,0,0));
 		m_pLevel->cubes()[m_indiceCubeSelected]->body()->setLinearVelocity(btVector3(0,0,0));
 
 		m_pLevel->cubes()[m_indiceCubeSelected]->releaseCube();

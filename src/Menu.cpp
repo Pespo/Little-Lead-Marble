@@ -72,7 +72,7 @@ llm::Menu::Menu() {
     quitStart->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.62f, 0 ), CEGUI::UDim( 0.8f, 0 ) ) );
     quitStart->setSize(CEGUI::UVector2(CEGUI::UDim(0.18, 0), CEGUI::UDim(0.16, 0)));
     startMenu->addChildWindow(quitStart);//intégration du bouton dans le conteneur
-	
+
 	wmgr.getWindow("StartMenu/StartButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::startGame, app));//event du bouton
 	wmgr.getWindow("StartMenu/QuitButton")->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&llm::Application::quit, app));//event du bouton
 
@@ -109,8 +109,8 @@ llm::Menu::~Menu() {
 }
 
 void llm::Menu::desactive() {
-	startMenu(false);
-	pauseMenu(false);
+	startMenu( false );
+	pauseMenu( false );
 }
 
 void llm::Menu::startMenu( bool visible ) {
