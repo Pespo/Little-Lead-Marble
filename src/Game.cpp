@@ -53,7 +53,7 @@ void llm::Game::loadLevel() {
  	m_pLevel = new Level();
     m_pLevel->load();
 	m_pPlayer = llm::Player::getInstance()->init( m_pLevel->startingPosition() );
-	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 100. );
     m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
 }
 
@@ -65,7 +65,7 @@ void llm::Game::restart() {
 	m_pLevel->load();
 	m_pPlayer = llm::Player::getInstance();
 	m_pPlayer->init( m_pLevel->startingPosition() );
-	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 100. );
     m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
 }
 
@@ -95,7 +95,7 @@ void llm::Game::loop() {
 		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
     }
     m_pPlayer->move();
-   	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 20 );
+   	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 100 );
    	m_pCamera->lookAt( m_pPlayer->position().getX(), m_pPlayer->position().getY(), 0 );	
 }
 
