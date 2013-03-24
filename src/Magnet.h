@@ -18,7 +18,7 @@ namespace llm {
 
 	public:
 
-		Magnet( const Ogre::String& name, const Ogre::String& mesh, Orientation orientation, Ogre::Vector3& dim = Ogre::Vector3(1., 1., 1.), float mass = 0, bool north = false, int force = 1);
+		Magnet( const Ogre::String& name, const Ogre::String& mesh, Orientation orientation, Ogre::Vector3& dim = Ogre::Vector3(1., 1., 1.), float mass = 0, bool north = false, int force = 1000);
 		~Magnet();
 
 		virtual void onCollision();

@@ -54,7 +54,7 @@ void llm::Cube::rotateLeft() {
 	btTransform transformation;
 	transformation.setIdentity();
 	btQuaternion rotation;
-	rotation.setEuler( 0, 0, M_PI/4 );
+	rotation.setEuler( 0, 0, M_PI/2 );
 	transformation.setRotation(rotation);
 	btTransform actualTransformation = body()->getCenterOfMassTransform();
 	transformation *= actualTransformation;
@@ -66,13 +66,11 @@ void llm::Cube::rotateRight() {
 	btTransform transformation;
 	transformation.setIdentity();
 	btQuaternion rotation;
-	rotation.setEuler( 0, 0, -M_PI/4 );
+	rotation.setEuler( 0, 0, 3*M_PI/2 );
 	transformation.setRotation(rotation);
-
 	btTransform actualTransformation = body()->getCenterOfMassTransform();
-	
 	transformation *= actualTransformation;
-	body()->setCenterOfMassTransform(transformation);
+	body()->setCenterOfMassTransform( transformation );
 }
 
 void llm::Cube::move( Ogre::Vector3 position ) {
@@ -86,6 +84,13 @@ void llm::Cube::move( Ogre::Vector3 position ) {
 	node()->setPosition( position );
 }
 
+void llm::Cube::selectCube() {
+	m_bIsGhost = true;
+}
+
+void llm::Cube::releaseCube() {
+	m_bIsGhost = false;
+}
 
 void llm::Cube::relativeToWorld(int i, btConvexHullShape* shape, btVector3& v) {
 

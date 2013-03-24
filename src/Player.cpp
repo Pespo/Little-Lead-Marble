@@ -1,16 +1,16 @@
 #include "Player.h"
 #include "Tools.h"
 
-const float llm::Player::step = 0.01;
-const float llm::Player::vitMax = 0.05;
+const float llm::Player::step = 1.;
+const float llm::Player::vitMax = 5.0;
 
-llm::Player::Player() : Magnet(Ogre::String( "player" ), Ogre::String( "sphere.mesh" ), MARBLE, Ogre::Vector3( .002, .002, .002), 1) {
+llm::Player::Player() : Magnet(Ogre::String( "player" ), Ogre::String( "sphere.mesh" ), MARBLE, Ogre::Vector3( 0.02, 0.02, 0.02), 20) {
 	m_pStartingPosition = Ogre::Vector3( 0., 10., 0.); //Default position (0,0,0);
 	entity()->setMaterialName("bille.material");
 	position(btVector3( 0., 10., 0.));
 	m_vitesse = btVector3( 0., 0., 0. );
 	body()->setActivationState(DISABLE_DEACTIVATION);
-	body()->setFriction(50);
+	body()->setFriction(100);
 }
 
 llm::Player::~Player() { }
@@ -27,15 +27,14 @@ void llm::Player::move() {
 }
 
 llm::Player* llm::Player::init( btVector3& startingPosition, bool isNorth ) {
-	m_pStartingPosition = convert(startingPosition);
-	position(startingPosition);
-	llm::Magnet::isNorth(isNorth);
-	return this;
+	return init( convert(startingPosition) );
 }
 
 llm::Player* llm::Player::init( Ogre::Vector3 startingPosition, bool isNorth ) {
 	m_pStartingPosition = startingPosition;
 	position(convert(startingPosition));
 	llm::Magnet::isNorth(isNorth);
+	body()->setAngularVelocity(btVector3(0,0,0));
+	body()->setLinearVelocity(btVector3(0,0,0));
 	return this;
 }

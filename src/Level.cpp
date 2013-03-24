@@ -13,9 +13,9 @@ llm::Level::~Level() {
 
 bool llm::Level::load() {
 	// //FUNCTION LOADING A SCENE FROM XML FILE
-	/*llm::Application* app = llm::Application::getInstance();
+	llm::Application* app = llm::Application::getInstance();
 	DotSceneLoader loader; 
-	loader.loadScene("../res/3dsmax/level_2/level2.xml");*/
+	loader.loadScene("../res/3dsmax/level_2/level2.xml");
 
 	//Verif remplissage lvl
 	/*std::vector<Cube*> assetLvl = app->game()->level()->cubes();
@@ -28,7 +28,7 @@ bool llm::Level::load() {
 	/***** TEST ENVIRONMENT ****/
 	srand(time(NULL));
 	//Création du sol
-	Object* ground = new Object("ground", "cube.mesh", Ogre::Vector3(100, 1 ,2), 0);
+	/*Object* ground = new Object("ground", "cube.mesh", Ogre::Vector3(100, 1 ,2), 0);
 	ground->entity()->setMaterialName("ground");
 	ground->position(btVector3(0., -10., 0.));
 	addObject(ground);
@@ -42,7 +42,7 @@ bool llm::Level::load() {
    	Cube* rightWall = new Cube("rightWall", "cube.mesh", Ogre::Vector3(1,1,1), 50);
     rightWall->entity()->setMaterialName("cube");
     rightWall->position(btVector3(20, 12, 0.));
-   	addCube(rightWall);
+   	addCube(rightWall);*/
 
    	/*Magnet* magnet = new Magnet("magnet", "cube.mesh", UP, Ogre::Vector3( 10, 0.2, 1 ), 0, false);
    	magnet->entity()->setMaterialName("cube");

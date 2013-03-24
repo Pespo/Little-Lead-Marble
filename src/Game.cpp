@@ -4,11 +4,7 @@
 #include "Magnet.h"
 #include "Tools.h"
 
-inline Ogre::Vector3 cvt(const btVector3 &V){
-	return Ogre::Vector3(V.getX(), V.getY(), V.getZ());
-}
-
-llm::Game::Game() : m_indiceCubeSelected(-1) {
+llm::Game::Game() : m_indiceCubeSelected(-1), m_pLevel(0) {
 
 	//Init game scene manager 
 	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager( "DefaultSceneManager", "Game" );
@@ -34,9 +30,10 @@ llm::Game::Game() : m_indiceCubeSelected(-1) {
 }
 
 llm::Game::~Game() {
-	//delete m_pPlayer;
-	m_pPlayer->kill();
-	delete m_pLevel;
+
+	llm::Player::getInstance()->kill();
+	if( m_pLevel != 0 )
+		delete m_pLevel;
 	delete m_pWorld;
 	delete m_pSolver;
 	delete m_pBroadphase;
@@ -56,7 +53,19 @@ void llm::Game::loadLevel() {
  	m_pLevel = new Level();
     m_pLevel->load();
 	m_pPlayer = llm::Player::getInstance()->init( m_pLevel->startingPosition() );
-	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 100. );
+    m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
+}
+
+void llm::Game::restart() {
+	m_pLevel->deleteLevel();
+	m_pPlayer->kill();
+	m_pSceneManager->getRootSceneNode()->removeAndDestroyAllChildren();
+	m_pSceneManager->destroyAllEntities();
+	m_pLevel->load();
+	m_pPlayer = llm::Player::getInstance();
+	m_pPlayer->init( m_pLevel->startingPosition() );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 100. );
     m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
 }
 
@@ -73,7 +82,7 @@ void llm::Game::loop() {
 	    		magnetImpulse -= m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
 	    }
 	    m_pPlayer->addImpulse(magnetImpulse); // Error in received value
-	    std::cout << magnetImpulse.getX() << std::endl;
+	    std::cout << "magnetForce: " << magnetImpulse.getX() << "  " << magnetImpulse.getY() << std::endl;
 	}
 
 	if( level()->cubes().size() != 0 ) {
@@ -89,12 +98,17 @@ void llm::Game::loop() {
 	    	else
 	    		magnetImpulse -= m_pLevel->cubes()[i]->getMagneticForce(m_pPlayer->position());
 	    }
-	    //m_pPlayer->addImpulse(magnetImpulse); // Error in received value
-	    //std::cout << magnetImpulse.getX() << std::endl;*/
+	    //m_pPlayer->addImpulse(playerImpulse); // Error in received value
+	    //std::cout << playerImpulse.getX() << std::endl;*/
 	}
+	    
+	if( m_indiceCubeSelected != -1 ) {
+    	CEGUI::Point mouseCursor = CEGUI::MouseCursor::getSingleton().getPosition();
+		cubeNextPosition( mouseCursor.d_x, mouseCursor.d_y );
+    }
 
     m_pPlayer->move();
-   	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 20 );
+   	m_pCamera->setPosition( m_pPlayer->position().getX(), m_pPlayer->position().getY() + 2, 100 );
    	m_pCamera->lookAt( m_pPlayer->position().getX(), m_pPlayer->position().getY(), 0 );	
 }
 
@@ -108,15 +122,17 @@ bool llm::Game::cubeHit( int x, int y ) {
 		for( int i = 0 ; i < m_pLevel->cubes().size() ; ++i ) {
 			if( ray.intersects( m_pLevel->cubes()[i]->node()->_getWorldAABB() ).first) { 
 				m_indiceCubeSelected = i;
+				m_pLevel->cubes()[i]->selectCube();
 				m_pLevel->cubes()[i]->body()->setAngularVelocity(btVector3(0,0,0));
-				//world()->removeRigidBody( m_pLevel->cubes()[i]->rigidBody() );
+				m_pLevel->cubes()[i]->body()->setLinearVelocity(btVector3(0,0,0));
 				return true;
 			}
 		}
-	}
-	else {
-		//world()->addRigidBody( m_pLevel->cubes()[m_indiceCubeSelected]->rigidBody() );
+	} else {
+		m_pLevel->cubes()[m_indiceCubeSelected]->body()->setAngularVelocity(btVector3(0,0,0));
 		m_pLevel->cubes()[m_indiceCubeSelected]->body()->setLinearVelocity(btVector3(0,0,0));
+
+		m_pLevel->cubes()[m_indiceCubeSelected]->releaseCube();
 		m_indiceCubeSelected = -1;
 	}
 	return false;

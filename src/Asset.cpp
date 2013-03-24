@@ -15,9 +15,6 @@ llm::Asset::Asset( Ogre::SceneNode* sNode, Ogre::Vector3& dim, Ogre::Entity* ent
     m_pNode = sNode;
 	m_pEntity = ent;
 	m_pHalfdim = dim;
-
 }
-
-
 
 llm::Asset::~Asset() { }

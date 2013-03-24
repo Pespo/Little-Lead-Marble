@@ -18,7 +18,9 @@ enum PointRef {
 
 namespace llm {
 	class Cube : public Object {
-	private:
+
+		bool m_bIsGhost;
+
 		const float m_distanceMax;
 		float m_force;
 		int m_indicePoints[4];
@@ -40,7 +42,12 @@ namespace llm {
 		void rotateLeft();
 		void rotateRight();
 		void move( Ogre::Vector3 position );
+		void selectCube();
+		void releaseCube();
 		btVector3 getMagneticForce( const btVector3& point );
+
+		inline bool isGhost() { return m_bIsGhost; }
+		inline void setIsGhost(bool b) { m_bIsGhost = b; }
 	};
 }
 
