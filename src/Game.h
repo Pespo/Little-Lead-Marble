@@ -13,6 +13,8 @@ namespace llm{
 
 	class Game {
 
+		bool m_bMagnetism;
+
 		Ogre::SceneManager* m_pSceneManager;
 		Ogre::Camera* m_pCamera;
 
@@ -38,30 +40,15 @@ namespace llm{
 		bool cubeHit( int x, int y );
 		void cubeNextPosition( float x, float y );
 
-		inline int cubeSelected() {
-			return m_indiceCubeSelected;
-		}
-		
-		inline void cubeSelected(int indice) {
-			m_indiceCubeSelected = indice;
-		}
-
-		inline Ogre::SceneManager* sceneManager(){
-            return m_pSceneManager;
-        } 
-        inline btDiscreteDynamicsWorld* world(){
-            return m_pWorld;
-        } 
-        inline Ogre::Camera* camera(){
-            return m_pCamera;
-        } 
-        inline llm::Level* level(){
-            return m_pLevel;
-        } 
-
-		 inline llm::Player* player(){
-            return m_pPlayer;
-        } 
+		inline void activeMagnetism() { m_bMagnetism = m_bMagnetism ? false : true; }
+		inline bool magnetism(){ return m_bMagnetism; }
+		inline int cubeSelected() { return m_indiceCubeSelected; }		
+		inline void cubeSelected( int indice ) { m_indiceCubeSelected = indice; }
+		inline Ogre::SceneManager* sceneManager() { return m_pSceneManager; } 
+        inline btDiscreteDynamicsWorld* world(){ return m_pWorld; } 
+        inline Ogre::Camera* camera(){ return m_pCamera; } 
+        inline llm::Level* level(){ return m_pLevel; } 
+		inline llm::Player* player(){ return m_pPlayer; } 
 	};
 }
 

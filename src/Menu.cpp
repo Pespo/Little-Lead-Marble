@@ -81,7 +81,7 @@ llm::Menu::Menu() {
 	Menu->addChildWindow(PauseMenu);
 
 	CEGUI::Window *continued = wmgr.createWindow("TaharezLook/Button", "PauseMenu/ContinueButton"); //bouton
-	continued->setText("Start");
+	continued->setText("Continue");
 	continued->setPosition(CEGUI::UVector2( CEGUI::UDim( 0.42f, 0 ), CEGUI::UDim( 0.40f, 0 ) ) );
 	continued->setSize(CEGUI::UVector2(CEGUI::UDim(0.15, 0), CEGUI::UDim(0.05, 0)));
 	PauseMenu->addChildWindow(continued);//intégration du bouton dans le conteneur

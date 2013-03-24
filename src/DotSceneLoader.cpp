@@ -29,7 +29,7 @@ void DotSceneLoader::loadScene(const Ogre::String &SceneName){
 
 		 // Grab the scene node
 		XMLRoot = XMLDoc.first_node("scene");
-		std::cout << "Name of my first node is: " << XMLDoc.first_node()->name() << "\n";  /*test the xml_document */
+		//std::cout << "Name of my first node is: " << XMLDoc.first_node()->name() << "\n";  /*test the xml_document */
 		 Ogre::String version = getAttrib(XMLRoot, "formatVersion", "unknown");
 		 Ogre::String message = "[DotSceneLoader] Parsing dotScene file with version " + version;
 		if(XMLRoot->first_attribute("minOgreVersion"))
@@ -184,7 +184,7 @@ void DotSceneLoader::processNode(rapidxml::xml_node<>* XMLNode, Ogre::SceneNode 
 		}
 		else
 		{
-			std::cout<<"Its not an asset !!"<<std::endl;
+			//std::cout<<"Its not an asset !!"<<std::endl;
 		}
         
 		//if(!materialFile.empty())

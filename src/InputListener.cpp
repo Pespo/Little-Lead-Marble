@@ -130,29 +130,16 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 			case OIS::KC_ESCAPE:
 				llm::Application::getInstance()->pause();
 				break;
-			case OIS::KC_W:
-				m_mouvement.z -= 1;
+			case OIS::KC_R:
+				llm::Application::getInstance()->game()->activeMagnetism();
 				break;
-			case OIS::KC_S:
-				m_mouvement.z += 1;
-				break;
+			case OIS::KC_F:
+				llm::Application::getInstance()->game()->player()->switchPole();
 			case OIS::KC_A:
 				llm::Application::getInstance()->game()->player()->direction(L);
 				break;
 			case OIS::KC_D:
 				llm::Application::getInstance()->game()->player()->direction(R);
-				break;
-			case OIS::KC_UP:
-				m_mouvement.y += 1;
-				break;
-			case OIS::KC_DOWN:
-				m_mouvement.y -= 1;
-				break;
-			case OIS::KC_LEFT:
-				m_mouvement.x -= 1;
-				break;
-			case OIS::KC_RIGHT:
-				m_mouvement.x += 1;
 				break;
 			case OIS::KC_Q:
 				if( app->game()->cubeSelected() != -1 )
@@ -162,14 +149,10 @@ bool llm::InputListener::keyPressed(const OIS::KeyEvent &e){
 				if( app->game()->cubeSelected() != -1 )
 					app->game()->level()->cubes()[app->game()->cubeSelected()]->rotateRight();
 				break;
-			case OIS::KC_LSHIFT:
-				m_vitesse *= 2;
-				break;
 		}
 	} else {
 		CEGUI::System &sys = CEGUI::System::getSingleton();
 	    sys.injectKeyDown(convertKey(e));
-	   // sys.injectChar(e.text);
 	}
     return m_bContinue;
 }

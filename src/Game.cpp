@@ -10,7 +10,7 @@ llm::Game::Game() : m_indiceCubeSelected(-1), m_pLevel(0) {
 	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager( "DefaultSceneManager", "Game" );
 	m_pSceneManager->setShadowTechnique( Ogre::SHADOWTYPE_STENCIL_ADDITIVE );
 	m_pSceneManager->setShadowColour( Ogre::ColourValue( 0.2, 0.2, 0.2 ) );
-	m_pSceneManager->setAmbientLight( Ogre::ColourValue( 0.6, 0.6, 0.6 ) );
+	m_pSceneManager->setAmbientLight( Ogre::ColourValue( 0.8, 0.8, 0.8 ) );
 
 	//Init camera
 	m_pCamera = m_pSceneManager->createCamera( "Camera" );
@@ -72,17 +72,21 @@ void llm::Game::restart() {
 void llm::Game::loop() {
 	m_pWorld->stepSimulation(1.f/60, 10);
 
+	//m_pPlayer->body()->checkCollideWith(m_pLevel->end()
+
 	btVector3 magnetImpulse(0, 0, 0);
 
-	if( level()->magnets().size() != 0 ) {
-	    for( int i = 0 ; i < m_pLevel->magnets().size() ; ++i ) {
-	    	if(m_pPlayer->isNorth())
-	    		magnetImpulse += m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
-	    	else
-	    		magnetImpulse -= m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
-	    }
-	    m_pPlayer->addImpulse(magnetImpulse); // Error in received value
-	    std::cout << "magnetForce: " << magnetImpulse.getX() << "  " << magnetImpulse.getY() << std::endl;
+	if(magnetism()) {
+		if( level()->magnets().size() != 0 ) {
+		    for( int i = 0 ; i < m_pLevel->magnets().size() ; ++i ) {
+		    	if(m_pPlayer->isNorth())
+		    		magnetImpulse += m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
+		    	else
+		    		magnetImpulse -= m_pLevel->magnets()[i]->getMagneticForce(m_pPlayer->position());
+		    }
+		    m_pPlayer->addImpulse(magnetImpulse); // Error in received value
+		    std::cout << "magnetForce: " << magnetImpulse.getX() << "  " << magnetImpulse.getY() << std::endl;
+		}
 	}
 
 	if( level()->cubes().size() != 0 ) {
