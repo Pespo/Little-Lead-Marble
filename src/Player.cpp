@@ -27,15 +27,14 @@ void llm::Player::move() {
 }
 
 llm::Player* llm::Player::init( btVector3& startingPosition, bool isNorth ) {
-	m_pStartingPosition = convert(startingPosition);
-	position(startingPosition);
-	llm::Magnet::isNorth(isNorth);
-	return this;
+	return init( convert(startingPosition) );
 }
 
 llm::Player* llm::Player::init( Ogre::Vector3 startingPosition, bool isNorth ) {
 	m_pStartingPosition = startingPosition;
 	position(convert(startingPosition));
 	llm::Magnet::isNorth(isNorth);
+	body()->setAngularVelocity(btVector3(0,0,0));
+	body()->setLinearVelocity(btVector3(0,0,0));
 	return this;
 }

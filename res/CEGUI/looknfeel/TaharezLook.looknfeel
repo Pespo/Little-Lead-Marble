@@ -1,6 +1,301 @@
 <?xml version="1.0" ?>
 <Falagard>
-    <!--
+  
+  <!--
+    ***************************************************
+        TaharezLook/PlayButton
+    ***************************************************
+    -->
+  <WidgetLook name="TaharezLook/PlayButton">
+    <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+    <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+    <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+    <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+    <ImagerySection name="normal">
+      <FrameComponent>
+        <Area>
+          <Dim type="LeftEdge">
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge">
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width">
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height">
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <Image type="Background" imageset="TaharezLook" image="PlayButtonNormal" />
+      </FrameComponent>
+      <ImageryComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <ImageProperty name="NormalImage" />
+        <VertFormatProperty name="VertImageFormatting" />
+        <HorzFormatProperty name="HorzImageFormatting" />
+      </ImageryComponent>
+    </ImagerySection>
+    <ImagerySection name="hover">
+      <FrameComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <Image type="Background" imageset="TaharezLook" image="PlayButtonHover" />
+      </FrameComponent>
+      <ImageryComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <ImageProperty name="HoverImage" />
+        <VertFormatProperty name="VertImageFormatting" />
+        <HorzFormatProperty name="HorzImageFormatting" />
+      </ImageryComponent>
+    </ImagerySection>
+    <StateImagery name="Normal">
+      <Layer>
+        <Section section="normal" />
+      </Layer>
+    </StateImagery>
+    <StateImagery name="Hover">
+      <Layer>
+        <Section section="hover" />
+      </Layer>
+    </StateImagery>
+  </WidgetLook>
+
+  <!--
+    ***************************************************
+        TaharezLook/QuitButton
+    ***************************************************
+    -->
+  <WidgetLook name="TaharezLook/QuitButton">
+    <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+    <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+    <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+    <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+    <ImagerySection name="normal">
+      <FrameComponent>
+        <Area>
+          <Dim type="LeftEdge">
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge">
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width">
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height">
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <Image type="Background" imageset="TaharezLook" image="QuitButtonNormal" />
+      </FrameComponent>
+      <ImageryComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <ImageProperty name="NormalImage" />
+        <VertFormatProperty name="VertImageFormatting" />
+        <HorzFormatProperty name="HorzImageFormatting" />
+      </ImageryComponent>
+    </ImagerySection>
+    <ImagerySection name="hover">
+      <FrameComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <Image type="Background" imageset="TaharezLook" image="QuitButtonHover" />
+      </FrameComponent>
+      <ImageryComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <ImageProperty name="HoverImage" />
+        <VertFormatProperty name="VertImageFormatting" />
+        <HorzFormatProperty name="HorzImageFormatting" />
+      </ImageryComponent>
+    </ImagerySection>
+    <StateImagery name="Normal">
+      <Layer>
+        <Section section="normal" />
+      </Layer>
+    </StateImagery>
+    <StateImagery name="Hover">
+      <Layer>
+        <Section section="hover" />
+      </Layer>
+    </StateImagery>
+  </WidgetLook>
+
+  <!--
+    ***************************************************
+        TaharezLook/OptionsButton
+    ***************************************************
+    -->
+  <WidgetLook name="TaharezLook/OptionsButton">
+    <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
+    <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
+    <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+    <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+    <ImagerySection name="normal">
+      <FrameComponent>
+        <Area>
+          <Dim type="LeftEdge">
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge">
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width">
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height">
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <Image type="Background" imageset="TaharezLook" image="OptionsButtonNormal" />
+      </FrameComponent>
+      <ImageryComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <ImageProperty name="NormalImage" />
+        <VertFormatProperty name="VertImageFormatting" />
+        <HorzFormatProperty name="HorzImageFormatting" />
+      </ImageryComponent>
+    </ImagerySection>
+    <ImagerySection name="hover">
+      <FrameComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <Image type="Background" imageset="TaharezLook" image="OptionsButtonHover" />
+      </FrameComponent>
+      <ImageryComponent>
+        <Area>
+          <Dim type="LeftEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="TopEdge" >
+            <AbsoluteDim value="0" />
+          </Dim>
+          <Dim type="Width" >
+            <UnifiedDim scale="1" type="Width" />
+          </Dim>
+          <Dim type="Height" >
+            <UnifiedDim scale="1" type="Height" />
+          </Dim>
+        </Area>
+        <ImageProperty name="HoverImage" />
+        <VertFormatProperty name="VertImageFormatting" />
+        <HorzFormatProperty name="HorzImageFormatting" />
+      </ImageryComponent>
+    </ImagerySection>
+    <StateImagery name="Normal">
+      <Layer>
+        <Section section="normal" />
+      </Layer>
+    </StateImagery>
+    <StateImagery name="Hover">
+      <Layer>
+        <Section section="hover" />
+      </Layer>
+    </StateImagery>
+  </WidgetLook>
+
+  <!--
     ***************************************************
         TaharezLook/Button
     ***************************************************
@@ -2360,11 +2655,11 @@
         <ImagerySection name="image_noframe">
             <ImageryComponent>
                 <Area>
-					<Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-					<Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-					<Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-					<Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-				</Area>
+					          <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+					          <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+					          <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+					          <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+				        </Area>
                 <ImageProperty name="Image" />
                 <ColourRectProperty name="ImageColours" />
                 <VertFormatProperty name="VertFormatting" />

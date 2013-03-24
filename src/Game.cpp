@@ -4,7 +4,7 @@
 #include "Magnet.h"
 #include "Tools.h"
 
-llm::Game::Game() : m_indiceCubeSelected(-1) {
+llm::Game::Game() : m_indiceCubeSelected(-1), m_pLevel(0) {
 
 	//Init game scene manager 
 	m_pSceneManager = llm::Application::getInstance()->root()->createSceneManager( "DefaultSceneManager", "Game" );
@@ -30,9 +30,10 @@ llm::Game::Game() : m_indiceCubeSelected(-1) {
 }
 
 llm::Game::~Game() {
-	//delete m_pPlayer;
-	m_pPlayer->kill();
-	delete m_pLevel;
+
+	llm::Player::getInstance()->kill();
+	if( m_pLevel != 0 )
+		delete m_pLevel;
 	delete m_pWorld;
 	delete m_pSolver;
 	delete m_pBroadphase;
@@ -52,6 +53,18 @@ void llm::Game::loadLevel() {
  	m_pLevel = new Level();
     m_pLevel->load();
 	m_pPlayer = llm::Player::getInstance()->init( m_pLevel->startingPosition() );
+	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
+    m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
+}
+
+void llm::Game::restart() {
+	m_pLevel->deleteLevel();
+	m_pPlayer->kill();
+	m_pSceneManager->getRootSceneNode()->removeAndDestroyAllChildren();
+	m_pSceneManager->destroyAllEntities();
+	m_pLevel->load();
+	m_pPlayer = llm::Player::getInstance();
+	m_pPlayer->init( m_pLevel->startingPosition() );
 	m_pCamera->setPosition( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 30. );
     m_pCamera->lookAt( m_pLevel->startingPosition().x, m_pLevel->startingPosition().y, 0 );
 }

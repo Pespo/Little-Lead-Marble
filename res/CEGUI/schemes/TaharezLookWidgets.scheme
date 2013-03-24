@@ -1,7 +1,11 @@
 <?xml version="1.0" ?>
 <GUIScheme Name="TaharezLookWidgets">
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
-	<FalagardMapping WindowType="TaharezLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/Button" />
+  <FalagardMapping WindowType="TaharezLook/PlayButton"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/PlayButton" />
+  <FalagardMapping WindowType="TaharezLook/QuitButton"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/QuitButton" />
+  <FalagardMapping WindowType="TaharezLook/OptionsButton"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/OptionsButton" />
+  <FalagardMapping WindowType="TaharezLook/MenuBackground" TargetType="DefaultWindow" Renderer="Falagard/StaticImage" LookNFeel="TaharezLook/MenuBackground" />
+  <FalagardMapping WindowType="TaharezLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/Button" />
 	<FalagardMapping WindowType="TaharezLook/Checkbox"    TargetType="CEGUI/Checkbox"    Renderer="Falagard/ToggleButton" LookNFeel="TaharezLook/Checkbox" />
 	<FalagardMapping WindowType="TaharezLook/ImageButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/ImageButton" />
 	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="TaharezLook/RadioButton" />

@@ -33,13 +33,12 @@ bool llm::Application::start() {
 
 	m_pGame = new Game();
 	m_pMenu = new Menu();
-	m_pInputListener = new InputListener( m_pWindow );
+	m_pMenu->startMenu(true);
 
+	m_pInputListener = new InputListener( m_pWindow );
     m_pRoot->addFrameListener(m_pInputListener);
 
-	setupViewport(m_pGame->sceneManager(), Ogre::String("Camera"));
-	
-	m_pGame->loadLevel();
+	setupViewport(MENU);
 
 	while(true)	{
 		Ogre::WindowEventUtilities::messagePump();
@@ -76,34 +75,50 @@ void llm::Application::loadRessource() {
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
-void llm::Application::setupViewport(Ogre::SceneManager* current, Ogre::String& cameraName) {
+void llm::Application::setupViewport(viewport v) {
+	Ogre::Camera *cam;
+	Ogre::Viewport *vp;
 	m_pWindow->removeAllViewports();
- 
-	Ogre::Camera *cam = current->getCamera(cameraName); //The Camera
-	Ogre::Viewport *vp = m_pWindow->addViewport(cam); //Our Viewport linked to the camera
-	 
+ 	if(v == GAME) {
+		cam = m_pGame->camera(); //The Camera
+		vp = m_pWindow->addViewport(cam); //Our Viewport linked to the camera
+	} else { 
+		cam = m_pMenu->camera(); //The Camera
+		vp = m_pWindow->addViewport(cam); //Our Viewport linked to the camera
+	}
 	vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
 	cam->setAspectRatio(Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));
-}
-
-bool llm::Application::quit(const CEGUI::EventArgs &e) {
-	std::cout << "Quit" << std::endl;
-	((InputListener*)m_pInputListener)->quit();
-	return true;
 }
 
 bool llm::Application::quit() {
 	((InputListener*)m_pInputListener)->quit();
 	return true;
 }
+bool llm::Application::quit(const CEGUI::EventArgs &e) { quit(); return true; }
 
-bool llm::Application::pause(const CEGUI::EventArgs &e) {
-	m_bInGame = m_bInGame ? false : true;
-	m_pMenu->startMenu(!m_bInGame);
-	return true;
+void llm::Application::startGame() {
+	m_pGame->loadLevel();
+	m_bInGame = true;
+	setupViewport(GAME);
+	m_pMenu->startMenu(false);
 }
+bool llm::Application::startGame(const CEGUI::EventArgs &e) { startGame(); return true; }
 
 void llm::Application::pause() {
-	m_bInGame = m_bInGame ? false : true;
-	m_pMenu->startMenu(!m_bInGame);
+	if( !m_bInGame ) {
+		m_bInGame = true;
+		setupViewport(GAME);
+		m_pMenu->desactive();
+	} else {
+		m_bInGame = false;
+		setupViewport(MENU);
+		m_pMenu->pauseMenu(true);
+	}
 }
+bool llm::Application::pause(const CEGUI::EventArgs &e) { pause(); return true; }
+
+void llm::Application::reset() {
+	m_pGame->restart();
+	pause();
+}
+bool llm::Application::reset(const CEGUI::EventArgs &e) { reset(); return true; }

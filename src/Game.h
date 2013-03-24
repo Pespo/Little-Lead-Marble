@@ -33,6 +33,7 @@ namespace llm{
 
 		void loadLevel();
 		void loadPlayer();
+		void restart();
 		void loop();
 		bool cubeHit( int x, int y );
 		void cubeNextPosition( float x, float y );

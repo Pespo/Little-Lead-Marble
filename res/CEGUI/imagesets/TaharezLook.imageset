@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset Name="TaharezLook" Imagefile="TaharezLook.tga" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
+<Imageset Name="TaharezLook" Imagefile="TaharezLook.tga" NativeHorzRes="1600" NativeVertRes="1200" AutoScaled="true">
     <Image Name="ClientBrush" XPos="2" YPos="2" Width="64" Height="64" />
     <Image Name="GenericBrush" XPos="9" YPos="71" Width="1" Height="1" />
 	<Image Name="WindowLeftEdge" XPos="6" YPos="95" Width="1" Height="22" XOffset="4" />
@@ -170,7 +170,7 @@
 	<Image Name="MultiLineEditboxBackdrop" XPos="52" YPos="89" Width="6" Height="6" />
 	<Image Name="MultiLineEditboxSelectionBrush" XPos="9" YPos="71" Width="14" Height="14" />
 	<Image Name="MouseTarget" XPos="182" YPos="127" Width="17" Height="17" XOffset="-8" YOffset="-8" />
-	<Image Name="MouseArrow" XPos="138" YPos="127" Width="31" Height="25" XOffset="0" YOffset="0" />
+	<Image Name="MouseArrow" XPos="1280" YPos="400" Width="65" Height="65" XOffset="0" YOffset="0" />
 	<Image Name="MouseMoveCursor" XPos="201" YPos="127" Width="18" Height="18" XOffset="-8" YOffset="-8" />
 	<Image Name="MouseNoSoCursor" XPos="221" YPos="127" Width="8" Height="18" XOffset="-3" YOffset="-8" />
 	<Image Name="MouseEsWeCursor" XPos="182" YPos="150" Width="18" Height="8" XOffset="-8" YOffset="-3" />
@@ -242,4 +242,11 @@
 	<Image Name="PopupMenuArrowLeft" XPos="179" YPos="210" Width="5" Height="5" />
 	<Image Name="TreeListClosed" XPos="175" YPos="111" Width="7" Height="11" XOffset="8" YOffset="2" />
 	<Image Name="TreeListOpened" XPos="164" YPos="111" Width="11" Height="7" XOffset="8" YOffset="2"/>
+  <Image Name="PlayButtonNormal" XPos="595" YPos="0" Width="260" Height="152" />
+  <Image Name="PlayButtonHover" XPos="285" YPos="0" Width="260" Height="152" />
+  <Image Name="QuitButtonNormal" XPos="542" YPos="182" Width="228" Height="131" />
+  <Image Name="QuitButtonHover" XPos="274" YPos="182" Width="228" Height="131" />
+  <Image Name="OptionsButtonNormal" XPos="1186" YPos="0" Width="228" Height="131" />
+  <Image Name="OptionsButtonHover" XPos="898" YPos="0" Width="228" Height="131" />
+  <Image Name="MenuBackgroundImage" XPos="0" YPos="400" Width="1280" Height="800" />
 </Imageset>
